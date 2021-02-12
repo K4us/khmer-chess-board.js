@@ -26,12 +26,16 @@
 const COLUMN_NUMBER = 8;
 const BORDER_WIDTH = 1
 const MIN_SQUARE_WIDTH = 5
+const COLUMN_TEXT = 'abcdefgh';
 
 class KhmerChessBoard {
     options = {
         width: 500,
         container: null
     };
+    squares = [];
+    graveyardSquares = [];
+    squaresIndex = {};
     constructor(options = {}) {
         if (!options.container) {
             throw new Error('Container is required!');
@@ -76,10 +80,23 @@ class KhmerChessBoard {
                 td.style.border = '1px solid white';
                 td.style.padding = 0;
                 td.style.margin = 0;
+                td.style.maxWidth = squareWidth;
+                td.style.maxHeight = squareWidth;
                 tr.appendChild(td);
-                td.innerText = "*";
+                const div = document.createElement('div');
+                div.style.width = squareWidth;
+                div.style.height = squareWidth;
+                div.style.fontSize = 70;
+                div.classList.add('trey');
+                td.appendChild(div);
+                this.squaresIndex[`${COLUMN_TEXT[j]}${COLUMN_NUMBER - i}`] = td;
             }
         }
+        Object.keys(this.squaresIndex).forEach((key) => {
+            const arr = key.split('');
+            const i = (Number(arr[1]) - 1) * COLUMN_NUMBER + COLUMN_TEXT.indexOf(arr[0]);
+            this.squares[i] = this.squaresIndex[key];
+        });
         const tr = document.createElement('tr');
         tr.style.height = squareWidth;
         tbody.appendChild(tr);
@@ -111,7 +128,17 @@ class KhmerChessBoard {
             td.style.width = squareWidth;
             td.style.height = squareWidth;
             trGraveyard.appendChild(td);
-            td.innerText = "*";
+            td.innerText = '*';
+            this.graveyardSquares.push(td);
+        }
+
+        for (let i = 0; i < COLUMN_NUMBER; i++) {
+            const span = document.createElement('span');
+            span.style.float = 'left';
+            const c = COLUMN_TEXT[i];
+            span.innerText = c;
+            const td = this.squaresIndex[`${c}1`];
+            // td.appendChild(span);
         }
     };
 }
