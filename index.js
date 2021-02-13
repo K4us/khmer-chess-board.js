@@ -282,9 +282,9 @@ class KhmerChessBoard {
     squares = [];
     squaresIndex = {};
     graveyard = new Graveyard();
-    khmerChess = null;
+    khmerChess = new KhmerChess();
     constructor(options = {}) {
-        this.khmerChess = new KhmerChess('bhgqkghb/8/1ff5/8/8/FFFFFFFF/8/BHGKQGHB w ---- -- -.- ffffff');
+        this.khmerChess.load('bhgqkghb/8/1ff5/8/8/FFFFFFFF/8/BHGKQGHB w ---- -- -.- ffffff');
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -511,7 +511,7 @@ class KhmerChessBoard {
             const square = this.graveyard.get(i);
             square.removePiece();
         }
-        this.khmerChess.renInstance.graveyard.pieces.forEach((p, i) => {
+        this.khmerChess.graveyard().forEach((p, i) => {
             const square = this.graveyard.get(i);
             square.setPiece(new Piece(p.type, p.color));
         });
