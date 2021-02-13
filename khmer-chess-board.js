@@ -1,4 +1,31 @@
-"use strict";
+/*
+ * Copyright (c) 2021, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *----------------------------------------------------------------------------*/
+
 /*
   ┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓
 8 ┃   ┃   ┃   ┃   ┃ k ┃   ┃   ┃   ┃
@@ -22,17 +49,26 @@
   ┃ b ┃ h ┃ g ┃ q ┃ g ┃ h ┃ b ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ B ┃ H ┃ G ┃ Q ┃ G ┃ H ┃ B ┃
   ┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛
  */
+"use strict";
 
 const COLUMN_NUMBER = 8;
 const BORDER_WIDTH = 1
 const MIN_SQUARE_WIDTH = 5
 const TD_GRAVEYARD_NUMBER = 30;
 const HORIZONTAL_CODE_LETTERS = 'abcdefgh';
+const TABLE_CLASS = 'khmer-chess-board';
 
 const COLORS = {
     PIECE_COLOR_WHITE: "w",
     PIECE_COLOR_BLACK: "b",
 };
+const WOOD_COLORS = {
+    WHITE: '#ffffff',
+    BLACK: '#422007',
+}
+const toWhite = (c) => {
+    return c.toUpperCase();
+}
 const TYPES = {
     PIECE_TYPE_TOUK: "b", // Boat
     PIECE_TYPE_SES: "h", // Horse
@@ -41,7 +77,35 @@ const TYPES = {
     PIECE_TYPE_NEANG: "q", // Queen
     PIECE_TYPE_TREY: "f", // Fish
     PIECE_TYPE_BORK: "t", // Transform fish
-    EMPTY_PIECE: ".",
+};
+const filterId = 'drop-shadow';
+const SVG_FILTER = `<defs>
+<filter id="${filterId}" height="130%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="5"/> 
+  <feOffset dx="5" dy="5" result="offsetblur"/> 
+  <feMerge> 
+    <feMergeNode/>
+    <feMergeNode in="SourceGraphic"/> 
+  </feMerge>
+</filter>
+</defs>`;
+const PIECES_SVG = {
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
 };
 
 class Piece {
@@ -123,24 +187,75 @@ class KhmerChessBoard {
             this.options.width = options.width;
         }
 
+        this.addCss();
         this.drawBoard();
+    }
+    addCss() {
+        const squareWidth = this._squareWidth();
+        const pieceFontSize = this.options.width / 12;
+
+        let css = `
+          table.${TABLE_CLASS}  {
+            table-layout: fixed;
+            border-collapse: collapse;
+            border-spacing: 0px;
+            width: ${this.options.width}px;
+            height: ${this.options.width}px;
+            text-align: center;
+            border: 0px;
+            padding: 0px;
+            margin: auto;
+            background-color: white;
+          }
+          table.${TABLE_CLASS} tr {
+            width: ${this.options.width}px;
+            height: ${squareWidth}px;
+          }
+          table.${TABLE_CLASS} td {
+            user-select: none;
+            background-color: #f4d1a6;
+            border: 1px solid white;
+            padding: 0px;
+            margin: 0px;
+            max-width: ${squareWidth}px;
+            max-height: ${squareWidth}px;
+          }
+          table.${TABLE_CLASS} td, table.${TABLE_CLASS} td::before {
+            font-size: ${pieceFontSize}px;
+          }
+          table.${TABLE_CLASS} td.piece::before {
+            width: ${squareWidth}px;
+            height: ${squareWidth}px;
+            background-size: ${squareWidth}px ${squareWidth}px;
+            display: block;
+            content: ' ';
+          }
+          table.${TABLE_CLASS} td.piece.type-f.color-w::before {
+            background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[COLORS.PIECE_COLOR_WHITE + TYPES.PIECE_TYPE_TREY])}');
+          }
+          table.${TABLE_CLASS} td.piece.type-f.color-b::before {
+            background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[COLORS.PIECE_COLOR_BLACK + TYPES.PIECE_TYPE_TREY])}');
+          }
+        `;
+
+        const head = document.head || document.getElementsByTagName('head')[0];
+        const style = document.createElement('style');
+        head.appendChild(style);
+
+        style.type = 'text/css';
+        if (style.styleSheet) {
+            // This is required for IE8 and below.
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
     }
     drawBoard() {
         const squareWidth = this._squareWidth();
 
         const createTable = (parent = this.options.container) => {
             const table = document.createElement('table');
-            table.style.tableLayout = 'fixed';
-            table.style.borderCollapse = 'collapse';
-            table.style.borderSpacing = 0;
-            table.style.width = this.options.width;
-            table.style.height = this.options.width;
-            table.style.textAlign = 'center';
-            table.style.border = 0;
-            table.style.padding = 0;
-            table.style.margin = 'auto';
-            table.style.backgroundColor = 'white';
-            table.classList.add('khmer-chess-board');
+            table.classList.add(TABLE_CLASS);
             parent.appendChild(table);
             return table;
         }
@@ -151,20 +266,11 @@ class KhmerChessBoard {
         }
         const createTr = (parent) => {
             const tr = document.createElement('tr');
-            tr.style.width = this.options.width;
-            tr.style.height = squareWidth;
             parent.appendChild(tr);
             return tr;
         }
         const createTd = (parent) => {
             const td = document.createElement('td');
-            td.style.userSelect = 'none';
-            td.style.backgroundColor = '#d4d4d4';
-            td.style.border = '1px solid white';
-            td.style.padding = 0;
-            td.style.margin = 0;
-            td.style.maxWidth = squareWidth;
-            td.style.maxHeight = squareWidth;
             parent.appendChild(td);
             return td;
         }
@@ -172,9 +278,8 @@ class KhmerChessBoard {
             const div = document.createElement('div');
             div.style.width = squareWidth;
             div.style.height = squareWidth;
-            div.style.fontSize = this.options.width / 6;
-            div.style.float = 'left';
-            div.innerText = '*';
+            div.style.fontSize = this.options.width / 12;
+            div.innerText = 't';
             parent.appendChild(div);
             return
         }
@@ -187,8 +292,13 @@ class KhmerChessBoard {
             for (let j = 0; j < COLUMN_NUMBER; j++) {
                 const td = createTd(tr);
                 td.style.cursor = 'pointer';
-                const div = createDiv(td);
-                const piece = new Piece(TYPES.PIECE_TYPE_TREY, COLORS.PIECE_COLOR_WHITE, div);
+                if (i % 2 == 0) {
+                    td.classList.add('piece');
+                    td.classList.add('type-f');
+                    td.classList.add('color-w');
+                }
+                // const div = createDiv(td);
+                const piece = new Piece(TYPES.PIECE_TYPE_TREY, COLORS.PIECE_COLOR_WHITE, null);
                 const squarePiece = new SquarePiece(j, COLUMN_NUMBER - i - 1, td, piece);
                 this.squaresIndex[squarePiece.indexCode] = squarePiece;
             }
@@ -219,6 +329,9 @@ class KhmerChessBoard {
 
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const tdGraveyard = createTd(trGraveyard);
+            tdGraveyard.classList.add('piece');
+            tdGraveyard.classList.add('type-f');
+            tdGraveyard.classList.add(i % 2 == 0 ? 'color-w' : 'color-b');
             const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
             this.graveyard.push(squarePiece);
         }
