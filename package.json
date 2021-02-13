@@ -1,0 +1,25 @@
+{
+  "name": "khmer-chess-board",
+  "version": "1.0.0",
+  "description": "Khmer Chess Javascript library to simulate chess board",
+  "main": "khmer-chess-board.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K4us/khmer-chess-board.js.git"
+  },
+  "author": "Raksa Eng <eng.raksa@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/K4us/khmer-chess-board.js/issues"
+  },
+  "homepage": "https://github.com/K4us/khmer-chess-board.js#readme",
+  "keywords": [
+    "Khmer",
+    "KhmerChess",
+    "Chess",
+    "Board"
+  ]
+}
