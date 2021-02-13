@@ -421,6 +421,10 @@ class KhmerChessBoard {
         const trGraveyardContainer = createTr(tbody);
         trGraveyardContainer.style.height = graveyardContainerHeight;
         const tdGraveyardContainer = createTd(trGraveyardContainer);
+        tdGraveyardContainer.addEventListener('mousewheel', function (e) {
+            this.scrollLeft -= (e.wheelDelta);
+            e.preventDefault();
+        }, false);
         tdGraveyardContainer.style.width = this.options.width;
         tdGraveyardContainer.style.height = graveyardContainerHeight;
         tdGraveyardContainer.style.overflowX = 'scroll';
