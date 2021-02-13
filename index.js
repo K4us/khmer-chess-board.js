@@ -51,6 +51,8 @@
  */
 "use strict";
 
+const { KhmerChess } = require('khmer-chess');
+
 const COLUMN_NUMBER = 8;
 const BORDER_WIDTH = 1
 const MIN_SQUARE_WIDTH = 5
@@ -282,10 +284,7 @@ class KhmerChessBoard {
     graveyard = new Graveyard();
     khmerChess = null;
     constructor(options = {}) {
-        if (!options.khmerChess) {
-            throw new Error('Khmer chess engin is required check https://github.com/K4us/khmer-chess.js#readme');
-        }
-        this.khmerChess = options.khmerChess;
+        this.khmerChess = new KhmerChess('bhgqkghb/8/1ff5/8/8/FFFFFFFF/8/BHGKQGHB w ---- -- -.- ffffff');
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -527,3 +526,5 @@ class KhmerChessBoard {
         });
     }
 }
+
+module.exports = { KhmerChessBoard };
