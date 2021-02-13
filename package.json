@@ -21,5 +21,8 @@
     "KhmerChess",
     "Chess",
     "Board"
-  ]
+  ],
+  "dependencies": {
+    "khmer-chess": "^1.0.2"
+  }
 }
