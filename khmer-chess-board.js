@@ -126,7 +126,7 @@ class KhmerChessBoard {
         this.drawBoard();
     }
     drawBoard() {
-        const squareWidth = (this.options.width - (COLUMN_NUMBER - 1) * BORDER_WIDTH) / COLUMN_NUMBER;
+        const squareWidth = this._squareWidth();
 
         const createTable = (parent = this.options.container) => {
             const table = document.createElement('table');
@@ -140,6 +140,7 @@ class KhmerChessBoard {
             table.style.padding = 0;
             table.style.margin = 'auto';
             table.style.backgroundColor = 'white';
+            // table.style.fontFamily = 'Arial, Helvetica, sans-serif';
             table.classList.add('khmer-chess-board');
             parent.appendChild(table);
             return table;
@@ -223,14 +224,57 @@ class KhmerChessBoard {
             this.graveyard.push(squarePiece);
         }
 
-        for (let i = 0; i < COLUMN_NUMBER; i++) {
+        this._addNote();
+    };
+    _addNote() {
+        const squareWidth = this._squareWidth();
+        const fSize = 15 * this.options.width / 600;
+
+        const addBackground = (target, tObjects = []) => {
+            let bgImg = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>`;
+            tObjects.forEach((obj) => {
+                bgImg += `<text x='${obj.x}' y='${obj.y}' `;
+                bgImg += `fill='white' font-size='${fSize}'>${obj.t}</text>`;
+            })
+
+            bgImg += `</svg>")`;
+            target.style.backgroundImage = bgImg;
+            target.style.backgroundRepeat = 'no-repeat';
+        }
+
+        const square = this.squaresIndex['a1'];
+        addBackground(square.container, [
+            {
+                x: squareWidth / 2 - squareWidth / 10,
+                y: squareWidth,
+                t: 'a'
+            }, {
+                x: 0,
+                y: squareWidth / 2 + squareWidth / 10,
+                t: '1'
+            }
+        ]);
+        square.container.style.backgroundRepeat = 'no-repeat';
+        for (let i = 1; i < COLUMN_NUMBER; i++) {
             const c = HORIZONTAL_CODE_LETTERS[i];
             const square = this.squaresIndex[`${c}1`];
-            square.container.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>` +
-                `<text x='${squareWidth / 2 - squareWidth / 10}' y='${squareWidth}' ` +
-                `fill='white' font-size='${15 * this.options.width / 600}'>${c}</text>` +
-                `</svg>")`;
-            square.container.style.backgroundRepeat = 'no-repeat';
+            addBackground(square.container, [{
+                x: squareWidth / 2 - squareWidth / 10,
+                y: squareWidth,
+                t: c
+            }]);
         }
-    };
+        for (let i = 1; i < COLUMN_NUMBER; i++) {
+            const square = this.squaresIndex[`a${i + 1}`];
+            addBackground(square.container, [{
+                x: 0,
+                y: squareWidth / 2 + squareWidth / 10,
+                t: i + 1
+            }]);
+        }
+    }
+    _squareWidth() {
+        const squareWidth = (this.options.width - (COLUMN_NUMBER - 1) * BORDER_WIDTH) / COLUMN_NUMBER;
+        return squareWidth;
+    }
 }
