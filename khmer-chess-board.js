@@ -96,6 +96,9 @@ class Graveyard {
     push(squarePiece) {
         this.squares.push(squarePiece);
     }
+    get(index) {
+        return this.squares[index];
+    }
 }
 
 class KhmerChessBoard {
@@ -137,6 +140,7 @@ class KhmerChessBoard {
             table.style.padding = 0;
             table.style.margin = 'auto';
             table.style.backgroundColor = 'white';
+            table.classList.add('khmer-chess-board');
             parent.appendChild(table);
             return table;
         }
@@ -168,7 +172,8 @@ class KhmerChessBoard {
             const div = document.createElement('div');
             div.style.width = squareWidth;
             div.style.height = squareWidth;
-            div.style.fontSize = 100;
+            div.style.fontSize = this.options.width / 6;
+            div.style.float = 'left';
             div.innerText = '*';
             parent.appendChild(div);
             return
@@ -202,8 +207,8 @@ class KhmerChessBoard {
         tdGraveyardContainer.style.overflowX = 'scroll';
         tdGraveyardContainer.style.overflowY = 'hidden';
         tdGraveyardContainer.colSpan = 8;
-        tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH;
-        tdGraveyardContainer.style.boxShadow = 'inset 0 0 10px #000000';
+        tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH * this.options.width / 600;
+        tdGraveyardContainer.style.boxShadow = `inset 0 0 ${this.options.width / 60}px #000000`;
         const tableGraveyard = createTable(tdGraveyardContainer);
         const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + squareWidth * TD_GRAVEYARD_NUMBER;
         tableGraveyard.style.width = graveyardWidth;
@@ -218,36 +223,14 @@ class KhmerChessBoard {
             this.graveyard.push(squarePiece);
         }
 
-        const createNote = (parent, text) => {
-            const div = document.createElement('div');
-            div.style.position = 'absolute';
-            div.style.width = squareWidth;
-            div.style.height = squareWidth;
-            div.style.transform = 'translate(0, -100%)';
-            div.style.color = 'white';
-            div.style.pointerEvents = 'none';
-            const span = document.createElement('span');
-            span.style.margin = 0;
-            span.style.marginTop = squareWidth / 2;
-            span.style.display = 'block';
-            span.style.transform = 'translate(0, -20%)';
-            span.style.pointerEvents = 'none';
-            span.innerText = text;
-            div.appendChild(span);
-            parent.appendChild(div);
-            return span;
-        }
         for (let i = 0; i < COLUMN_NUMBER; i++) {
             const c = HORIZONTAL_CODE_LETTERS[i];
             const square = this.squaresIndex[`${c}1`];
-            const span = createNote(square.container, c);
-            span.style.marginTop = squareWidth;
-            span.style.transform = 'translateY(-100%)';
-        }
-        for (let i = 0; i < COLUMN_NUMBER; i++) {
-            const square = this.squaresIndex[`${HORIZONTAL_CODE_LETTERS[0]}${i + 1}`];
-            const span = createNote(square.container, i + 1);
-            span.style.transform = `translateX(-${squareWidth / 2 - squareWidth / 10}px)`;
+            square.container.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>` +
+                `<text x='${squareWidth / 2 - squareWidth / 10}' y='${squareWidth}' ` +
+                `fill='white' font-size='${15 * this.options.width / 600}'>${c}</text>` +
+                `</svg>")`;
+            square.container.style.backgroundRepeat = 'no-repeat';
         }
     };
 }
