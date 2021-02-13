@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khmer Chess Board</title>
+    <script src="node_modules/khmer-chess/dist/khmer-chess.js"></script>
     <script src="khmer-chess-board.js"></script>
 </head>
 
@@ -12,8 +13,10 @@
     <div id="board-container"></div>
     <script>
         var container = document.getElementById("board-container");
+        var khmerChess = new KhmerChess();
         var kcb = new KhmerChessBoard({
             width: 600,
+            khmerChess,
             container: container
         });
     </script>

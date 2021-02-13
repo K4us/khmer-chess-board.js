@@ -90,6 +90,46 @@ const SVG_FILTER = `<defs>
 </filter>
 </defs>`;
 const PIECES_SVG = {
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_TOUK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_SES}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_KOL}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_SDECH}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_NEANG}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
     [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
@@ -98,7 +138,63 @@ const PIECES_SVG = {
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
  </svg>
  `,
+    [`${COLORS.PIECE_COLOR_WHITE}${TYPES.PIECE_TYPE_BORK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_TOUK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_SES}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_KOL}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_SDECH}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_NEANG}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
     [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+    ${SVG_FILTER}
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
+ d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
+ c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
+ c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
+ </svg>
+ `,
+    [`${COLORS.PIECE_COLOR_BLACK}${TYPES.PIECE_TYPE_BORK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
@@ -117,18 +213,14 @@ class Piece {
         }
         return this.type;
     }
-    target = document.createElement('div');
-    constructor(type, color, target) {
+    constructor(type, color) {
         this.type = type;
         this.color = color;
-        this.target = target;
     }
 }
 class SquarePiece {
     x = 0;
     y = 0;
-    type = TYPES.PIECE_TYPE_TREY;
-    color = COLORS.PIECE_COLOR_WHITE;
     get h() {
         if (this.isGraveyard) {
             return `${this.x}x`;
@@ -151,8 +243,23 @@ class SquarePiece {
         this.x = x;
         this.y = y;
         this.container = container;
-        this.piece = piece;
+        this.setPiece(piece);
         this.isGraveyard = isGraveyard;
+    }
+    removePiece() {
+        this.setPiece(null);
+    }
+    setPiece(piece) {
+        this.piece = piece;
+        this.drawPiece();
+    }
+    drawPiece() {
+        this.container.classList.remove('piece');
+        if (this.piece) {
+            this.container.classList.add('piece');
+            this.container.classList.add(`type-${this.piece.type}`);
+            this.container.classList.add(`color-${this.piece.color}`);
+        }
     }
 }
 class Graveyard {
@@ -173,7 +280,12 @@ class KhmerChessBoard {
     squares = [];
     squaresIndex = {};
     graveyard = new Graveyard();
+    khmerChess = null;
     constructor(options = {}) {
+        if (!options.khmerChess) {
+            throw new Error('Khmer chess engin is required check https://github.com/K4us/khmer-chess.js#readme');
+        }
+        this.khmerChess = options.khmerChess;
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -189,6 +301,7 @@ class KhmerChessBoard {
 
         this.addCss();
         this.drawBoard();
+        this.renderKhmerChess();
     }
     addCss() {
         const squareWidth = this._squareWidth();
@@ -230,13 +343,16 @@ class KhmerChessBoard {
             display: block;
             content: ' ';
           }
-          table.${TABLE_CLASS} td.piece.type-f.color-w::before {
-            background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[COLORS.PIECE_COLOR_WHITE + TYPES.PIECE_TYPE_TREY])}');
-          }
-          table.${TABLE_CLASS} td.piece.type-f.color-b::before {
-            background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[COLORS.PIECE_COLOR_BLACK + TYPES.PIECE_TYPE_TREY])}');
-          }
         `;
+        Object.values(COLORS).forEach((color) => {
+            Object.values(TYPES).forEach((type) => {
+                css += `
+                table.${TABLE_CLASS} td.piece.type-${type}.color-${color}::before {
+                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[color + type])}');
+                }
+                  `;
+            });
+        });
 
         const head = document.head || document.getElementsByTagName('head')[0];
         const style = document.createElement('style');
@@ -292,13 +408,7 @@ class KhmerChessBoard {
             for (let j = 0; j < COLUMN_NUMBER; j++) {
                 const td = createTd(tr);
                 td.style.cursor = 'pointer';
-                if (i % 2 == 0) {
-                    td.classList.add('piece');
-                    td.classList.add('type-f');
-                    td.classList.add('color-w');
-                }
-                // const div = createDiv(td);
-                const piece = new Piece(TYPES.PIECE_TYPE_TREY, COLORS.PIECE_COLOR_WHITE, null);
+                const piece = new Piece(TYPES.PIECE_TYPE_TREY, COLORS.PIECE_COLOR_WHITE);
                 const squarePiece = new SquarePiece(j, COLUMN_NUMBER - i - 1, td, piece);
                 this.squaresIndex[squarePiece.indexCode] = squarePiece;
             }
@@ -329,9 +439,6 @@ class KhmerChessBoard {
 
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const tdGraveyard = createTd(trGraveyard);
-            tdGraveyard.classList.add('piece');
-            tdGraveyard.classList.add('type-f');
-            tdGraveyard.classList.add(i % 2 == 0 ? 'color-w' : 'color-b');
             const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
             this.graveyard.push(squarePiece);
         }
@@ -399,5 +506,24 @@ class KhmerChessBoard {
     _squareWidth() {
         const squareWidth = (this.options.width - (COLUMN_NUMBER - 1) * BORDER_WIDTH) / COLUMN_NUMBER;
         return squareWidth;
+    }
+    renderKhmerChess() {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const square = this.graveyard.get(i);
+            square.removePiece();
+        }
+        this.khmerChess.renInstance.graveyard.pieces.forEach((p, i) => {
+            const square = this.graveyard.get[i];
+            square.setPiece(new Piece(p.type, p.color));
+        });
+        this.khmerChess.board().forEach((arr, i) => {
+            arr.forEach((p, j) => {
+                const square = this.squares[i * COLUMN_NUMBER + j];
+                square.removePiece();
+                if (p) {
+                    square.setPiece(new Piece(p.type, p.color));
+                }
+            });
+        });
     }
 }
