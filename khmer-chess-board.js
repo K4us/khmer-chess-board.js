@@ -513,7 +513,7 @@ class KhmerChessBoard {
             square.removePiece();
         }
         this.khmerChess.renInstance.graveyard.pieces.forEach((p, i) => {
-            const square = this.graveyard.get[i];
+            const square = this.graveyard.get(i);
             square.setPiece(new Piece(p.type, p.color));
         });
         this.khmerChess.board().forEach((arr, i) => {
