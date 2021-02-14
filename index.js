@@ -53,6 +53,7 @@
 
 const { KhmerChess } = require('khmer-chess');
 const { PIECES_SVG, COLORS, TYPES } = require('./src/index');
+const { SquarePiece } = require('./src/SquarePiece');
 
 const COLUMN_NUMBER = 8;
 const BORDER_WIDTH = 1
@@ -73,50 +74,6 @@ class Piece {
     constructor(type, color) {
         this.type = type;
         this.color = color;
-    }
-}
-class SquarePiece {
-    x = 0;
-    y = 0;
-    get h() {
-        if (this.isGraveyard) {
-            return `${this.x}x`;
-        }
-        return HORIZONTAL_CODE_LETTERS[this.x];
-    }
-    get v() {
-        return this.y + 1;
-    }
-    get index() {
-        return this.y * COLUMN_NUMBER + this.x;
-    }
-    get indexCode() {
-        return `${this.h}${this.v}`;
-    }
-    isGraveyard = false;
-    container = document.createElement('td');
-    piece = null;
-    constructor(x, y, container, piece, isGraveyard) {
-        this.x = x;
-        this.y = y;
-        this.container = container;
-        this.setPiece(piece);
-        this.isGraveyard = isGraveyard;
-    }
-    removePiece() {
-        this.setPiece(null);
-    }
-    setPiece(piece) {
-        this.piece = piece;
-        this.drawPiece();
-    }
-    drawPiece() {
-        this.container.classList.remove('piece');
-        if (this.piece) {
-            this.container.classList.add('piece');
-            this.container.classList.add(`type-${this.piece.type}`);
-            this.container.classList.add(`color-${this.piece.color}`);
-        }
     }
 }
 class Graveyard {
