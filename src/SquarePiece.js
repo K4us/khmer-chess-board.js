@@ -75,6 +75,17 @@ class SquarePiece {
     isSelected() {
         return this.container.classList.contains(SELECTED_CLASS_NAME);
     }
+    getProperties() {
+        return {
+            className: this.container.className,
+        };
+    }
+    clear() {
+        this.container.className = '';
+    }
+    setProperties(prop) {
+        this.container.className = prop.className;
+    }
 }
 
 module.exports = { SquarePiece };

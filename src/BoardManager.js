@@ -32,6 +32,7 @@ const boardHelper = require('khmer-chess/src/board-helper');
 
 class BoardManager {
     squares = [];
+    isUpsideDown = false;
     put(i, squarePiece) {
         this.squares[i] = squarePiece;
     }
@@ -45,6 +46,19 @@ class BoardManager {
     getByXY(x, y) {
         const index = boardHelper.nerdXyToPos(x, y);
         return this.get(index);
+    }
+    flip() {
+        this.isUpsideDown = !this.isUpsideDown;
+        const propArr = this.squares.map((s) => {
+            return s.getProperties();
+        });
+        this.squares.forEach((s) => {
+            return s.clear();
+        });
+        this.squares = this.squares.reverse();
+        this.squares.forEach((s, i) => {
+            return s.setProperties(propArr[i]);
+        });
     }
 }
 
