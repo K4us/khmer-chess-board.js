@@ -32,6 +32,7 @@ const { boardHelper } = require('khmer-chess');
 const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME } = require('./constance');
 
 class SquarePiece {
+    _CLICK_EVENT_LISTENERS = [];
     x = 0;
     y = 0;
     get index() {
@@ -49,6 +50,11 @@ class SquarePiece {
         this.container = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
+        this.container.onclick = () => {
+            this._CLICK_EVENT_LISTENERS.forEach((listener) => {
+                listener();
+            });
+        };
     }
     removePiece() {
         this.setPiece(null);
@@ -85,6 +91,15 @@ class SquarePiece {
     }
     setProperties(prop) {
         this.container.className = prop.className;
+    }
+    addOnClickEventListener(listener) {
+        this._CLICK_EVENT_LISTENERS.push(listener);
+    }
+    removeOnClickEventListener(listener) {
+        const index = this._CLICK_EVENT_LISTENERS.indexOf(listener);
+        if (~index) {
+            this._CLICK_EVENT_LISTENERS.splice(index, 1);
+        }
     }
 }
 

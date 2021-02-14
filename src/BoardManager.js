@@ -60,6 +60,11 @@ class BoardManager {
             return s.setProperties(propArr[i]);
         });
     }
+    enableSelect() {
+        this.squares.forEach((s) => {
+            return s.clear();
+        });
+    }
 }
 
 module.exports = { BoardManager };
