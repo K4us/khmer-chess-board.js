@@ -28,51 +28,24 @@
 
 "use strict";
 
-const { boardHelper } = require("khmer-chess");
+const boardHelper = require("khmer-chess/src/board-helper");
 
-class SquarePiece {
-    x = 0;
-    y = 0;
-    get index() {
-        return boardHelper.nerdXyToPos(this.x, this.y);
+class BoardManager {
+    squares = [];
+    put(i, squarePiece) {
+        this.squares[i] = squarePiece;
     }
-    get indexCode() {
-        return boardHelper.xyToIndexCode(this.x, this.y);
+    get(index) {
+        return this.squares[index];
     }
-    isGraveyard = false;
-    container = document.createElement('td');
-    piece = null;
-    constructor(x, y, container, piece, isGraveyard) {
-        this.x = x;
-        this.y = y;
-        this.container = container;
-        this.setPiece(piece);
-        this.isGraveyard = isGraveyard;
+    getByIndexCode(code) {
+        const index = boardHelper.indexCodeToPos(code);
+        return this.get(index);
     }
-    removePiece() {
-        this.setPiece(null);
-    }
-    setPiece(piece) {
-        this.piece = piece;
-        this.drawPiece();
-    }
-    drawPiece() {
-        this.container.classList.remove('piece');
-        if (this.piece) {
-            this.container.classList.add('piece');
-            this.container.classList.add(`type-${this.piece.type}`);
-            this.container.classList.add(`color-${this.piece.color}`);
-        }
-    }
-    select() {
-        this.container.classList.add('selected');
-    }
-    unselect() {
-        this.container.classList.remove('selected');
-    }
-    isSelected() {
-
+    getByXY(x, y) {
+        const index = boardHelper.nerdXyToPos(x, y);
+        return this.get(index);
     }
 }
 
-module.exports = { SquarePiece };
+module.exports = { BoardManager };

@@ -51,7 +51,7 @@
  */
 "use strict";
 
-const { Graveyard } = require('./src/Graveyard');
+const { GraveyardManager } = require('./src/GraveyardManager');
 const {
     addCss,
     drawBoard,
@@ -62,6 +62,7 @@ const {
 const config = require('./package.json');
 const khmerChess = require('khmer-chess');
 const { SoundManager } = require('./src/SoundManager');
+const { BoardManager } = require('./src/BoardManager');
 
 const { KhmerChess, Piece, boardHelper } = khmerChess;
 
@@ -76,11 +77,10 @@ class KhmerChessBoard {
         width: 500,
     };
     container = null;
-    squares = [];
-    squaresIndex = {};
-    graveyard = new Graveyard();
-    khmerChess = new KhmerChess();
+    graveyardManager = new GraveyardManager();
+    boardManager = new BoardManager();
     soundManager = new SoundManager();
+    khmerChess = new KhmerChess();
     constructor(options = {}) {
         if (!options.container) {
             throw new Error('Container is required!');
@@ -114,16 +114,16 @@ class KhmerChessBoard {
     }
     renderKhmerChess() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.graveyard.get(i);
+            const square = this.graveyardManager.get(i);
             square.removePiece();
         }
         this.khmerChess.graveyard().forEach((p, i) => {
-            const square = this.graveyard.get(i);
+            const square = this.graveyardManager.get(i);
             square.setPiece(new Piece(p.type, p.color));
         });
         this.khmerChess.board().forEach((arr, i) => {
             arr.forEach((p, j) => {
-                const square = this.squares[i * boardHelper.ROW_NUMBER + j];
+                const square = this.boardManager.get(i * boardHelper.ROW_NUMBER + j);
                 square.removePiece();
                 if (p) {
                     square.setPiece(new Piece(p.type, p.color));
@@ -136,4 +136,4 @@ class KhmerChessBoard {
 console.log(KhmerChess.name, KhmerChess.version);
 console.log(KhmerChessBoard.name, KhmerChessBoard.version);
 
-module.exports = { KhmerChessBoard, Graveyard, ...khmerChess };
+module.exports = { KhmerChessBoard, GraveyardManager, ...khmerChess };

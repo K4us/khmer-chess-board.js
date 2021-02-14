@@ -71,6 +71,9 @@ function addCss() {
       table.${TABLE_CLASS} td, table.${TABLE_CLASS} td::before {
         font-size: ${pieceFontSize}px;
       }
+      table.${TABLE_CLASS} td.selected::before {
+        background: radial-gradient(#e66465, #f4d1a6);
+      }
       table.${TABLE_CLASS} td.piece::before {
         width: ${squareWidth}px;
         height: ${squareWidth}px;
@@ -136,12 +139,10 @@ function drawBoard() {
             const td = createTd(tr);
             td.style.cursor = 'pointer';
             const squarePiece = new SquarePiece(j, boardHelper.ROW_NUMBER - i - 1, td, null);
-            this.squaresIndex[squarePiece.indexCode] = squarePiece;
+            const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
+            this.boardManager.put(index, squarePiece);
         }
     }
-    Object.keys(this.squaresIndex).forEach((key) => {
-        this.squares[this.squaresIndex[key].index] = this.squaresIndex[key];
-    });
 
     const graveyardContainerHeight = squareWidth + 10 * BORDER_WIDTH;
     table.style.height += graveyardContainerHeight;
@@ -170,7 +171,7 @@ function drawBoard() {
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
         const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
-        this.graveyard.push(squarePiece);
+        this.graveyardManager.push(squarePiece);
     }
 
     const fSize = 15 * this.options.width / 600;
@@ -189,7 +190,7 @@ function drawBoard() {
         target.style.backgroundRepeat = 'no-repeat';
     }
 
-    const square = this.squaresIndex['a1'];
+    const square = this.boardManager.getByIndexCode('a1');
     addBackground(square.container, [
         {
             x: squareWidth / 2 - squareWidth / 10,
@@ -201,10 +202,9 @@ function drawBoard() {
             t: '1'
         }
     ]);
-    square.container.style.backgroundRepeat = 'no-repeat';
     for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
         const c = boardHelper.HORIZONTAL_CODE_LETTERS[i];
-        const square = this.squaresIndex[`${c}1`];
+        const square = this.boardManager.getByXY(i, 0);
         addBackground(square.container, [{
             x: squareWidth / 2 - squareWidth / 10,
             y: squareWidth,
@@ -212,7 +212,7 @@ function drawBoard() {
         }]);
     }
     for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
-        const square = this.squaresIndex[`a${i + 1}`];
+        const square = this.boardManager.getByIndexCode(`a${i + 1}`);
         addBackground(square.container, [{
             x: 0,
             y: squareWidth / 2 + squareWidth / 10,
@@ -221,7 +221,7 @@ function drawBoard() {
     }
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-        const square = this.graveyard.get(i);
+        const square = this.graveyardManager.get(i);
         addBackground(square.container, [{
             x: squareWidth / 2 - squareWidth / 10,
             y: squareWidth,

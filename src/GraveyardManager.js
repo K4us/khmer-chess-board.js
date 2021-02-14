@@ -28,7 +28,7 @@
 
 "use strict";
 
-class Graveyard {
+class GraveyardManager {
     squares = [];
     push(squarePiece) {
         this.squares.push(squarePiece);
@@ -38,4 +38,4 @@ class Graveyard {
     }
 }
 
-module.exports = { Graveyard };
+module.exports = { GraveyardManager };
