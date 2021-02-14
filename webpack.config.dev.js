@@ -9,7 +9,7 @@ module.exports = {
     umdNamedDefine: true
   },
   mode: "development",
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     compress: true,
