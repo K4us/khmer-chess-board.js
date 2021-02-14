@@ -197,63 +197,23 @@ function drawBoard() {
         const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
         this.graveyardManager.push(squarePiece);
     }
+}
 
-    const fSize = 15 * this.options.width / 600;
+function addBackground(target, tObjects = [], squareWidth, fSize) {
+    let bgImg = `url("data:image/svg+xml;utf8,`;
+    bgImg += `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>`;
 
-    const addBackground = (target, tObjects = []) => {
-        let bgImg = `url("data:image/svg+xml;utf8,`;
-        bgImg += `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>`;
+    tObjects.forEach((obj) => {
+        bgImg += `<text x='${obj.x}' y='${obj.y}' `;
+        bgImg += `fill='white' font-size='${fSize}'>${obj.t}</text>`;
+    })
 
-        tObjects.forEach((obj) => {
-            bgImg += `<text x='${obj.x}' y='${obj.y}' `;
-            bgImg += `fill='white' font-size='${fSize}'>${obj.t}</text>`;
-        })
-
-        bgImg += `</svg>")`;
-        target.style.backgroundImage = bgImg;
-    }
-
-    const square = this.boardManager.getByIndexCode('a1');
-    addBackground(square.container, [
-        {
-            x: squareWidth / 2 - squareWidth / 10,
-            y: squareWidth,
-            t: 'a'
-        }, {
-            x: 0,
-            y: squareWidth / 2 + squareWidth / 10,
-            t: '1'
-        }
-    ]);
-    for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
-        const c = boardHelper.HORIZONTAL_CODE_LETTERS[i];
-        const square = this.boardManager.getByXY(i, 0);
-        addBackground(square.container, [{
-            x: squareWidth / 2 - squareWidth / 10,
-            y: squareWidth,
-            t: c
-        }]);
-    }
-    for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
-        const square = this.boardManager.getByIndexCode(`a${i + 1}`);
-        addBackground(square.container, [{
-            x: 0,
-            y: squareWidth / 2 + squareWidth / 10,
-            t: i + 1
-        }]);
-    }
-
-    for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-        const square = this.graveyardManager.get(i);
-        addBackground(square.container, [{
-            x: squareWidth / 2 - squareWidth / 10,
-            y: squareWidth,
-            t: i + 1
-        }]);
-    }
+    bgImg += `</svg>")`;
+    target.style.backgroundImage = bgImg;
 }
 
 module.exports = {
     addCss,
     drawBoard,
+    addBackground,
 };

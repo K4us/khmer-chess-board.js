@@ -100,6 +100,10 @@ class KhmerChessBoard {
 
         addCss.call(this);
         drawBoard.call(this);
+        const squareWidth = this.squareWidth();
+        const fSize = 15 * this.options.width / 600;
+        this.boardManager.setNote(squareWidth, fSize);
+        this.graveyardManager.setNote(squareWidth, fSize);
         this.renderKhmerChess();
     }
 

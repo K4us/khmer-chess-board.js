@@ -28,6 +28,9 @@
 
 'use strict';
 
+const { addBackground } = require(".");
+const { TD_GRAVEYARD_NUMBER } = require("./constance");
+
 class GraveyardManager {
     squares = [];
     push(squarePiece) {
@@ -35,6 +38,16 @@ class GraveyardManager {
     }
     get(index) {
         return this.squares[index];
+    }
+    setNote(squareWidth, fSize) {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const square = this.get(i);
+            addBackground(square.container, [{
+                x: squareWidth / 2 - squareWidth / 10,
+                y: squareWidth,
+                t: i + 1
+            }], squareWidth, fSize);
+        }
     }
 }
 

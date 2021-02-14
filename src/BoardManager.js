@@ -29,6 +29,8 @@
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
+const { addBackground } = require('.');
+const { TD_GRAVEYARD_NUMBER } = require('./constance');
 
 class BoardManager {
     squares = [];
@@ -66,6 +68,37 @@ class BoardManager {
                 s.isSelected() ? s.unselect() : s.select();
             });
         });
+    }
+    setNote(squareWidth, fSize) {
+        const square = this.getByIndexCode('a1');
+        addBackground(square.container, [
+            {
+                x: squareWidth / 2 - squareWidth / 10,
+                y: squareWidth,
+                t: 'a'
+            }, {
+                x: 0,
+                y: squareWidth / 2 + squareWidth / 10,
+                t: '1'
+            }
+        ], squareWidth, fSize);
+        for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
+            const c = boardHelper.HORIZONTAL_CODE_LETTERS[i];
+            const square = this.getByXY(i, 0);
+            addBackground(square.container, [{
+                x: squareWidth / 2 - squareWidth / 10,
+                y: squareWidth,
+                t: c
+            }]);
+        }
+        for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
+            const square = this.getByIndexCode(`a${i + 1}`);
+            addBackground(square.container, [{
+                x: 0,
+                y: squareWidth / 2 + squareWidth / 10,
+                t: i + 1
+            }], squareWidth, fSize);
+        }
     }
 }
 
