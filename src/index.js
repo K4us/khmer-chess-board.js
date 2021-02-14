@@ -30,8 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
-const { PIECES_SVG } = require('./svg');
-const { AUDIO } = require('./audio');
+const { PIECES_SVG, squareWidth } = require('./svg');
 const {
     BORDER_WIDTH,
     TD_GRAVEYARD_NUMBER,
@@ -42,7 +41,7 @@ const {
 
 function addCss() {
     const width = this.options.width;
-    const squareWidth = this.squareWidth();
+    const sqWidth = squareWidth(width);
     const pieceFontSize = width / 12;
     const highlightPseudo = 'after';
     const piecePseudo = 'before';
@@ -71,7 +70,7 @@ function addCss() {
         }
         table.${TABLE_CLASS} tr {
             width: ${width}px;
-            height: ${squareWidth}px;
+            height: ${sqWidth}px;
         }
         table.${TABLE_CLASS} td {
             user-select: none;
@@ -79,8 +78,8 @@ function addCss() {
             border: 1px solid white;
             padding: 0px;
             margin: 0px;
-            max-width: ${squareWidth}px;
-            max-height: ${squareWidth}px;
+            max-width: ${sqWidth}px;
+            max-height: ${sqWidth}px;
             background-repeat: no-repeat;
             cursor: pointer;
         }
@@ -96,9 +95,9 @@ function addCss() {
         }
         table.${TABLE_CLASS} td:not(.graveyard)::${highlightPseudo},
         table.${TABLE_CLASS} td:not(.graveyard)::${piecePseudo} {
-            width: ${squareWidth}px;
-            height: ${squareWidth}px;
-            background-size: ${squareWidth}px ${squareWidth}px;
+            width: ${sqWidth}px;
+            height: ${sqWidth}px;
+            background-size: ${sqWidth}px ${sqWidth}px;
             display: block;
             content: ' ';
         }
@@ -130,7 +129,7 @@ function addCss() {
 }
 
 function drawBoard() {
-    const squareWidth = this.squareWidth();
+    const sqWidth = squareWidth(this.options.width);
 
     const createTable = (parent = this.container) => {
         const table = document.createElement('table');
@@ -167,7 +166,7 @@ function drawBoard() {
         }
     }
 
-    const graveyardContainerHeight = squareWidth + 10 * BORDER_WIDTH;
+    const graveyardContainerHeight = sqWidth + 10 * BORDER_WIDTH;
     table.style.height = this.options.width + graveyardContainerHeight;
     const trGraveyardContainer = createTr(tbody);
     trGraveyardContainer.style.height = graveyardContainerHeight;
@@ -185,9 +184,9 @@ function drawBoard() {
     tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH * this.options.width / 600;
     tdGraveyardContainer.style.boxShadow = `inset 0 0 ${this.options.width / 60}px #000000`;
     const tableGraveyard = createTable(tdGraveyardContainer);
-    const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + squareWidth * TD_GRAVEYARD_NUMBER;
+    const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + sqWidth * TD_GRAVEYARD_NUMBER;
     tableGraveyard.style.width = graveyardWidth;
-    tableGraveyard.style.height = squareWidth;
+    tableGraveyard.style.height = sqWidth;
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
     trGraveyard.style.width = graveyardWidth;

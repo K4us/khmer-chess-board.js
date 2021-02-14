@@ -29,6 +29,8 @@
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
+const { isNumber } = require('khmer-chess/src/jsis');
+const { BORDER_WIDTH } = require('./constance');
 
 const WOOD_COLORS = {
    WHITE: '#ffffff',
@@ -174,7 +176,16 @@ function addBackgroundNote(target, tObjects = [], squareWidth, fSize) {
    target.style.backgroundImage = bgImg;
 }
 
+function squareWidth(width) {
+   if (isNaN(Number(width))) {
+      throw new Error('Invalid width');
+   }
+   const sqWidth = (width - (boardHelper.ROW_NUMBER - 1) * BORDER_WIDTH) / boardHelper.ROW_NUMBER;
+   return sqWidth;
+}
+
 module.exports = {
    PIECES_SVG,
    addBackgroundNote,
+   squareWidth,
 };

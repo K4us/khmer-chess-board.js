@@ -98,23 +98,19 @@ class KhmerChessBoard {
             this.options.width = options.width;
         }
 
+        this.boardManager.setOptions(this.options);
+        this.graveyardManager.setOptions(this.options);
+
         addCss.call(this);
         drawBoard.call(this);
-        const squareWidth = this.squareWidth();
-        const fSize = 15 * this.options.width / 600;
-        this.boardManager.setNote(squareWidth, fSize);
-        this.graveyardManager.setNote(squareWidth, fSize);
+        this.boardManager.setNote();
+        this.graveyardManager.setNote();
         this.renderKhmerChess();
     }
 
     loadRen(renStr) {
         this.khmerChess.load(renStr);
         this.renderKhmerChess();
-    }
-
-    squareWidth() {
-        const squareWidth = (this.options.width - (boardHelper.ROW_NUMBER - 1) * BORDER_WIDTH) / boardHelper.ROW_NUMBER;
-        return squareWidth;
     }
     renderKhmerChess() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {

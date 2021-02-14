@@ -29,10 +29,15 @@
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
+const { squareWidth } = require('./svg');
 
 class BoardManager {
     squares = [];
+    options = {};
     isUpsideDown = false;
+    setOptions(options) {
+        this.options = options;
+    }
     put(i, squarePiece) {
         this.squares[i] = squarePiece;
     }
@@ -59,6 +64,8 @@ class BoardManager {
         this.squares.forEach((s, i) => {
             return s.setProperties(propArr[i]);
         });
+        this.clearNote();
+        this.setNote();
     }
     enableSelect() {
         this.squares.forEach((s) => {
@@ -72,25 +79,28 @@ class BoardManager {
             s.clearNote();
         });
     }
-    setNote(squareWidth, fSize) {
+    setNote() {
+        const sqWidth = squareWidth(this.options.width);
+        const fSize = 15 * this.options.width / 600;
+
         const square = this.getByIndexCode('a1');
         square.addNote([
             {
-                x: squareWidth / 2 - squareWidth / 10,
-                y: squareWidth,
+                x: sqWidth / 2 - sqWidth / 10,
+                y: sqWidth,
                 t: 'a'
             }, {
                 x: 0,
-                y: squareWidth / 2 + squareWidth / 10,
+                y: sqWidth / 2 + sqWidth / 10,
                 t: '1'
             }
-        ], squareWidth, fSize);
+        ], sqWidth, fSize);
         for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
             const c = boardHelper.HORIZONTAL_CODE_LETTERS[i];
             const square = this.getByXY(i, 0);
             square.addNote([{
-                x: squareWidth / 2 - squareWidth / 10,
-                y: squareWidth,
+                x: sqWidth / 2 - sqWidth / 10,
+                y: sqWidth,
                 t: c
             }]);
         }
@@ -98,9 +108,9 @@ class BoardManager {
             const square = this.getByIndexCode(`a${i + 1}`);
             square.addNote([{
                 x: 0,
-                y: squareWidth / 2 + squareWidth / 10,
+                y: sqWidth / 2 + sqWidth / 10,
                 t: i + 1
-            }], squareWidth, fSize);
+            }], sqWidth, fSize);
         }
     }
 }

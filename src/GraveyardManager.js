@@ -29,23 +29,31 @@
 'use strict';
 
 const { TD_GRAVEYARD_NUMBER } = require("./constance");
+const { squareWidth } = require('./svg');
 
 class GraveyardManager {
     squares = [];
+    options = {};
+    setOptions(options) {
+        this.options = options;
+    }
     push(squarePiece) {
         this.squares.push(squarePiece);
     }
     get(index) {
         return this.squares[index];
     }
-    setNote(squareWidth, fSize) {
+    setNote() {
+        const sqWidth = squareWidth(this.options.width);
+        const fSize = 15 * this.options.width / 600;
+
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const square = this.get(i);
             square.addNote([{
-                x: squareWidth / 2 - squareWidth / 10,
-                y: squareWidth,
+                x: sqWidth / 2 - sqWidth / 10,
+                y: sqWidth,
                 t: i + 1
-            }], squareWidth, fSize);
+            }], sqWidth, fSize);
         }
     }
 }
