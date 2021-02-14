@@ -61,6 +61,7 @@ const {
 } = require('./src');
 const config = require('./package.json');
 const khmerChess = require('khmer-chess');
+const { SoundManager } = require('./src/SoundManager');
 
 const { KhmerChess, Piece, boardHelper } = khmerChess;
 
@@ -73,21 +74,25 @@ class KhmerChessBoard {
     static TABLE_CLASS;
     options = {
         width: 500,
-        container: null
     };
+    container = null;
     squares = [];
     squaresIndex = {};
     graveyard = new Graveyard();
     khmerChess = new KhmerChess();
+    soundManager = new SoundManager();
     constructor(options = {}) {
         if (!options.container) {
             throw new Error('Container is required!');
         }
-        this.options.container = options.container;
+        this.container = options.container;
 
         const minWidth = (boardHelper.ROW_NUMBER - 1) * BORDER_WIDTH + boardHelper.ROW_NUMBER * MIN_SQUARE_WIDTH;
         if (options.width < minWidth) {
             throw new Error(`Board width must more than ${minWidth}`);
+        }
+        if (options.width) {
+            this.options.width = options.width;
         }
         if (options.width) {
             this.options.width = options.width;

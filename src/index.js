@@ -31,6 +31,7 @@
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
 const { PIECES_SVG } = require('./svg');
+const { AUDIO } = require('./audio');
 
 const BORDER_WIDTH = 1
 const MIN_SQUARE_WIDTH = 5
@@ -104,7 +105,7 @@ function addCss() {
 function drawBoard() {
     const squareWidth = this.squareWidth();
 
-    const createTable = (parent = this.options.container) => {
+    const createTable = (parent = this.container) => {
         const table = document.createElement('table');
         table.classList.add(TABLE_CLASS);
         parent.appendChild(table);
@@ -226,6 +227,43 @@ function drawBoard() {
             y: squareWidth,
             t: i + 1
         }]);
+    }
+}
+
+class SoundManager {
+    move = null;
+    capture = null;
+    check = null;
+    enable = false;
+    disable() {
+        this.enable = false;
+        if (this.move) {
+            this.move.parentElement.removeChild(this.move);
+            this.move = null;
+        }
+        if (this.capture) {
+            this.capture.parentElement.removeChild(this.capture);
+            this.capture = null;
+        }
+        if (this.check) {
+            this.check.parentElement.removeChild(this.check);
+            this.check = null;
+        }
+    }
+    enable() {
+        this.enable = true;
+        this.move = this._addSound(AUDIO.move);
+        this.capture = this._addSound(AUDIO.capture);
+        this.check = this._addSound(AUDIO.check);
+    }
+    _addSound(src) {
+        const sound = document.createElement("audio");
+        sound.src = src;
+        sound.setAttribute("preload", "auto");
+        sound.setAttribute("controls", "none");
+        sound.style.display = "none";
+        document.body.appendChild(sound);
+        return sound;
     }
 }
 
