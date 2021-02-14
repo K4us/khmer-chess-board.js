@@ -11,15 +11,11 @@
 <body>
     <div id="board-container"></div>
     <script>
-        try {
-            var container = document.getElementById("board-container");
-            var kcb = new KhmerChessBoard({
-                width: 600,
-                container: container
-            });
-        } catch (error) {
-            alert(error.message);
-        }
+        var container = document.getElementById("board-container");
+        var kcb = new KhmerChessBoard({
+            width: 600,
+            container: container
+        });
     </script>
 </body>
 

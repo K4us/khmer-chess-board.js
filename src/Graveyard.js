@@ -28,51 +28,14 @@
 
 "use strict";
 
-const { boardHelper } = require("khmer-chess");
-
-class SquarePiece {
-    x = 0;
-    y = 0;
-    get h() {
-        if (this.isGraveyard) {
-            return `${this.x}x`;
-        }
-        return boardHelper.HORIZONTAL_CODE_LETTERS[this.x];
+class Graveyard {
+    squares = [];
+    push(squarePiece) {
+        this.squares.push(squarePiece);
     }
-    get v() {
-        return this.y + 1;
-    }
-    get index() {
-        return this.y * boardHelper.ROW_NUMBER + this.x;
-    }
-    get indexCode() {
-        return `${this.h}${this.v}`;
-    }
-    isGraveyard = false;
-    container = document.createElement('td');
-    piece = null;
-    constructor(x, y, container, piece, isGraveyard) {
-        this.x = x;
-        this.y = y;
-        this.container = container;
-        this.setPiece(piece);
-        this.isGraveyard = isGraveyard;
-    }
-    removePiece() {
-        this.setPiece(null);
-    }
-    setPiece(piece) {
-        this.piece = piece;
-        this.drawPiece();
-    }
-    drawPiece() {
-        this.container.classList.remove('piece');
-        if (this.piece) {
-            this.container.classList.add('piece');
-            this.container.classList.add(`type-${this.piece.type}`);
-            this.container.classList.add(`color-${this.piece.color}`);
-        }
+    get(index) {
+        return this.squares[index];
     }
 }
 
-module.exports = { SquarePiece };
+module.exports = { Graveyard };
