@@ -49,30 +49,30 @@
   ┃ b ┃ h ┃ g ┃ q ┃ g ┃ h ┃ b ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ B ┃ H ┃ G ┃ Q ┃ G ┃ H ┃ B ┃
   ┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛
  */
-"use strict";
+'use strict';
 
 const { GraveyardManager } = require('./src/GraveyardManager');
 const {
     addCss,
     drawBoard,
-    BORDER_WIDTH,
-    MIN_SQUARE_WIDTH,
-    TD_GRAVEYARD_NUMBER,
-} = require('./src');
+} = require('./src/index');
 const config = require('./package.json');
 const khmerChess = require('khmer-chess');
 const { SoundManager } = require('./src/SoundManager');
 const { BoardManager } = require('./src/BoardManager');
+const constance = require('./src/constance');
+
+const {
+    BORDER_WIDTH,
+    MIN_SQUARE_WIDTH,
+    TD_GRAVEYARD_NUMBER,
+} = constance;
 
 const { KhmerChess, Piece, boardHelper } = khmerChess;
 
 class KhmerChessBoard {
     static name = config.name;
     static version = config.version;
-    static BORDER_WIDTH;
-    static MIN_SQUARE_WIDTH;
-    static TD_GRAVEYARD_NUMBER;
-    static TABLE_CLASS;
     options = {
         width: 500,
     };
@@ -136,4 +136,4 @@ class KhmerChessBoard {
 console.log(KhmerChess.name, KhmerChess.version);
 console.log(KhmerChessBoard.name, KhmerChessBoard.version);
 
-module.exports = { KhmerChessBoard, GraveyardManager, ...khmerChess };
+module.exports = { KhmerChessBoard, GraveyardManager, ...khmerChess, ...constance };

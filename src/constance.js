@@ -12,7 +12,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
@@ -28,24 +28,18 @@
 
 'use strict';
 
-const boardHelper = require('khmer-chess/src/board-helper');
+const BORDER_WIDTH = 1
+const MIN_SQUARE_WIDTH = 5
+const TD_GRAVEYARD_NUMBER = 30;
+const TABLE_CLASS = 'khmer-chess-board';
+const SELECTED_CLASS_NAME = 'selected';
+const PIECE_CLASS_NAME = 'piece';
 
-class BoardManager {
-    squares = [];
-    put(i, squarePiece) {
-        this.squares[i] = squarePiece;
-    }
-    get(index) {
-        return this.squares[index];
-    }
-    getByIndexCode(code) {
-        const index = boardHelper.indexCodeToPos(code);
-        return this.get(index);
-    }
-    getByXY(x, y) {
-        const index = boardHelper.nerdXyToPos(x, y);
-        return this.get(index);
-    }
-}
-
-module.exports = { BoardManager };
+module.exports = {
+    BORDER_WIDTH,
+    MIN_SQUARE_WIDTH,
+    TD_GRAVEYARD_NUMBER,
+    TABLE_CLASS,
+    SELECTED_CLASS_NAME,
+    PIECE_CLASS_NAME,
+};

@@ -26,69 +26,83 @@
  *
  *----------------------------------------------------------------------------*/
 
-"use strict";
+'use strict';
 
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
 const { PIECES_SVG } = require('./svg');
 const { AUDIO } = require('./audio');
-
-const BORDER_WIDTH = 1
-const MIN_SQUARE_WIDTH = 5
-const TD_GRAVEYARD_NUMBER = 30;
-const TABLE_CLASS = 'khmer-chess-board';
+const {
+    BORDER_WIDTH,
+    TD_GRAVEYARD_NUMBER,
+    TABLE_CLASS,
+    SELECTED_CLASS_NAME,
+    PIECE_CLASS_NAME
+} = require('./constance');
 
 function addCss() {
     const width = this.options.width;
     const squareWidth = this.squareWidth();
     const pieceFontSize = width / 12;
+    const highlightPseudo = 'after';
+    const piecePseudo = 'before';
 
     let css = `
-      table.${TABLE_CLASS}  {
-        table-layout: fixed;
-        border-collapse: collapse;
-        border-spacing: 0px;
-        width: ${width}px;
-        text-align: center;
-        border: 0px;
-        padding: 0px;
-        margin: auto;
-        background-color: white;
-      }
-      table.${TABLE_CLASS} tr {
-        width: ${width}px;
-        height: ${squareWidth}px;
-      }
-      table.${TABLE_CLASS} td {
-        user-select: none;
-        background-color: #f4d1a6;
-        border: 1px solid white;
-        padding: 0px;
-        margin: 0px;
-        max-width: ${squareWidth}px;
-        max-height: ${squareWidth}px;
-      }
-      table.${TABLE_CLASS} td, table.${TABLE_CLASS} td::before {
-        font-size: ${pieceFontSize}px;
-      }
-      table.${TABLE_CLASS} td.selected::before {
-        background: radial-gradient(#e66465, #f4d1a6);
-      }
-      table.${TABLE_CLASS} td.piece::before {
-        width: ${squareWidth}px;
-        height: ${squareWidth}px;
-        background-size: ${squareWidth}px ${squareWidth}px;
-        display: block;
-        content: ' ';
-      }
+        table.${TABLE_CLASS}  {
+            table-layout: fixed;
+            border-collapse: collapse;
+            border-spacing: 0px;
+            width: ${width}px;
+            text-align: center;
+            border: 0px;
+            padding: 0px;
+            margin: auto;
+            background-color: white;
+        }
+        table.${TABLE_CLASS} tr {
+            width: ${width}px;
+            height: ${squareWidth}px;
+        }
+        table.${TABLE_CLASS} td {
+            user-select: none;
+            background-color: #f4d1a6;
+            border: 1px solid white;
+            padding: 0px;
+            margin: 0px;
+            max-width: ${squareWidth}px;
+            max-height: ${squareWidth}px;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+        table.${TABLE_CLASS} td, table.${TABLE_CLASS} td::${highlightPseudo},
+        table.${TABLE_CLASS} td::${piecePseudo} {
+            font-size: ${pieceFontSize}px;
+        }
+        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${highlightPseudo} {
+            opacity: 0.4;
+        }
+        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${piecePseudo} {
+            float: left;
+        }
+        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${highlightPseudo},
+        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${piecePseudo} {
+            width: ${squareWidth}px;
+            height: ${squareWidth}px;
+            background-size: ${squareWidth}px ${squareWidth}px;
+            display: block;
+            content: ' ';
+        }
+        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${SELECTED_CLASS_NAME}::${highlightPseudo} {
+            background: radial-gradient(#f4d1a6, #e66465) !important;
+        }
     `;
     boardHelper.getColorArray().forEach((color) => {
         boardHelper.getPieceCharArray().forEach((type) => {
             css += `
-            table.${TABLE_CLASS} td.piece.type-${type}.color-${color}::before {
-                background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[color + type])}');
-            }
-              `;
+              table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
+                  background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[color + type])}');
+              }
+                `;
         });
     });
 
@@ -137,7 +151,6 @@ function drawBoard() {
         const tr = createTr(tbody);
         for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
             const td = createTd(tr);
-            td.style.cursor = 'pointer';
             const squarePiece = new SquarePiece(j, boardHelper.ROW_NUMBER - i - 1, td, null);
             const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
             this.boardManager.put(index, squarePiece);
@@ -187,7 +200,6 @@ function drawBoard() {
 
         bgImg += `</svg>")`;
         target.style.backgroundImage = bgImg;
-        target.style.backgroundRepeat = 'no-repeat';
     }
 
     const square = this.boardManager.getByIndexCode('a1');
@@ -230,48 +242,7 @@ function drawBoard() {
     }
 }
 
-class SoundManager {
-    move = null;
-    capture = null;
-    check = null;
-    enable = false;
-    disable() {
-        this.enable = false;
-        if (this.move) {
-            this.move.parentElement.removeChild(this.move);
-            this.move = null;
-        }
-        if (this.capture) {
-            this.capture.parentElement.removeChild(this.capture);
-            this.capture = null;
-        }
-        if (this.check) {
-            this.check.parentElement.removeChild(this.check);
-            this.check = null;
-        }
-    }
-    enable() {
-        this.enable = true;
-        this.move = this._addSound(AUDIO.move);
-        this.capture = this._addSound(AUDIO.capture);
-        this.check = this._addSound(AUDIO.check);
-    }
-    _addSound(src) {
-        const sound = document.createElement("audio");
-        sound.src = src;
-        sound.setAttribute("preload", "auto");
-        sound.setAttribute("controls", "none");
-        sound.style.display = "none";
-        document.body.appendChild(sound);
-        return sound;
-    }
-}
-
 module.exports = {
     addCss,
     drawBoard,
-    BORDER_WIDTH,
-    MIN_SQUARE_WIDTH,
-    TD_GRAVEYARD_NUMBER,
-    TABLE_CLASS
 };

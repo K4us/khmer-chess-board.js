@@ -26,9 +26,9 @@
  *
  *----------------------------------------------------------------------------*/
 
-"use strict";
+'use strict';
 
-const { AUDIO } = require("./audio");
+const { AUDIO } = require('./audio');
 
 class SoundManager {
     static MOVE_FLAG = 'm';
@@ -62,11 +62,11 @@ class SoundManager {
         console.log('Sound is enabled');
     }
     _addSound(src) {
-        const sound = document.createElement("audio");
+        const sound = document.createElement('audio');
         sound.src = src;
-        sound.setAttribute("preload", "auto");
-        sound.setAttribute("controls", "none");
-        sound.style.display = "none";
+        sound.setAttribute('preload', 'auto');
+        sound.setAttribute('controls', 'none');
+        sound.style.display = 'none';
         document.body.appendChild(sound);
         return sound;
     }

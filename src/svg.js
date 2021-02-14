@@ -26,9 +26,9 @@
  *
  *----------------------------------------------------------------------------*/
 
-"use strict";
+'use strict';
 
-const { boardHelper } = require("khmer-chess");
+const { boardHelper } = require('khmer-chess');
 
 const WOOD_COLORS = {
     WHITE: '#ffffff',

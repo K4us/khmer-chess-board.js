@@ -12,7 +12,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
@@ -26,9 +26,10 @@
  *
  *----------------------------------------------------------------------------*/
 
-"use strict";
+'use strict';
 
-const { boardHelper } = require("khmer-chess");
+const { boardHelper } = require('khmer-chess');
+const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME } = require('./constance');
 
 class SquarePiece {
     x = 0;
@@ -57,21 +58,22 @@ class SquarePiece {
         this.drawPiece();
     }
     drawPiece() {
-        this.container.classList.remove('piece');
+        const classList = this.container.classList;
+        classList.remove(PIECE_CLASS_NAME);
         if (this.piece) {
-            this.container.classList.add('piece');
-            this.container.classList.add(`type-${this.piece.type}`);
-            this.container.classList.add(`color-${this.piece.color}`);
+            classList.add(PIECE_CLASS_NAME);
+            classList.add(`type-${this.piece.type}`);
+            classList.add(`color-${this.piece.color}`);
         }
     }
     select() {
-        this.container.classList.add('selected');
+        this.container.classList.add(SELECTED_CLASS_NAME);
     }
     unselect() {
-        this.container.classList.remove('selected');
+        this.container.classList.remove(SELECTED_CLASS_NAME);
     }
     isSelected() {
-
+        return this.container.classList.contains(SELECTED_CLASS_NAME);
     }
 }
 

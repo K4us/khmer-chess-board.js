@@ -26,7 +26,7 @@
  *
  *----------------------------------------------------------------------------*/
 
-"use strict";
+'use strict';
 
 const { KhmerChessBoard } = require('./index');
 
