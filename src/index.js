@@ -59,6 +59,16 @@ function addCss() {
             margin: auto;
             background-color: white;
         }
+        table.${TABLE_CLASS} td table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            border-spacing: 0px;
+            text-align: center;
+            border: 0px;
+            padding: 0px;
+            margin: auto;
+            background-color: white;
+        }
         table.${TABLE_CLASS} tr {
             width: ${width}px;
             height: ${squareWidth}px;
@@ -78,21 +88,21 @@ function addCss() {
         table.${TABLE_CLASS} td::${piecePseudo} {
             font-size: ${pieceFontSize}px;
         }
-        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${highlightPseudo} {
+        table.${TABLE_CLASS} td::${highlightPseudo} {
             opacity: 0.4;
         }
-        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${piecePseudo} {
+        table.${TABLE_CLASS} td::${piecePseudo} {
             float: left;
         }
-        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${highlightPseudo},
-        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}::${piecePseudo} {
+        table.${TABLE_CLASS} td:not(.graveyard)::${highlightPseudo},
+        table.${TABLE_CLASS} td:not(.graveyard)::${piecePseudo} {
             width: ${squareWidth}px;
             height: ${squareWidth}px;
             background-size: ${squareWidth}px ${squareWidth}px;
             display: block;
             content: ' ';
         }
-        table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${SELECTED_CLASS_NAME}::${highlightPseudo} {
+        table.${TABLE_CLASS} td.${SELECTED_CLASS_NAME}::${highlightPseudo} {
             background: radial-gradient(#f4d1a6, #e66465) !important;
         }
     `;
@@ -158,10 +168,11 @@ function drawBoard() {
     }
 
     const graveyardContainerHeight = squareWidth + 10 * BORDER_WIDTH;
-    table.style.height += graveyardContainerHeight;
+    table.style.height = this.options.width + graveyardContainerHeight;
     const trGraveyardContainer = createTr(tbody);
     trGraveyardContainer.style.height = graveyardContainerHeight;
     const tdGraveyardContainer = createTd(trGraveyardContainer);
+    tdGraveyardContainer.classList.add('graveyard');
     tdGraveyardContainer.addEventListener('mousewheel', function (e) {
         this.scrollLeft -= (e.wheelDelta);
         e.preventDefault();

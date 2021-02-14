@@ -62,7 +62,9 @@ class BoardManager {
     }
     enableSelect() {
         this.squares.forEach((s) => {
-            return s.clear();
+            return s.setOnClick(() => {
+                s.isSelected() ? s.unselect() : s.select();
+            });
         });
     }
 }
