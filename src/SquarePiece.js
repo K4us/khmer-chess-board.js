@@ -30,6 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME } = require('./constance');
+const { addBackgroundNote } = require('./svg');
 
 class SquarePiece {
     x = 0;
@@ -91,6 +92,12 @@ class SquarePiece {
     }
     removeOnClick() {
         this.container.onclick = null;
+    }
+    addNote(tObjects, squareWidth, fSize) {
+        addBackgroundNote(this.container, tObjects, squareWidth, fSize);
+    }
+    clearNote() {
+        this.container.style.backgroundImage = '';
     }
 }
 

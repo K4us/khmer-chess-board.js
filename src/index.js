@@ -199,21 +199,7 @@ function drawBoard() {
     }
 }
 
-function addBackground(target, tObjects = [], squareWidth, fSize) {
-    let bgImg = `url("data:image/svg+xml;utf8,`;
-    bgImg += `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>`;
-
-    tObjects.forEach((obj) => {
-        bgImg += `<text x='${obj.x}' y='${obj.y}' `;
-        bgImg += `fill='white' font-size='${fSize}'>${obj.t}</text>`;
-    })
-
-    bgImg += `</svg>")`;
-    target.style.backgroundImage = bgImg;
-}
-
 module.exports = {
     addCss,
     drawBoard,
-    addBackground,
 };
