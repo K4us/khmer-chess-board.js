@@ -83,35 +83,40 @@ class BoardManager {
         const sqWidth = squareWidth(this.options.width);
         const fSize = 15 * this.options.width / 600;
 
-        const square = this.getByIndexCode('a1');
+        for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+            const x = i;
+            const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
+            const square = this.getByXY(x, y);
+            square.addNote([{
+                x: sqWidth / 2 - sqWidth / 10,
+                y: sqWidth,
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
+            }]);
+        }
+        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+            const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
+            const y = j;
+            const square = this.getByXY(x, y);
+            square.addNote([{
+                x: 0,
+                y: sqWidth / 2 + sqWidth / 10,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[y]
+            }], sqWidth, fSize);
+        }
+        const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
+        const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
+        const square = this.getByXY(x, y);
         square.addNote([
             {
                 x: sqWidth / 2 - sqWidth / 10,
                 y: sqWidth,
-                t: 'a'
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
             }, {
                 x: 0,
                 y: sqWidth / 2 + sqWidth / 10,
-                t: '1'
+                t: boardHelper.VERTICAL_NOTE_LETTERS[y]
             }
         ], sqWidth, fSize);
-        for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
-            const c = boardHelper.HORIZONTAL_CODE_LETTERS[i];
-            const square = this.getByXY(i, 0);
-            square.addNote([{
-                x: sqWidth / 2 - sqWidth / 10,
-                y: sqWidth,
-                t: c
-            }]);
-        }
-        for (let i = 1; i < boardHelper.ROW_NUMBER; i++) {
-            const square = this.getByIndexCode(`a${i + 1}`);
-            square.addNote([{
-                x: 0,
-                y: sqWidth / 2 + sqWidth / 10,
-                t: i + 1
-            }], sqWidth, fSize);
-        }
     }
 }
 
