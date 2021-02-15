@@ -28,6 +28,17 @@ module.exports = {
             plugins: ['@babel/plugin-proposal-class-properties']
           }
         }
+      },
+      {
+        test: /\.(jpe?g|png|ttf|eot|svg|woff(2)?|mp3)(\?[a-z0-9=&.]+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'public/assets/[name].[ext]'
+            }
+          },
+        ],
       }
     ]
   }
