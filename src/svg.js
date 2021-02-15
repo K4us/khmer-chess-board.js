@@ -30,7 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const { isNumber } = require('khmer-chess/src/jsis');
-const { BORDER_WIDTH } = require('./constance');
+const { BORDER_WIDTH, ATTACKED_ID_NAME } = require('./constance');
 
 const WOOD_COLORS = {
    WHITE: '#ffffff',
@@ -49,7 +49,7 @@ const SVG_FILTER = `<defs>
 </filter>
 </defs>`;
 const PIECES_SVG = {
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_TOUK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_TOUK}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
     d="M506.824 315.526h0.364258c0.870117 0.394531 69.209 31.3027 114.183 47.3984c18.665 6.67871 72.2451 17.4453 121.243 45.1572c49 27.7119 96.5205 77.9189 99.8809 156.794c2.7832 65.3447 -12.3887 131.396 -30.3809 185.18
@@ -68,56 +68,49 @@ c9.91895 8.68457 27.3672 18.6895 50.2764 27.1748c45.8154 16.9727 112.931 28.4297
 c74.1768 0 141.292 -11.457 187.109 -28.4297c22.9082 -8.48535 40.3574 -18.4902 50.2764 -27.1748c9.91797 -8.68652 11.2842 -13.8906 11.2842 -16.6953c0 -2.80078 -1.36621 -8.00391 -11.2842 -16.6924l0.0244141 -0.120117
 c-1.77148 0.818359 -3.56152 1.63281 -5.36914 2.43262c-62.5312 27.7129 -145.77 43.8975 -237.583 43.8975c-0.679688 0 -1.35547 -0.00878906 -2.0332 -0.0107422c-0.676758 0.00292969 -1.35059 0.0107422 -2.0293 0.0107422
 c-91.8135 0 -175.054 -16.1846 -237.583 -43.8975c-1.80957 -0.799805 -3.59863 -1.61426 -5.37207 -2.43262z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_SES}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_SES}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_KOL}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_KOL}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_SDECH}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_SDECH}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_NEANG}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_NEANG}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_TREY}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_BORK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_WHITE}${boardHelper.PIECE_TYPE_BORK}`]: `
     ${SVG_FILTER}
      <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M243 500h514v36h-514v-36zM490 428h34v178h-34v-178zM507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89z
  M507 443c-127 0 -231 31 -240 70v1v10c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM267 600v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_TOUK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_TOUK}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
     d="M506.824 315.526h0.364258c0.870117 0.394531 69.209 31.3027 114.183 47.3984c18.665 6.67871 72.2451 17.4453 121.243 45.1572c49 27.7119 96.5205 77.9189 99.8809 156.794c2.7832 65.3447 -12.3887 131.396 -30.3809 185.18
@@ -136,56 +129,73 @@ c9.91895 8.68457 27.3672 18.6895 50.2764 27.1748c45.8154 16.9727 112.931 28.4297
 c74.1768 0 141.292 -11.457 187.109 -28.4297c22.9082 -8.48535 40.3574 -18.4902 50.2764 -27.1748c9.91797 -8.68652 11.2842 -13.8906 11.2842 -16.6953c0 -2.80078 -1.36621 -8.00391 -11.2842 -16.6924l0.0244141 -0.120117
 c-1.77148 0.818359 -3.56152 1.63281 -5.36914 2.43262c-62.5312 27.7129 -145.77 43.8975 -237.583 43.8975c-0.679688 0 -1.35547 -0.00878906 -2.0332 -0.0107422c-0.676758 0.00292969 -1.35059 0.0107422 -2.0293 0.0107422
 c-91.8135 0 -175.054 -16.1846 -237.583 -43.8975c-1.80957 -0.799805 -3.59863 -1.61426 -5.37207 -2.43262z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_SES}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_SES}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_KOL}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_KOL}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_SDECH}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_SDECH}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_NEANG}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_NEANG}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_TREY}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_TREY}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})" 
  d="M507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89zM507 443c-127 0 -231 31 -240 70v1v10
  c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM504 473h1h2c99 0 180 20 180 45s-81 46 -180 46s-180 -21 -180 -46s79 -45 177 -45zM267 573v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116
  c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
-   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_BORK}`]: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+   [`${boardHelper.PIECE_COLOR_BLACK}${boardHelper.PIECE_TYPE_BORK}`]: `
     ${SVG_FILTER}
     <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})" 
  d="M243 500h514v36h-514v-36zM490 428h34v178h-34v-178zM507 417c145 0 265 39 283 89c1 2 2 5 2 8v1v3v4v172v3v2v2c0 2 0 4 -1 6h-1c-15 51 -135 92 -283 92c-146 0 -266 -39 -283 -90c-1 -2 -2 -5 -2 -8v-3v-1v-1v-176v-2v-1v-3c0 -3 1 -6 2 -8c17 -50 138 -89 283 -89z
  M507 443c-127 0 -231 31 -240 70v1v10c9 39 114 70 240 70s229 -30 239 -69v-11l1 -1c-9 -39 -114 -70 -240 -70zM267 600v117c13 8 28 15 45 22c51 19 120 31 195 31s144 -12 195 -31c17 -6 31 -14 44 -22v-116c-51 28 -138 46 -239 46s-189 -19 -240 -47z" />
- </svg>
  `,
 };
+
+const svgCSS = {
+   attacked: (color) => `path {
+      stroke: red;
+      stroke-width: 1px;
+      stroke-linejoin: round;
+      animation-name: attacking;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+   }
+   @keyframes attacking {
+      0% {
+         stroke-width: 20px;
+      }
+      50% {
+         stroke-width: 1px;
+      }
+      100% {
+         stroke-width: 20px;
+      }
+   }`,
+   notAttacked: (color) => `path {
+   }`
+}
 
 function addBackgroundNote(target, tObjects = [], squareWidth, fSize) {
    let bgImg = `url("data:image/svg+xml;utf8,`;
@@ -210,6 +220,8 @@ function squareWidth(width) {
 
 module.exports = {
    PIECES_SVG,
+   WOOD_COLORS,
+   svgCSS,
    addBackgroundNote,
    squareWidth,
 };

@@ -33,6 +33,7 @@ const MIN_SQUARE_WIDTH = 5
 const TD_GRAVEYARD_NUMBER = 30;
 const TABLE_CLASS = 'khmer-chess-board';
 const SELECTED_CLASS_NAME = 'selected';
+const ATTACKED_ID_NAME = 'attacked';
 const PIECE_CLASS_NAME = 'piece';
 
 module.exports = {
@@ -42,4 +43,5 @@ module.exports = {
     TABLE_CLASS,
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
+    ATTACKED_ID_NAME,
 };

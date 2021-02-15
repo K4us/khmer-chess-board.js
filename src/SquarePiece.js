@@ -29,7 +29,7 @@
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
-const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME } = require('./constance');
+const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME, ATTACKED_ID_NAME } = require('./constance');
 const { addBackgroundNote } = require('./svg');
 
 class SquarePiece {
@@ -75,6 +75,15 @@ class SquarePiece {
     }
     isSelected() {
         return this.container.classList.contains(SELECTED_CLASS_NAME);
+    }
+    attacked() {
+        this.container.classList.add(ATTACKED_ID_NAME);
+    }
+    notAttacked() {
+        this.container.classList.remove(ATTACKED_ID_NAME);
+    }
+    isAttacked() {
+        return this.container.classList.contains(ATTACKED_ID_NAME);
     }
     getProperties() {
         return {

@@ -30,13 +30,14 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
-const { PIECES_SVG, squareWidth } = require('./svg');
+const { PIECES_SVG, squareWidth, svgCSS, WOOD_COLORS } = require('./svg');
 const {
     BORDER_WIDTH,
     TD_GRAVEYARD_NUMBER,
     TABLE_CLASS,
     SELECTED_CLASS_NAME,
-    PIECE_CLASS_NAME
+    PIECE_CLASS_NAME,
+    ATTACKED_ID_NAME,
 } = require('./constance');
 
 function addCss() {
@@ -107,10 +108,22 @@ function addCss() {
     `;
     boardHelper.getColorArray().forEach((color) => {
         boardHelper.getPieceCharArray().forEach((type) => {
+            const woodColor = color == boardHelper.PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
+            const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+                <style>${svgCSS.attacked(woodColor)}</style>
+                ${PIECES_SVG[color + type]}
+            </svg>`;
+            const notAttackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+                <style>${svgCSS.notAttacked(woodColor)}</style>
+                ${PIECES_SVG[color + type]}
+            </svg>`;
             css += `
-              table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
-                  background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(PIECES_SVG[color + type])}');
-              }
+                table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}::${piecePseudo} {
+                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
+                }
+                table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
+                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
+                }
                 `;
         });
     });
