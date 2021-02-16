@@ -77,8 +77,8 @@ class KhmerChessBoard {
     };
 
     container = null;
-    graveyardManager = new GraveyardManager();
-    boardManager = new BoardManager();
+    graveyardManager = null;
+    boardManager = null;
     soundManager = new SoundManager();
     khmerChess = new KhmerChess();
     constructor(options = {}) {
@@ -98,8 +98,8 @@ class KhmerChessBoard {
             this.options.width = options.width;
         }
 
-        this.boardManager.setOptions(this.options);
-        this.graveyardManager.setOptions(this.options);
+        this.graveyardManager = new GraveyardManager(this, this.options);
+        this.boardManager = new BoardManager(this, this.options);
 
         addCss.call(this);
         drawBoard.call(this);

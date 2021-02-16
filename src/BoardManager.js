@@ -34,9 +34,12 @@ const { squareWidth } = require('./svg');
 class BoardManager {
     squares = [];
     options = {};
+    khmerChessBoard = null;
     isUpsideDown = false;
     _piecesFromKhmerChess = null;
-    setOptions(options) {
+
+    constructor(khmerChessBoard, options) {
+        this.khmerChessBoard = khmerChessBoard;
         this.options = options;
     }
 
@@ -65,7 +68,8 @@ class BoardManager {
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
         this.removePiecesFromSquares();
-        this.applyFlippingNotes();
+        this.applyFlippingFlag();
+        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
     }
 
     removePiecesFromSquares() {
@@ -74,7 +78,7 @@ class BoardManager {
         });
     }
 
-    applyFlippingNotes() {
+    applyFlippingFlag() {
         this.squares.forEach((s) => {
             s.unsetFlipped();
             if (this.isUpsideDown) {

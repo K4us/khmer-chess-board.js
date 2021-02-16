@@ -60,12 +60,14 @@ class SquarePiece {
     }
 
     removePiece() {
-        if (this.piece) {
+        const piece = this.piece;
+        if (piece) {
             this.removeClassName(PIECE_CLASS_NAME);
-            this.removeClassName(`type-${this.piece.type}`);
-            this.removeClassName(`color-${this.piece.color}`);
+            this.removeClassName(`type-${piece.type}`);
+            this.removeClassName(`color-${piece.color}`);
             this.piece = null;
         }
+        return piece;
     }
 
     setPiece(piece) {
