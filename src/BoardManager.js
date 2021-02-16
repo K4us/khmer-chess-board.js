@@ -83,12 +83,14 @@ class BoardManager {
         const sqWidth = squareWidth(this.options.width);
         const fSize = 15 * this.options.width / 600;
 
+        const hx = sqWidth / 2 - sqWidth / 10;
+        const vy = sqWidth / 2 + sqWidth / 10;
         for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
             const x = i;
             const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
             const square = this.getByXY(x, y);
             square.addNote([{
-                x: sqWidth / 2 - sqWidth / 10,
+                x: hx,
                 y: sqWidth,
                 t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
             }]);
@@ -99,7 +101,7 @@ class BoardManager {
             const square = this.getByXY(x, y);
             square.addNote([{
                 x: 0,
-                y: sqWidth / 2 + sqWidth / 10,
+                y: vy,
                 t: boardHelper.VERTICAL_NOTE_LETTERS[y]
             }], sqWidth, fSize);
         }
@@ -108,12 +110,12 @@ class BoardManager {
         const square = this.getByXY(x, y);
         square.addNote([
             {
-                x: sqWidth / 2 - sqWidth / 10,
+                x: hx,
                 y: sqWidth,
                 t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
             }, {
                 x: 0,
-                y: sqWidth / 2 + sqWidth / 10,
+                y: vy,
                 t: boardHelper.VERTICAL_NOTE_LETTERS[y]
             }
         ], sqWidth, fSize);
