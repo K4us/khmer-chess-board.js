@@ -29,23 +29,28 @@
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
-const { PIECES_SVG, squareWidth, svgCSS, WOOD_COLORS } = require('./svg');
 const {
-    TABLE_CLASS,
+    PIECES_SVG,
+    squareWidth,
+    svgCSS,
+    WOOD_COLORS
+} = require('./svg');
+const {
+    CSS_TABLE_SELECTOR,
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
-    ATTACKED_ID_NAME
+    ATTACKED_ID_NAME,
+    CSS_PSEUDO_HIGHLIGHT,
+    CSS_PSEUDO_PIECE
 } = require('./constance');
 const appendCss = require('./appendCss');
 
 function addCss(width) {
     const sqWidth = squareWidth(width);
     const pieceFontSize = width / 12;
-    const highlightPseudo = 'after';
-    const piecePseudo = 'before';
 
     let css = `
-        table.${TABLE_CLASS}  {
+        ${CSS_TABLE_SELECTOR} {
             table-layout: fixed;
             border-collapse: collapse;
             border-spacing: 0px;
@@ -56,7 +61,7 @@ function addCss(width) {
             margin: auto;
             background-color: white;
         }
-        table.${TABLE_CLASS} td table {
+        ${CSS_TABLE_SELECTOR} td table {
             table-layout: fixed;
             border-collapse: collapse;
             border-spacing: 0px;
@@ -66,11 +71,11 @@ function addCss(width) {
             margin: auto;
             background-color: white;
         }
-        table.${TABLE_CLASS} tr {
+        ${CSS_TABLE_SELECTOR} tr {
             width: ${width}px;
             height: ${sqWidth}px;
         }
-        table.${TABLE_CLASS} td {
+        ${CSS_TABLE_SELECTOR} td {
             user-select: none;
             background-color: #f4d1a6;
             border: 1px solid white;
@@ -81,28 +86,32 @@ function addCss(width) {
             background-repeat: no-repeat;
             cursor: pointer;
         }
-        table.${TABLE_CLASS} td, table.${TABLE_CLASS} td::${highlightPseudo},
-        table.${TABLE_CLASS} td::${piecePseudo} {
+        ${CSS_TABLE_SELECTOR} td,
+        ${CSS_TABLE_SELECTOR} td::before,
+        ${CSS_TABLE_SELECTOR} td::after {
             font-size: ${pieceFontSize}px;
         }
-        table.${TABLE_CLASS} td::${highlightPseudo} {
+        ${CSS_TABLE_SELECTOR} td::after {
             opacity: 0.4;
         }
-        table.${TABLE_CLASS} td::${piecePseudo} {
+        ${CSS_TABLE_SELECTOR} td::before {
             float: left;
         }
-        table.${TABLE_CLASS} td:not(.graveyard)::${highlightPseudo},
-        table.${TABLE_CLASS} td:not(.graveyard)::${piecePseudo} {
+        ${CSS_TABLE_SELECTOR} td:not(.graveyard)::before,
+        ${CSS_TABLE_SELECTOR} td:not(.graveyard)::after {
             width: ${sqWidth}px;
             height: ${sqWidth}px;
             background-size: ${sqWidth}px ${sqWidth}px;
             display: block;
             content: ' ';
         }
-        table.${TABLE_CLASS} td.${SELECTED_CLASS_NAME}::${highlightPseudo} {
-            background: radial-gradient(#f4d1a6, #e66465) !important;
-        }
     `;
+
+    css += `
+    ${CSS_TABLE_SELECTOR} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+        background: radial-gradient(#f4d1a6, #e66465) !important;
+    }`;
+
     boardHelper.getColorArray().forEach((color) => {
         boardHelper.getPieceCharArray().forEach((type) => {
             const woodColor = color === boardHelper.PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
@@ -115,10 +124,10 @@ function addCss(width) {
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-                table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}::${piecePseudo} {
+                ${CSS_TABLE_SELECTOR} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
-                table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
+                ${CSS_TABLE_SELECTOR} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
                 `;

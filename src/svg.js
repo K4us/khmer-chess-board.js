@@ -430,7 +430,7 @@ const svgCSS = {
 
 function genBackgroundNote(tObjects = [], squareWidth, fSize) {
     const text = tObjects.map((obj) => {
-        return `<text x='${obj.x}' y='${obj.y}' fill='white' font-size='${fSize}'>${obj.t}</text>`;
+        return `<text x='${obj.x}' y='${obj.y}' fill='grey' font-size='${fSize}'>${obj.t}</text>`;
     }).join('');
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>
       ${text}

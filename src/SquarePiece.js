@@ -161,7 +161,8 @@ class SquarePiece {
     }
 
     clone() {
-        return new SquarePiece(this.x, this.y, document.createElement('div'), this.piece);
+        const div = document.createElement('div');
+        return new SquarePiece(this.x, this.y, div, this.piece);
     }
 }
 
