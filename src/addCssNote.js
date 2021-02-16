@@ -59,75 +59,54 @@ function addCssNote(width) {
 
     const hx = sqWidth / 2 - sqWidth / 10;
     const vy = sqWidth / 2 + sqWidth / 10;
+    let bgImg = (i) => genBackgroundNote([{
+        x: hx,
+        y: sqWidth,
+        t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
+    }]);
     for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
-        const bgImg = genBackgroundNote([{
-            x: hx,
-            y: sqWidth,
-            t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
-        }]);
-        const bgImgFlipped = genBackgroundNote([{
-            x: hx,
-            y: sqWidth,
-            t: boardHelper.HORIZONTAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - i - 1]
-        }]);
         css += `
-            table.${TABLE_CLASS} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
-                background-image: ${bgImg};
-            }
-            table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
-                background-image: ${bgImgFlipped};
-            }
-            `;
+        table.${TABLE_CLASS} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
+            background-image: ${bgImg(i)};
+        }
+        table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
+            background-image: ${bgImg(boardHelper.ROW_NUMBER - i - 1)};
+        }
+        `;
     }
+    bgImg = (i) => genBackgroundNote([{
+        x: 0,
+        y: vy,
+        t: boardHelper.VERTICAL_NOTE_LETTERS[i]
+    }]);
     for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
-        const bgImg = genBackgroundNote([{
-            x: 0,
-            y: vy,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[j]
-        }]);
-        const bgImgFlipped = genBackgroundNote([{
-            x: 0,
-            y: vy,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - j - 1]
-        }]);
         css += `
             table.${TABLE_CLASS} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
-                background-image: ${bgImg};
+                background-image: ${bgImg(j)};
             }
             table.${TABLE_CLASS} td.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
-                background-image: ${bgImgFlipped};
+                background-image: ${bgImg(boardHelper.ROW_NUMBER - j - 1)};
             }
             `;
     }
 
-    const bgImg = genBackgroundNote([
+    bgImg = (i) => genBackgroundNote([
         {
             x: hx,
             y: sqWidth,
-            t: boardHelper.HORIZONTAL_NOTE_LETTERS[0]
+            t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
         }, {
             x: 0,
             y: vy,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[0]
-        }
-    ]);
-    const bgImgFlipped = genBackgroundNote([
-        {
-            x: hx,
-            y: sqWidth,
-            t: boardHelper.HORIZONTAL_NOTE_LETTERS[0]
-        }, {
-            x: 0,
-            y: vy,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[0]
+            t: boardHelper.VERTICAL_NOTE_LETTERS[i]
         }
     ]);
     css += `
     table.${TABLE_CLASS} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1 {
-        background-image: ${bgImg};
+        background-image: ${bgImg(0)};
     }
     table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1 {
-        background-image: ${bgImgFlipped};
+        background-image: ${bgImg(7)};
     }
     `;
 
