@@ -30,6 +30,10 @@
 
 const boardHelper = require('khmer-chess/src/board-helper');
 const { squareWidth } = require('./svg');
+const {
+    BOARD_NOTE_V_PREFIX_CLASS,
+    BOARD_NOTE_H_PREFIX_CLASS
+} = require('./constance');
 
 class BoardManager {
     squares = [];
@@ -96,49 +100,14 @@ class BoardManager {
     }
 
     setNote() {
-        // TODO: change to add-class
-        const sqWidth = squareWidth(this.options.width);
-        const fSize = 15 * this.options.width / 600;
-        const note = (square, tObjects) => {
-            square.addNote(tObjects, sqWidth, fSize);
-        };
-
-        const hx = sqWidth / 2 - sqWidth / 10;
-        const vy = sqWidth / 2 + sqWidth / 10;
         for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
-            const x = i;
-            const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
-            const square = this.getByXY(x, y);
-            note(square, [{
-                x: hx,
-                y: sqWidth,
-                t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
-            }]);
+            const square = this.getByXY(i, 0);
+            square.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
         }
         for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
-            const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
-            const y = j;
-            const square = this.getByXY(x, y);
-            note(square, [{
-                x: 0,
-                y: vy,
-                t: boardHelper.VERTICAL_NOTE_LETTERS[y]
-            }]);
+            const square = this.getByXY(0, j);
+            square.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
         }
-        const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
-        const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
-        const square = this.getByXY(x, y);
-        note(square, [
-            {
-                x: hx,
-                y: sqWidth,
-                t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
-            }, {
-                x: 0,
-                y: vy,
-                t: boardHelper.VERTICAL_NOTE_LETTERS[y]
-            }
-        ]);
     }
 
     applyPiecesFromKhmerChess(pieces) {

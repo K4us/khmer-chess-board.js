@@ -44,6 +44,90 @@ const {
     FLIPPED_CLASS
 } = require('./constance');
 
+function drawBoard() {
+    const sqWidth = squareWidth(this.options.width);
+
+    const createTable = (parent = this.container) => {
+        const table = document.createElement('table');
+        table.classList.add(TABLE_CLASS);
+        parent.appendChild(table);
+        return table;
+    };
+    const createTbody = (parent) => {
+        const tbody = document.createElement('tbody');
+        parent.appendChild(tbody);
+        return tbody;
+    };
+    const createTr = (parent) => {
+        const tr = document.createElement('tr');
+        parent.appendChild(tr);
+        return tr;
+    };
+    const createTd = (parent) => {
+        const td = document.createElement('td');
+        parent.appendChild(td);
+        return td;
+    };
+
+    const table = createTable();
+    const tbody = createTbody(table);
+
+    for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+        const tr = createTr(tbody);
+        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+            const td = createTd(tr);
+            const squarePiece = new SquarePiece(j, boardHelper.ROW_NUMBER - i - 1, td, null);
+            const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
+            this.boardManager.put(index, squarePiece);
+        }
+    }
+
+    const graveyardContainerHeight = sqWidth + 10 * BORDER_WIDTH;
+    table.style.height = this.options.width + graveyardContainerHeight;
+    const trGraveyardContainer = createTr(tbody);
+    trGraveyardContainer.style.height = graveyardContainerHeight;
+    const tdGraveyardContainer = createTd(trGraveyardContainer);
+    tdGraveyardContainer.classList.add('graveyard');
+    tdGraveyardContainer.addEventListener('mousewheel', function (e) {
+        this.scrollLeft -= (e.wheelDelta);
+        e.preventDefault();
+    }, false);
+    tdGraveyardContainer.style.width = this.options.width;
+    tdGraveyardContainer.style.height = graveyardContainerHeight;
+    tdGraveyardContainer.style.overflowX = 'scroll';
+    tdGraveyardContainer.style.overflowY = 'hidden';
+    tdGraveyardContainer.colSpan = 8;
+    tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH * this.options.width / 600;
+    tdGraveyardContainer.style.boxShadow = `inset 0 0 ${this.options.width / 60}px #000000`;
+    const tableGraveyard = createTable(tdGraveyardContainer);
+    const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + sqWidth * TD_GRAVEYARD_NUMBER;
+    tableGraveyard.style.width = graveyardWidth;
+    tableGraveyard.style.height = sqWidth;
+    const tbodyGraveyard = createTbody(tableGraveyard);
+    const trGraveyard = createTr(tbodyGraveyard);
+    trGraveyard.style.width = graveyardWidth;
+
+    for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+        const tdGraveyard = createTd(trGraveyard);
+        const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
+        this.graveyardManager.push(squarePiece);
+    }
+}
+
+function applyCss(css) {
+    const head = document.head || document.getElementsByTagName('head')[0];
+    const style = document.createElement('style');
+    head.appendChild(style);
+
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        // This is required for IE8 and below.
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+}
+
 function addCss() {
     const width = this.options.width;
     const sqWidth = squareWidth(width);
@@ -122,15 +206,12 @@ function addCss() {
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-
                 table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}::${piecePseudo} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
-
                 table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
-
                 `;
         });
 
@@ -142,11 +223,9 @@ function addCss() {
                 t: boardHelper.VERTICAL_NOTE_LETTERS[i]
             }], sqWidth, fSize);
             css += `
-
             table.${TABLE_CLASS} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1} {
                 background-image: ${bgImg};
             }
-
             `;
         }
 
@@ -164,15 +243,12 @@ function addCss() {
                 t: boardHelper.HORIZONTAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - i - 1]
             }]);
             css += `
-
             table.${TABLE_CLASS} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
                 background-image: ${bgImg};
             }
-
             table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
                 background-image: ${bgImgFlipped};
             }
-
             `;
         }
         for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
@@ -187,100 +263,48 @@ function addCss() {
                 t: boardHelper.VERTICAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - j - 1]
             }]);
             css += `
-
             table.${TABLE_CLASS} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
                 background-image: ${bgImg};
             }
-
             table.${TABLE_CLASS} td.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
                 background-image: ${bgImgFlipped};
             }
-
             `;
         }
+
+        const bgImg = genBackgroundNote([
+            {
+                x: hx,
+                y: sqWidth,
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[0]
+            }, {
+                x: 0,
+                y: vy,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[0]
+            }
+        ]);
+        const bgImgFlipped = genBackgroundNote([
+            {
+                x: hx,
+                y: sqWidth,
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[0]
+            }, {
+                x: 0,
+                y: vy,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[0]
+            }
+        ]);
+        css += `
+        table.${TABLE_CLASS} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1 {
+            background-image: ${bgImg};
+        }
+        table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1 {
+            background-image: ${bgImgFlipped};
+        }
+        `;
     });
 
-    const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
-    head.appendChild(style);
-
-    style.type = 'text/css';
-    if (style.styleSheet) {
-    // This is required for IE8 and below.
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-}
-
-function drawBoard() {
-    const sqWidth = squareWidth(this.options.width);
-
-    const createTable = (parent = this.container) => {
-        const table = document.createElement('table');
-        table.classList.add(TABLE_CLASS);
-        parent.appendChild(table);
-        return table;
-    };
-    const createTbody = (parent) => {
-        const tbody = document.createElement('tbody');
-        parent.appendChild(tbody);
-        return tbody;
-    };
-    const createTr = (parent) => {
-        const tr = document.createElement('tr');
-        parent.appendChild(tr);
-        return tr;
-    };
-    const createTd = (parent) => {
-        const td = document.createElement('td');
-        parent.appendChild(td);
-        return td;
-    };
-
-    const table = createTable();
-    const tbody = createTbody(table);
-
-    for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
-        const tr = createTr(tbody);
-        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
-            const td = createTd(tr);
-            const squarePiece = new SquarePiece(j, boardHelper.ROW_NUMBER - i - 1, td, null);
-            const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
-            this.boardManager.put(index, squarePiece);
-        }
-    }
-
-    const graveyardContainerHeight = sqWidth + 10 * BORDER_WIDTH;
-    table.style.height = this.options.width + graveyardContainerHeight;
-    const trGraveyardContainer = createTr(tbody);
-    trGraveyardContainer.style.height = graveyardContainerHeight;
-    const tdGraveyardContainer = createTd(trGraveyardContainer);
-    tdGraveyardContainer.classList.add('graveyard');
-    tdGraveyardContainer.addEventListener('mousewheel', function (e) {
-        this.scrollLeft -= (e.wheelDelta);
-        e.preventDefault();
-    }, false);
-    tdGraveyardContainer.style.width = this.options.width;
-    tdGraveyardContainer.style.height = graveyardContainerHeight;
-    tdGraveyardContainer.style.overflowX = 'scroll';
-    tdGraveyardContainer.style.overflowY = 'hidden';
-    tdGraveyardContainer.colSpan = 8;
-    tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH * this.options.width / 600;
-    tdGraveyardContainer.style.boxShadow = `inset 0 0 ${this.options.width / 60}px #000000`;
-    const tableGraveyard = createTable(tdGraveyardContainer);
-    const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + sqWidth * TD_GRAVEYARD_NUMBER;
-    tableGraveyard.style.width = graveyardWidth;
-    tableGraveyard.style.height = sqWidth;
-    const tbodyGraveyard = createTbody(tableGraveyard);
-    const trGraveyard = createTr(tbodyGraveyard);
-    trGraveyard.style.width = graveyardWidth;
-
-    for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-        const tdGraveyard = createTd(trGraveyard);
-        const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
-        this.graveyardManager.push(squarePiece);
-    }
+    applyCss(css);
 }
 
 module.exports = {
