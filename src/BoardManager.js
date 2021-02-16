@@ -29,7 +29,6 @@
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
-const { squareWidth } = require('./svg');
 const {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS

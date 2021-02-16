@@ -52,15 +52,14 @@
 'use strict';
 
 const { GraveyardManager } = require('./src/GraveyardManager');
-const {
-    addCss,
-    drawBoard
-} = require('./src/index');
 const config = require('./package.json');
 const khmerChess = require('khmer-chess');
 const { SoundManager } = require('./src/SoundManager');
 const { BoardManager } = require('./src/BoardManager');
 const constance = require('./src/constance');
+const addCss = require('./src/addCss');
+const addCssNote = require('./src/addCssNote');
+const drawBoard = require('./src/drawBoard');
 
 const {
     BORDER_WIDTH,
@@ -101,8 +100,14 @@ class KhmerChessBoard {
         this.graveyardManager = new GraveyardManager(this, this.options);
         this.boardManager = new BoardManager(this, this.options);
 
-        addCss.call(this);
-        drawBoard.call(this);
+        addCss(this.options.width);
+        addCssNote(this.options.width);
+        drawBoard({
+            width: this.options.width,
+            container: this.container,
+            boardManager: this.boardManager,
+            graveyardManager: this.graveyardManager
+        });
         this.boardManager.setNote();
         this.graveyardManager.setNote();
         this.applyPieces();
