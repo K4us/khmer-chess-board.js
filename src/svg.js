@@ -429,17 +429,14 @@ const svgCSS = {
    }`
 }
 
-function addBackgroundNote(target, tObjects = [], squareWidth, fSize) {
-   let bgImg = `url("data:image/svg+xml;utf8,`;
-   bgImg += `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>`;
-
-   tObjects.forEach((obj) => {
-      bgImg += `<text x='${obj.x}' y='${obj.y}' `;
-      bgImg += `fill='white' font-size='${fSize}'>${obj.t}</text>`;
-   })
-
-   bgImg += `</svg>")`;
-   target.style.backgroundImage = bgImg;
+function genBackgroundNote(tObjects = [], squareWidth, fSize) {
+   const text = tObjects.map((obj) => {
+      return `<text x='${obj.x}' y='${obj.y}' fill='white' font-size='${fSize}'>${obj.t}</text>`;
+   }).join('');
+   const svg = `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>
+      ${text}
+   </svg>`;
+   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 }
 
 function squareWidth(width) {
@@ -454,6 +451,6 @@ module.exports = {
    PIECES_SVG,
    WOOD_COLORS,
    svgCSS,
-   addBackgroundNote,
+   genBackgroundNote,
    squareWidth,
 };

@@ -30,7 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME, ATTACKED_ID_NAME } = require('./constance');
-const { addBackgroundNote } = require('./svg');
+const { genBackgroundNote } = require('./svg');
 
 class SquarePiece {
     x = 0;
@@ -67,23 +67,32 @@ class SquarePiece {
             classList.add(`color-${this.piece.color}`);
         }
     }
+    addClassName(className) {
+        this.container.classList.add(className);
+    }
+    removeClassName(className) {
+        this.container.classList.remove(className);
+    }
+    hasClassName(className) {
+        return this.container.classList.contains(className);
+    }
     select() {
-        this.container.classList.add(SELECTED_CLASS_NAME);
+        this.addClassName(SELECTED_CLASS_NAME);
     }
     unselect() {
-        this.container.classList.remove(SELECTED_CLASS_NAME);
+        this.removeClassName(SELECTED_CLASS_NAME);
     }
     isSelected() {
-        return this.container.classList.contains(SELECTED_CLASS_NAME);
+        return this.hasClassName(SELECTED_CLASS_NAME);
     }
     attacked() {
-        this.container.classList.add(ATTACKED_ID_NAME);
+        this.addClassName(ATTACKED_ID_NAME);
     }
     notAttacked() {
-        this.container.classList.remove(ATTACKED_ID_NAME);
+        this.removeClassName(ATTACKED_ID_NAME);
     }
     isAttacked() {
-        return this.container.classList.contains(ATTACKED_ID_NAME);
+        return this.hasClassName(ATTACKED_ID_NAME);
     }
     getProperties() {
         return {
@@ -103,7 +112,7 @@ class SquarePiece {
         this.container.onclick = null;
     }
     addNote(tObjects, squareWidth, fSize) {
-        addBackgroundNote(this.container, tObjects, squareWidth, fSize);
+        this.container.style.backgroundImage = genBackgroundNote(tObjects, squareWidth, fSize);
     }
     clearNote() {
         this.container.style.backgroundImage = '';

@@ -29,7 +29,7 @@
 'use strict';
 
 const { boardHelper } = require("khmer-chess");
-const { TD_GRAVEYARD_NUMBER } = require("./constance");
+const { TD_GRAVEYARD_NUMBER, GRAVEYARD_NOTE_PREFIX_CLASS } = require("./constance");
 const { squareWidth } = require('./svg');
 
 class GraveyardManager {
@@ -45,16 +45,9 @@ class GraveyardManager {
         return this.squares[index];
     }
     setNote() {
-        const sqWidth = squareWidth(this.options.width);
-        const fSize = 15 * this.options.width / 600;
-
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const square = this.get(i);
-            square.addNote([{
-                x: sqWidth / 2 - sqWidth / 10,
-                y: sqWidth,
-                t: boardHelper.VERTICAL_NOTE_LETTERS[i]
-            }], sqWidth, fSize);
+            square.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
         }
     }
 }

@@ -35,6 +35,10 @@ const TABLE_CLASS = 'khmer-chess-board';
 const SELECTED_CLASS_NAME = 'selected';
 const ATTACKED_ID_NAME = 'attacked';
 const PIECE_CLASS_NAME = 'piece';
+const GRAVEYARD_NOTE_PREFIX_CLASS = 'note-gy';
+const BOARD_NOTE_V_PREFIX_CLASS = 'note-board-v';
+const BOARD_NOTE_H_PREFIX_CLASS = 'note-board-h';
+const FLIPPED_CLASS = 'flipped';
 
 module.exports = {
     BORDER_WIDTH,
@@ -44,4 +48,8 @@ module.exports = {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
+    GRAVEYARD_NOTE_PREFIX_CLASS,
+    BOARD_NOTE_V_PREFIX_CLASS,
+    BOARD_NOTE_H_PREFIX_CLASS,
+    FLIPPED_CLASS,
 };

@@ -29,6 +29,11 @@
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
+const {
+    BOARD_NOTE_H_PREFIX_CLASS,
+    BOARD_NOTE_V_PREFIX_CLASS,
+    FLIPPED_CLASS,
+} = require('./constance');
 const { squareWidth } = require('./svg');
 
 class BoardManager {
@@ -64,7 +69,7 @@ class BoardManager {
         this.squares.forEach((s, i) => {
             return s.setProperties(propArr[i]);
         });
-        this.clearNote();
+        this.flipNote();
         this.setNote();
     }
     enableSelect() {
@@ -74,14 +79,22 @@ class BoardManager {
             });
         });
     }
-    clearNote() {
+    flipNote() {
         this.squares.forEach((s) => {
             s.clearNote();
+            s.removeClassName(FLIPPED_CLASS);
+            if (this.isUpsideDown) {
+                s.addClassName(FLIPPED_CLASS);
+            }
         });
     }
     setNote() {
+        // TODO: change to add-class
         const sqWidth = squareWidth(this.options.width);
         const fSize = 15 * this.options.width / 600;
+        const note = (square, tObjects) => {
+            square.addNote(tObjects, sqWidth, fSize);
+        };
 
         const hx = sqWidth / 2 - sqWidth / 10;
         const vy = sqWidth / 2 + sqWidth / 10;
@@ -89,7 +102,7 @@ class BoardManager {
             const x = i;
             const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
             const square = this.getByXY(x, y);
-            square.addNote([{
+            note(square, [{
                 x: hx,
                 y: sqWidth,
                 t: boardHelper.HORIZONTAL_NOTE_LETTERS[x]
@@ -99,16 +112,16 @@ class BoardManager {
             const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
             const y = j;
             const square = this.getByXY(x, y);
-            square.addNote([{
+            note(square, [{
                 x: 0,
                 y: vy,
                 t: boardHelper.VERTICAL_NOTE_LETTERS[y]
-            }], sqWidth, fSize);
+            }]);
         }
         const x = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
         const y = this.isUpsideDown ? boardHelper.ROW_NUMBER - 1 : 0;
         const square = this.getByXY(x, y);
-        square.addNote([
+        note(square, [
             {
                 x: hx,
                 y: sqWidth,
@@ -118,7 +131,7 @@ class BoardManager {
                 y: vy,
                 t: boardHelper.VERTICAL_NOTE_LETTERS[y]
             }
-        ], sqWidth, fSize);
+        ]);
     }
 }
 

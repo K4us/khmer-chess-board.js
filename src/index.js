@@ -30,7 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
-const { PIECES_SVG, squareWidth, svgCSS, WOOD_COLORS } = require('./svg');
+const { PIECES_SVG, squareWidth, svgCSS, WOOD_COLORS, genBackgroundNote } = require('./svg');
 const {
     BORDER_WIDTH,
     TD_GRAVEYARD_NUMBER,
@@ -38,6 +38,10 @@ const {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
+    GRAVEYARD_NOTE_PREFIX_CLASS,
+    BOARD_NOTE_V_PREFIX_CLASS,
+    BOARD_NOTE_H_PREFIX_CLASS,
+    FLIPPED_CLASS,
 } = require('./constance');
 
 function addCss() {
@@ -118,14 +122,82 @@ function addCss() {
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
+
                 table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}::${piecePseudo} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
+
                 table.${TABLE_CLASS} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}::${piecePseudo} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
+
                 `;
         });
+
+        const fSize = 15 * this.options.width / 600;
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const bgImg = genBackgroundNote([{
+                x: sqWidth / 2 - sqWidth / 10,
+                y: sqWidth,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[i]
+            }], sqWidth, fSize);
+            css += `
+
+            table.${TABLE_CLASS} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1} {
+                background-image: ${bgImg};
+            }
+
+            `;
+        }
+
+        const hx = sqWidth / 2 - sqWidth / 10;
+        const vy = sqWidth / 2 + sqWidth / 10;
+        for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+            const bgImg = genBackgroundNote([{
+                x: hx,
+                y: sqWidth,
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
+            }]);
+            const bgImgFlipped = genBackgroundNote([{
+                x: hx,
+                y: sqWidth,
+                t: boardHelper.HORIZONTAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - i - 1]
+            }]);
+            css += `
+
+            table.${TABLE_CLASS} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
+                background-image: ${bgImg};
+            }
+
+            table.${TABLE_CLASS} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1} {
+                background-image: ${bgImgFlipped};
+            }
+
+            `;
+        }
+        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+            const bgImg = genBackgroundNote([{
+                x: 0,
+                y: vy,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[j]
+            }]);
+            const bgImgFlipped = genBackgroundNote([{
+                x: 0,
+                y: vy,
+                t: boardHelper.VERTICAL_NOTE_LETTERS[boardHelper.ROW_NUMBER - j - 1]
+            }]);
+            css += `
+
+            table.${TABLE_CLASS} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
+                background-image: ${bgImg};
+            }
+
+            table.${TABLE_CLASS} td.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1} {
+                background-image: ${bgImgFlipped};
+            }
+
+            `;
+        }
     });
 
     const head = document.head || document.getElementsByTagName('head')[0];
