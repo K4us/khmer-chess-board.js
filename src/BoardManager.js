@@ -35,7 +35,7 @@ const {
 } = require('./constance');
 
 class BoardManager {
-    squares = [];
+    _squares = [];
     options = {};
     khmerChessBoard = null;
     isUpsideDown = false;
@@ -47,15 +47,13 @@ class BoardManager {
     }
 
     put(i, squarePiece) {
-        this.squares[i] = squarePiece;
+        this._squares[i] = squarePiece;
     }
 
     get(index) {
-        if (this.isUpsideDown) {
-            const sqCount = boardHelper.getSubBoardNumber();
-            return this.squares[sqCount - index - 1];
-        }
-        return this.squares[index];
+        return this._squares.find((square) => {
+            return square.index === index;
+        });
     }
 
     getByIndexCode(code) {
@@ -70,28 +68,55 @@ class BoardManager {
 
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
+        // backup
+        const backupPiecesList = this._squares.map((square) => {
+            return square.clone();
+        });
+        const backupSelectedList = this.getSelectedSquares().map((square) => {
+            return square.clone();
+        });
+        // clear
+        this.clearSelectedSquares();
         this.removePiecesFromSquares();
+        // flip
         this.applyFlippingFlag();
-        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
+        // restore
+        backupPiecesList.forEach((clonedSquare) => {
+            const square = this.getByXY(clonedSquare.x, clonedSquare.y);
+            square.setPiece(clonedSquare.piece);
+        });
+        backupSelectedList.forEach((clonedSquare) => {
+            const square = this.getByXY(clonedSquare.x, clonedSquare.y);
+            square.select();
+        });
+    }
+
+    getSelectedSquares() {
+        return this._squares.filter((square) => {
+            return square.isSelected();
+        });
+    }
+
+    clearSelectedSquares() {
+        this._squares.forEach((s) => {
+            return s.unselect();
+        });
     }
 
     removePiecesFromSquares() {
-        this.squares.forEach((s) => {
+        this._squares.forEach((s) => {
             return s.removePiece();
         });
     }
 
     applyFlippingFlag() {
-        this.squares.forEach((s) => {
-            s.unsetFlipped();
-            if (this.isUpsideDown) {
-                s.setFlipped();
-            }
+        this._squares.forEach((square) => {
+            square.setFlipped(this.isUpsideDown);
         });
     }
 
     enableSelect() {
-        this.squares.forEach((s) => {
+        this._squares.forEach((s) => {
             return s.setOnClick(() => {
                 s.isSelected() ? s.unselect() : s.select();
             });
@@ -109,7 +134,8 @@ class BoardManager {
         }
     }
 
-    applyPiecesFromKhmerChess(pieces) {
+    receivePieces(pieces) {
+        this.removePiecesFromSquares();
         pieces.forEach((arr, i) => {
             arr.forEach((piece, j) => {
                 const square = this.getByXY(j, i);
@@ -118,12 +144,6 @@ class BoardManager {
                 }
             });
         });
-    }
-
-    receivePieces(pieces) {
-        this._piecesFromKhmerChess = pieces;
-        this.removePiecesFromSquares();
-        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
     }
 }
 

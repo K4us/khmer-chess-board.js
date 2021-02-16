@@ -38,8 +38,16 @@ const {
 const { genBackgroundNote } = require('./svg');
 
 class SquarePiece {
-    x = 0;
-    y = 0;
+    _x = 0;
+    _y = 0;
+    get x() {
+        return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._x - 1 : this._x;
+    }
+
+    get y() {
+        return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._y - 1 : this._y;
+    }
+
     get index() {
         return boardHelper.nerdXyToPos(this.x, this.y);
     }
@@ -51,9 +59,10 @@ class SquarePiece {
     isGraveyard = false;
     container = document.createElement('td');
     piece = null;
+    isUpsideDown = false;
     constructor(x, y, container, piece, isGraveyard) {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         this.container = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
@@ -143,12 +152,16 @@ class SquarePiece {
         this.container.style.backgroundImage = backgroundImage;
     }
 
-    unsetFlipped() {
+    setFlipped(isUpsideDown) {
         this.removeClassName(FLIPPED_CLASS);
+        this.isUpsideDown = isUpsideDown;
+        if (isUpsideDown) {
+            this.addClassName(FLIPPED_CLASS);
+        }
     }
 
-    setFlipped() {
-        this.addClassName(FLIPPED_CLASS);
+    clone() {
+        return new SquarePiece(this.x, this.y, document.createElement('div'), this.piece);
     }
 }
 

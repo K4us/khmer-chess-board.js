@@ -59,7 +59,7 @@ const { BoardManager } = require('./src/BoardManager');
 const constance = require('./src/constance');
 const addCss = require('./src/addCss');
 const addCssNote = require('./src/addCssNote');
-const drawBoard = require('./src/drawBoard');
+const drawBoardAndGraveyard = require('./src/drawBoardAndGraveyard');
 
 const {
     BORDER_WIDTH,
@@ -102,7 +102,7 @@ class KhmerChessBoard {
 
         addCss(this.options.width);
         addCssNote(this.options.width);
-        drawBoard({
+        drawBoardAndGraveyard({
             width: this.options.width,
             container: this.container,
             boardManager: this.boardManager,

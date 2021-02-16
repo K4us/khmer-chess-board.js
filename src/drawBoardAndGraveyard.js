@@ -37,7 +37,7 @@ const {
     TABLE_CLASS
 } = require('./constance');
 
-function drawBoard(options = {}) {
+function drawBoardAndGraveyard(options = {}) {
     const { width, container, boardManager, graveyardManager } = options;
     const sqWidth = squareWidth(width);
 
@@ -108,4 +108,4 @@ function drawBoard(options = {}) {
     }
 }
 
-module.exports = drawBoard;
+module.exports = drawBoardAndGraveyard;
