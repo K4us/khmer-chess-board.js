@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
@@ -33,9 +33,9 @@ const capture = require('../public/assets/Capture.mp3').default;
 const check = require('../public/assets/Check.mp3').default;
 
 const AUDIO = {
-   move,
-   capture,
-   check,
+    move,
+    capture,
+    check
 };
 
 module.exports = { AUDIO };

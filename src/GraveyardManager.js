@@ -24,31 +24,53 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
-const { boardHelper } = require("khmer-chess");
-const { TD_GRAVEYARD_NUMBER, GRAVEYARD_NOTE_PREFIX_CLASS } = require("./constance");
-const { squareWidth } = require('./svg');
+const { TD_GRAVEYARD_NUMBER, GRAVEYARD_NOTE_PREFIX_CLASS } = require('./constance');
 
 class GraveyardManager {
     squares = [];
     options = {};
+    _piecesFromKhmerChess = null;
     setOptions(options) {
         this.options = options;
     }
+
     push(squarePiece) {
         this.squares.push(squarePiece);
     }
+
     get(index) {
         return this.squares[index];
     }
+
     setNote() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const square = this.get(i);
             square.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
         }
+    }
+
+    removePiecesFromSquares() {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const square = this.get(i);
+            square.removePiece();
+        }
+    }
+
+    applyPiecesFromKhmerChess(pieces) {
+        pieces.forEach((piece, i) => {
+            const square = this.get(i);
+            square.setPiece(piece);
+        });
+    }
+
+    receivePieces(pieces) {
+        this._piecesFromKhmerChess = pieces;
+        this.removePiecesFromSquares();
+        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
     }
 }
 

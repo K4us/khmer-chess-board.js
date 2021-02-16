@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
@@ -41,7 +41,7 @@ const {
     GRAVEYARD_NOTE_PREFIX_CLASS,
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
-    FLIPPED_CLASS,
+    FLIPPED_CLASS
 } = require('./constance');
 
 function addCss() {
@@ -112,7 +112,7 @@ function addCss() {
     `;
     boardHelper.getColorArray().forEach((color) => {
         boardHelper.getPieceCharArray().forEach((type) => {
-            const woodColor = color == boardHelper.PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
+            const woodColor = color === boardHelper.PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.attacked(woodColor)}</style>
                 ${PIECES_SVG[color + type]}
@@ -206,7 +206,7 @@ function addCss() {
 
     style.type = 'text/css';
     if (style.styleSheet) {
-        // This is required for IE8 and below.
+    // This is required for IE8 and below.
         style.styleSheet.cssText = css;
     } else {
         style.appendChild(document.createTextNode(css));
@@ -221,22 +221,22 @@ function drawBoard() {
         table.classList.add(TABLE_CLASS);
         parent.appendChild(table);
         return table;
-    }
+    };
     const createTbody = (parent) => {
         const tbody = document.createElement('tbody');
         parent.appendChild(tbody);
         return tbody;
-    }
+    };
     const createTr = (parent) => {
         const tr = document.createElement('tr');
         parent.appendChild(tr);
         return tr;
-    }
+    };
     const createTd = (parent) => {
         const td = document.createElement('td');
         parent.appendChild(td);
         return td;
-    }
+    };
 
     const table = createTable();
     const tbody = createTbody(table);
@@ -285,5 +285,5 @@ function drawBoard() {
 
 module.exports = {
     addCss,
-    drawBoard,
+    drawBoard
 };

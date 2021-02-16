@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
@@ -54,6 +54,7 @@ class SoundManager {
         }
         console.log('Sound is disabled');
     }
+
     enable() {
         this.isEnable = true;
         this.move = this._addSound(AUDIO.move);
@@ -61,6 +62,7 @@ class SoundManager {
         this.check = this._addSound(AUDIO.check);
         console.log('Sound is enabled');
     }
+
     _addSound(src) {
         const sound = document.createElement('audio');
         sound.src = src;
@@ -70,32 +72,36 @@ class SoundManager {
         document.body.appendChild(sound);
         return sound;
     }
+
     play(flag) {
         if (!this.isEnable) {
             console.log('Sound is disable');
             return;
         }
         switch (flag) {
-            case SoundManager.MOVE_FLAG:
-                this.move && this.move.play();
-                break;
-            case SoundManager.CAPTURE_FLAG:
-                this.capture && this.capture.play();
-                break;
-            case SoundManager.CHECK_FLAG:
-                this.check && this.check.play();
-                break;
-            default:
-                console.log('Invalid sound flag');
+        case SoundManager.MOVE_FLAG:
+            this.move && this.move.play();
+            break;
+        case SoundManager.CAPTURE_FLAG:
+            this.capture && this.capture.play();
+            break;
+        case SoundManager.CHECK_FLAG:
+            this.check && this.check.play();
+            break;
+        default:
+            console.log('Invalid sound flag');
         }
     }
-    playMove(){
+
+    playMove() {
         this.play(SoundManager.MOVE_FLAG);
     }
-    playCapture(){
+
+    playCapture() {
         this.play(SoundManager.CAPTURE_FLAG);
     }
-    playCheck(){
+
+    playCheck() {
         this.play(SoundManager.CHECK_FLAG);
     }
 }

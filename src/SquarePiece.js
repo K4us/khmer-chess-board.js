@@ -24,12 +24,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
-const { SELECTED_CLASS_NAME, PIECE_CLASS_NAME, ATTACKED_ID_NAME } = require('./constance');
+const {
+    SELECTED_CLASS_NAME,
+    PIECE_CLASS_NAME,
+    ATTACKED_ID_NAME,
+    FLIPPED_CLASS
+} = require('./constance');
 const { genBackgroundNote } = require('./svg');
 
 class SquarePiece {
@@ -38,9 +43,11 @@ class SquarePiece {
     get index() {
         return boardHelper.nerdXyToPos(this.x, this.y);
     }
+
     get indexCode() {
         return boardHelper.xyToIndexCode(this.x, this.y);
     }
+
     isGraveyard = false;
     container = document.createElement('td');
     piece = null;
@@ -51,71 +58,95 @@ class SquarePiece {
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
     }
+
     removePiece() {
-        this.setPiece(null);
-    }
-    setPiece(piece) {
-        this.piece = piece;
-        this.drawPiece();
-    }
-    drawPiece() {
-        const classList = this.container.classList;
-        classList.remove(PIECE_CLASS_NAME);
         if (this.piece) {
-            classList.add(PIECE_CLASS_NAME);
-            classList.add(`type-${this.piece.type}`);
-            classList.add(`color-${this.piece.color}`);
+            this.removeClassName(PIECE_CLASS_NAME);
+            this.removeClassName(`type-${this.piece.type}`);
+            this.removeClassName(`color-${this.piece.color}`);
+            this.piece = null;
         }
     }
+
+    setPiece(piece) {
+        this.removePiece();
+        this.piece = piece;
+        if (this.piece) {
+            this.addClassName(`type-${this.piece.type}`);
+            this.addClassName(`color-${this.piece.color}`);
+            this.addClassName(PIECE_CLASS_NAME);
+        }
+    }
+
     addClassName(className) {
         this.container.classList.add(className);
     }
+
     removeClassName(className) {
         this.container.classList.remove(className);
     }
+
     hasClassName(className) {
         return this.container.classList.contains(className);
     }
+
     select() {
         this.addClassName(SELECTED_CLASS_NAME);
     }
+
     unselect() {
         this.removeClassName(SELECTED_CLASS_NAME);
     }
+
     isSelected() {
         return this.hasClassName(SELECTED_CLASS_NAME);
     }
+
     attacked() {
         this.addClassName(ATTACKED_ID_NAME);
     }
+
     notAttacked() {
         this.removeClassName(ATTACKED_ID_NAME);
     }
+
     isAttacked() {
         return this.hasClassName(ATTACKED_ID_NAME);
     }
+
     getProperties() {
         return {
-            className: this.container.className,
+            className: this.container.className
         };
     }
+
     clear() {
         this.container.className = '';
     }
+
     setProperties(prop) {
         this.container.className = prop.className;
     }
+
     setOnClick(listener) {
         this.container.onclick = listener;
     }
+
     removeOnClick() {
         this.container.onclick = null;
     }
+
     addNote(tObjects, squareWidth, fSize) {
-        this.container.style.backgroundImage = genBackgroundNote(tObjects, squareWidth, fSize);
+        const backgroundImage = genBackgroundNote(tObjects, squareWidth, fSize);
+        this.container.style.backgroundImage = backgroundImage;
     }
-    clearNote() {
-        this.container.style.backgroundImage = '';
+
+    unsetFlipped() {
+        this.removeClassName(FLIPPED_CLASS);
+    }
+
+    setFlipped() {
+        this.addClassName(FLIPPED_CLASS);
     }
 }
 

@@ -1,0 +1,5 @@
+#include test folder for linting later
+test/**/*.test.js
+dist/**/*.js
+node_modules/**/*.js
+.vscode/**/*.js

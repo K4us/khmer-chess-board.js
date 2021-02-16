@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 /*
   ┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓
@@ -54,7 +54,7 @@
 const { GraveyardManager } = require('./src/GraveyardManager');
 const {
     addCss,
-    drawBoard,
+    drawBoard
 } = require('./src/index');
 const config = require('./package.json');
 const khmerChess = require('khmer-chess');
@@ -64,18 +64,18 @@ const constance = require('./src/constance');
 
 const {
     BORDER_WIDTH,
-    MIN_SQUARE_WIDTH,
-    TD_GRAVEYARD_NUMBER,
+    MIN_SQUARE_WIDTH
 } = constance;
 
-const { KhmerChess, Piece, boardHelper } = khmerChess;
+const { KhmerChess, boardHelper } = khmerChess;
 
 class KhmerChessBoard {
     static name = config.name;
     static version = config.version;
     options = {
-        width: 500,
+        width: 500
     };
+
     container = null;
     graveyardManager = new GraveyardManager();
     boardManager = new BoardManager();
@@ -105,31 +105,17 @@ class KhmerChessBoard {
         drawBoard.call(this);
         this.boardManager.setNote();
         this.graveyardManager.setNote();
-        this.renderKhmerChess();
+        this.applyPieces();
     }
 
     loadRen(renStr) {
         this.khmerChess.load(renStr);
-        this.renderKhmerChess();
+        this.applyPieces();
     }
-    renderKhmerChess() {
-        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.graveyardManager.get(i);
-            square.removePiece();
-        }
-        this.khmerChess.graveyard().forEach((p, i) => {
-            const square = this.graveyardManager.get(i);
-            square.setPiece(new Piece(p.type, p.color));
-        });
-        this.khmerChess.board().forEach((arr, i) => {
-            arr.forEach((p, j) => {
-                const square = this.boardManager.get(i * boardHelper.ROW_NUMBER + j);
-                square.removePiece();
-                if (p) {
-                    square.setPiece(new Piece(p.type, p.color));
-                }
-            });
-        });
+
+    applyPieces() {
+        this.graveyardManager.receivePieces(this.khmerChess.graveyard());
+        this.boardManager.receivePieces(this.khmerChess.board());
     }
 }
 

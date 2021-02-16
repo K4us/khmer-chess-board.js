@@ -24,54 +24,65 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
-const {
-    BOARD_NOTE_H_PREFIX_CLASS,
-    BOARD_NOTE_V_PREFIX_CLASS,
-    FLIPPED_CLASS,
-} = require('./constance');
 const { squareWidth } = require('./svg');
 
 class BoardManager {
     squares = [];
     options = {};
     isUpsideDown = false;
+    _piecesFromKhmerChess = null;
     setOptions(options) {
         this.options = options;
     }
+
     put(i, squarePiece) {
         this.squares[i] = squarePiece;
     }
+
     get(index) {
+        if (this.isUpsideDown) {
+            const sqCount = boardHelper.getSubBoardNumber();
+            return this.squares[sqCount - index - 1];
+        }
         return this.squares[index];
     }
+
     getByIndexCode(code) {
         const index = boardHelper.indexCodeToPos(code);
         return this.get(index);
     }
+
     getByXY(x, y) {
         const index = boardHelper.nerdXyToPos(x, y);
         return this.get(index);
     }
+
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
-        const propArr = this.squares.map((s) => {
-            return s.getProperties();
-        });
-        this.squares.forEach((s) => {
-            return s.clear();
-        });
-        this.squares = this.squares.reverse();
-        this.squares.forEach((s, i) => {
-            return s.setProperties(propArr[i]);
-        });
-        this.flipNote();
-        this.setNote();
+        this.removePiecesFromSquares();
+        this.applyFlippingNotes();
     }
+
+    removePiecesFromSquares() {
+        this.squares.forEach((s) => {
+            return s.removePiece();
+        });
+    }
+
+    applyFlippingNotes() {
+        this.squares.forEach((s) => {
+            s.unsetFlipped();
+            if (this.isUpsideDown) {
+                s.setFlipped();
+            }
+        });
+    }
+
     enableSelect() {
         this.squares.forEach((s) => {
             return s.setOnClick(() => {
@@ -79,15 +90,7 @@ class BoardManager {
             });
         });
     }
-    flipNote() {
-        this.squares.forEach((s) => {
-            s.clearNote();
-            s.removeClassName(FLIPPED_CLASS);
-            if (this.isUpsideDown) {
-                s.addClassName(FLIPPED_CLASS);
-            }
-        });
-    }
+
     setNote() {
         // TODO: change to add-class
         const sqWidth = squareWidth(this.options.width);
@@ -132,6 +135,23 @@ class BoardManager {
                 t: boardHelper.VERTICAL_NOTE_LETTERS[y]
             }
         ]);
+    }
+
+    applyPiecesFromKhmerChess(pieces) {
+        pieces.forEach((arr, i) => {
+            arr.forEach((piece, j) => {
+                const square = this.getByXY(j, i);
+                if (piece) {
+                    square.setPiece(piece);
+                }
+            });
+        });
+    }
+
+    receivePieces(pieces) {
+        this._piecesFromKhmerChess = pieces;
+        this.removePiecesFromSquares();
+        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
     }
 }
 

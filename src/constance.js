@@ -24,12 +24,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *----------------------------------------------------------------------------*/
+ *---------------------------------------------------------------------------- */
 
 'use strict';
 
-const BORDER_WIDTH = 1
-const MIN_SQUARE_WIDTH = 5
+const BORDER_WIDTH = 1;
+const MIN_SQUARE_WIDTH = 5;
 const TD_GRAVEYARD_NUMBER = 30;
 const TABLE_CLASS = 'khmer-chess-board';
 const SELECTED_CLASS_NAME = 'selected';
@@ -51,5 +51,5 @@ module.exports = {
     GRAVEYARD_NOTE_PREFIX_CLASS,
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
-    FLIPPED_CLASS,
+    FLIPPED_CLASS
 };
