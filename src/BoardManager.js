@@ -41,7 +41,7 @@ class BoardManager {
     isUpsideDown = false;
     _piecesFromKhmerChess = null;
 
-    constructor(khmerChessBoard, options) {
+    setProps(khmerChessBoard, options) {
         this.khmerChessBoard = khmerChessBoard;
         this.options = options;
     }

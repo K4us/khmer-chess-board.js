@@ -69,8 +69,8 @@ class KhmerChessBoard {
     static version = config.version;
     options = new Options();
     container = null;
-    graveyardManager = null;
-    boardManager = null;
+    graveyardManager = new GraveyardManager();
+    boardManager = new BoardManager();
     soundManager = new SoundManager();
     khmerChess = new KhmerChess();
     constructor(options = {}) {
@@ -89,8 +89,8 @@ class KhmerChessBoard {
             this.options.width = options.width;
         }
 
-        this.graveyardManager = new GraveyardManager(this, this.options);
-        this.boardManager = new BoardManager(this, this.options);
+        this.graveyardManager.setProps(this, this.options);
+        this.boardManager.setProps(this, this.options);
         this.render();
     }
 

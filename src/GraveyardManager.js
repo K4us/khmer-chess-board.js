@@ -32,10 +32,10 @@ const { TD_GRAVEYARD_NUMBER, GRAVEYARD_NOTE_PREFIX_CLASS } = require('./constanc
 
 class GraveyardManager {
     squares = [];
-    options = {};
     khmerChessBoard = null;
+    options = {};
     _piecesFromKhmerChess = null;
-    constructor(khmerChessBoard, options) {
+    setProps(khmerChessBoard, options) {
         this.khmerChessBoard = khmerChessBoard;
         this.options = options;
     }

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
     "eslint:build": "npm run eslint && npm run build",
-    "eslint": " npx eslint --config ./.eslintrc ."
+    "eslint": "eslint --config ./.eslintrc ."
   },
   "repository": {
     "type": "git",
