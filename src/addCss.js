@@ -31,7 +31,6 @@
 const { boardHelper } = require('khmer-chess');
 const {
     PIECES_SVG,
-    squareWidth,
     svgCSS,
     WOOD_COLORS
 } = require('./svg');
@@ -41,16 +40,18 @@ const {
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
     CSS_PSEUDO_HIGHLIGHT,
-    CSS_PSEUDO_PIECE
+    CSS_PSEUDO_PIECE,
+    POPUP_CLASS_NAME
 } = require('./constance');
 const appendCss = require('./appendCss');
 
-function addCss({ uniqueClassName, width }) {
-    const sqWidth = squareWidth(width);
+function addCss({ uniqueClassName, options }) {
+    const { width, squareWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
 
-    let css = `
+    let css = '';
+    css += `
         ${selector} {
             table-layout: fixed;
             border-collapse: collapse;
@@ -61,6 +62,10 @@ function addCss({ uniqueClassName, width }) {
             padding: 0px;
             margin: auto;
             background-color: white;
+        }
+        ${selector}.${POPUP_CLASS_NAME} {
+            position: fixed;
+            box-shadow: 10px 10px 80px #000000, -10px -10px 80px #000000;
         }
         ${selector} td table {
             table-layout: fixed;
@@ -74,7 +79,7 @@ function addCss({ uniqueClassName, width }) {
         }
         ${selector} tr {
             width: ${width}px;
-            height: ${sqWidth}px;
+            height: ${squareWidth}px;
         }
         ${selector} td {
             user-select: none;
@@ -82,8 +87,8 @@ function addCss({ uniqueClassName, width }) {
             border: 1px solid white;
             padding: 0px;
             margin: 0px;
-            max-width: ${sqWidth}px;
-            max-height: ${sqWidth}px;
+            max-width: ${squareWidth}px;
+            max-height: ${squareWidth}px;
             background-repeat: no-repeat;
             cursor: pointer;
         }
@@ -100,9 +105,9 @@ function addCss({ uniqueClassName, width }) {
         }
         ${selector} td:not(.graveyard)::before,
         ${selector} td:not(.graveyard)::after {
-            width: ${sqWidth}px;
-            height: ${sqWidth}px;
-            background-size: ${sqWidth}px ${sqWidth}px;
+            width: ${squareWidth}px;
+            height: ${squareWidth}px;
+            background-size: ${squareWidth}px ${squareWidth}px;
             display: block;
             content: ' ';
         }

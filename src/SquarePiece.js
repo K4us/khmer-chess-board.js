@@ -112,12 +112,14 @@ class SquarePiece {
         return this.hasClassName(SELECTED_CLASS_NAME);
     }
 
-    attacked() {
-        this.addClassName(ATTACKED_ID_NAME);
-    }
-
-    notAttacked() {
-        this.removeClassName(ATTACKED_ID_NAME);
+    attack(attacked) {
+        if (this.piece) {
+            this.removeClassName(ATTACKED_ID_NAME);
+            if (attacked) {
+                this.addClassName(ATTACKED_ID_NAME);
+            }
+        }
+        return this.piece;
     }
 
     isAttacked() {

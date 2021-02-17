@@ -36,6 +36,7 @@ const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
 const SELECTED_CLASS_NAME = 'selected';
 const ATTACKED_ID_NAME = 'attacked';
 const PIECE_CLASS_NAME = 'piece';
+const POPUP_CLASS_NAME = 'popup';
 const GRAVEYARD_NOTE_PREFIX_CLASS = 'note-gy';
 const BOARD_NOTE_V_PREFIX_CLASS = 'note-board-v';
 const BOARD_NOTE_H_PREFIX_CLASS = 'note-board-h';
@@ -59,5 +60,6 @@ module.exports = {
     FLIPPED_CLASS,
     CSS_PSEUDO_HIGHLIGHT,
     CSS_PSEUDO_PIECE,
-    CSS_PSEUDO_NOTE
+    CSS_PSEUDO_NOTE,
+    POPUP_CLASS_NAME
 };

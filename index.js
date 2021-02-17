@@ -60,23 +60,14 @@ const constance = require('./src/constance');
 const addCss = require('./src/addCss');
 const addCssNote = require('./src/addCssNote');
 const drawBoardAndGraveyard = require('./src/drawBoardAndGraveyard');
-const uniqueIdHelper = require('./src/uniqueIdHelper');
+const { Options } = require('./src/Options');
 
-const {
-    BORDER_WIDTH,
-    MIN_SQUARE_WIDTH
-} = constance;
-
-const { KhmerChess, boardHelper } = khmerChess;
+const { KhmerChess } = khmerChess;
 
 class KhmerChessBoard {
     static name = config.name;
     static version = config.version;
-    options = {
-        width: 500,
-        uniqueClassName: `kcb-${uniqueIdHelper.genId()}`
-    };
-
+    options = new Options();
     container = null;
     graveyardManager = null;
     boardManager = null;
@@ -88,9 +79,8 @@ class KhmerChessBoard {
         }
         this.container = options.container;
 
-        const minWidth = (boardHelper.ROW_NUMBER - 1) * BORDER_WIDTH + boardHelper.ROW_NUMBER * MIN_SQUARE_WIDTH;
-        if (options.width < minWidth) {
-            throw new Error(`Board width must more than ${minWidth}`);
+        if (options.width < this.options.minWidth) {
+            throw new Error(`Board width must more than ${this.options.minWidth} `);
         }
         if (options.width) {
             this.options.width = options.width;
@@ -101,18 +91,31 @@ class KhmerChessBoard {
 
         this.graveyardManager = new GraveyardManager(this, this.options);
         this.boardManager = new BoardManager(this, this.options);
+        this.render();
+    }
 
-        addCss({
-            uniqueClassName: this.options.uniqueClassName,
-            width: this.options.width
+    setFullScreen(isFullScreen) {
+        this.options.isFullScreen = isFullScreen;
+        const elements = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
+        elements.forEach((element) => {
+            element.classList.remove(constance.POPUP_CLASS_NAME);
+            element.style.top = 0;
+            element.style.left = 0;
+            element.style.transform = '';
+            if (isFullScreen) {
+                element.classList.add(constance.POPUP_CLASS_NAME);
+                element.style.top = '50%';
+                element.style.left = '50%';
+                element.style.transform = `translate(-50%,-50%) scale(${this.options.scaleFit})`;
+            }
         });
-        addCssNote({
-            uniqueClassName: this.options.uniqueClassName,
-            width: this.options.width
-        });
+    }
+
+    render() {
+        this.addAllDomCss();
         drawBoardAndGraveyard({
             uniqueClassName: this.options.uniqueClassName,
-            width: this.options.width,
+            options: this.options,
             container: this.container,
             boardManager: this.boardManager,
             graveyardManager: this.graveyardManager
@@ -120,6 +123,17 @@ class KhmerChessBoard {
         this.boardManager.setNote();
         this.graveyardManager.setNote();
         this.applyPieces();
+    }
+
+    addAllDomCss() {
+        addCss({
+            uniqueClassName: this.options.uniqueClassName,
+            options: this.options
+        });
+        addCssNote({
+            uniqueClassName: this.options.uniqueClassName,
+            options: this.options
+        });
     }
 
     loadRen(renStr) {
@@ -132,12 +146,23 @@ class KhmerChessBoard {
         this.boardManager.receivePieces(this.khmerChess.board());
     }
 
-    destroy() {
-        const elements = document.querySelectorAll(`.${this.options.uniqueClassName}`);
-        console.log(elements);
+    removeAllDomElements() {
+        const elements = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
         elements.forEach((element) => {
             element.parentElement.removeChild(element);
         });
+        this.removeAllDomCss();
+    }
+
+    removeAllDomCss() {
+        const elements = document.querySelectorAll(`style.${this.options.uniqueClassName} `);
+        elements.forEach((element) => {
+            element.parentElement.removeChild(element);
+        });
+    }
+
+    destroy() {
+        this.removeAllDomElements();
         this.container = null;
         this.graveyardManager = null;
         this.boardManager = null;
@@ -149,4 +174,9 @@ class KhmerChessBoard {
 console.log(KhmerChess.name, KhmerChess.version);
 console.log(KhmerChessBoard.name, KhmerChessBoard.version);
 
-module.exports = { KhmerChessBoard, GraveyardManager, ...khmerChess, ...constance };
+module.exports = {
+    KhmerChessBoard,
+    GraveyardManager,
+    ...khmerChess,
+    ...constance
+};

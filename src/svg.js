@@ -29,7 +29,6 @@
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
-const { BORDER_WIDTH } = require('./constance');
 
 const WOOD_COLORS = {
     WHITE: '#ffffff',
@@ -438,18 +437,9 @@ function genBackgroundNote(tObjects = [], squareWidth, fSize) {
     return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 }
 
-function squareWidth(width) {
-    if (isNaN(Number(width))) {
-        throw new Error('Invalid width');
-    }
-    const sqWidth = (width - (boardHelper.ROW_NUMBER - 1) * BORDER_WIDTH) / boardHelper.ROW_NUMBER;
-    return sqWidth;
-}
-
 module.exports = {
     PIECES_SVG,
     WOOD_COLORS,
     svgCSS,
-    genBackgroundNote,
-    squareWidth
+    genBackgroundNote
 };

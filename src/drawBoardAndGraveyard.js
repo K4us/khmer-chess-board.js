@@ -30,15 +30,19 @@
 
 const { boardHelper } = require('khmer-chess');
 const { SquarePiece } = require('./SquarePiece');
-const { squareWidth } = require('./svg');
 const {
-    BORDER_WIDTH,
     TD_GRAVEYARD_NUMBER,
     TABLE_CLASS
 } = require('./constance');
 
-function drawBoardAndGraveyard({ uniqueClassName, width, container, boardManager, graveyardManager }) {
-    const sqWidth = squareWidth(width);
+function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManager, graveyardManager }) {
+    const {
+        width,
+        squareWidth,
+        graveyardContainerHeight,
+        graveyardWidth,
+        graveyardContainerPadding
+    } = options;
 
     const createTable = (parent = container) => {
         const table = document.createElement('table');
@@ -76,8 +80,6 @@ function drawBoardAndGraveyard({ uniqueClassName, width, container, boardManager
         }
     }
 
-    const graveyardContainerHeight = sqWidth + 10 * BORDER_WIDTH;
-    table.style.height = width + graveyardContainerHeight;
     const trGraveyardContainer = createTr(tbody);
     trGraveyardContainer.style.height = graveyardContainerHeight;
     const tdGraveyardContainer = createTd(trGraveyardContainer);
@@ -91,12 +93,11 @@ function drawBoardAndGraveyard({ uniqueClassName, width, container, boardManager
     tdGraveyardContainer.style.overflowX = 'scroll';
     tdGraveyardContainer.style.overflowY = 'hidden';
     tdGraveyardContainer.colSpan = 8;
-    tdGraveyardContainer.style.padding = 8 * BORDER_WIDTH * width / 600;
+    tdGraveyardContainer.style.padding = graveyardContainerPadding;
     tdGraveyardContainer.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
     const tableGraveyard = createTable(tdGraveyardContainer);
-    const graveyardWidth = BORDER_WIDTH * (TD_GRAVEYARD_NUMBER - 1) + sqWidth * TD_GRAVEYARD_NUMBER;
     tableGraveyard.style.width = graveyardWidth;
-    tableGraveyard.style.height = sqWidth;
+    tableGraveyard.style.height = squareWidth;
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
     trGraveyard.style.width = graveyardWidth;
@@ -106,6 +107,8 @@ function drawBoardAndGraveyard({ uniqueClassName, width, container, boardManager
         const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
         graveyardManager.push(squarePiece);
     }
+
+    options.boundingTableRect = table.getBoundingClientRect();
 }
 
 module.exports = drawBoardAndGraveyard;

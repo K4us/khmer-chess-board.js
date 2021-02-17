@@ -30,7 +30,7 @@
 
 const { boardHelper } = require('khmer-chess');
 const appendCss = require('./appendCss');
-const { squareWidth, genBackgroundNote } = require('./svg');
+const { genBackgroundNote } = require('./svg');
 const {
     TD_GRAVEYARD_NUMBER,
     CSS_TABLE_SELECTOR,
@@ -41,17 +41,17 @@ const {
     CSS_PSEUDO_NOTE
 } = require('./constance');
 
-function addCssNote({ uniqueClassName, width }) {
-    const sqWidth = squareWidth(width);
+function addCssNote({ uniqueClassName, options }) {
+    const { width, squareWidth } = options;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
     let css = '';
     const fSize = 15 * width / 600;
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const bgImg = genBackgroundNote([{
-            x: sqWidth / 2 - sqWidth / 10,
-            y: sqWidth,
+            x: squareWidth / 2 - squareWidth / 10,
+            y: squareWidth,
             t: boardHelper.VERTICAL_NOTE_LETTERS[i]
-        }], sqWidth, fSize);
+        }], squareWidth, fSize);
         css += `
         ${selector} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg};
@@ -59,13 +59,13 @@ function addCssNote({ uniqueClassName, width }) {
         `;
     }
 
-    const hx = sqWidth / 2 - sqWidth / 10;
-    const vy = sqWidth / 2 + sqWidth / 10;
+    const hx = squareWidth / 2 - squareWidth / 10;
+    const vy = squareWidth / 2 + squareWidth / 10;
     let bgImg = (i) => genBackgroundNote([{
         x: hx,
-        y: sqWidth,
+        y: squareWidth,
         t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
-    }], sqWidth, fSize);
+    }], squareWidth, fSize);
     for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
         css += `
         ${selector} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
@@ -80,7 +80,7 @@ function addCssNote({ uniqueClassName, width }) {
         x: 0,
         y: vy,
         t: boardHelper.VERTICAL_NOTE_LETTERS[i]
-    }], sqWidth, fSize);
+    }], squareWidth, fSize);
     for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
         css += `
             ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
@@ -95,14 +95,14 @@ function addCssNote({ uniqueClassName, width }) {
     bgImg = (i) => genBackgroundNote([
         {
             x: hx,
-            y: sqWidth,
+            y: squareWidth,
             t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
         }, {
             x: 0,
             y: vy,
             t: boardHelper.VERTICAL_NOTE_LETTERS[i]
         }
-    ], sqWidth, fSize);
+    ], squareWidth, fSize);
     css += `
     ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
         background-image: ${bgImg(0)};

@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <button onclick="toggleFullScreen();">Toggle Full Screen</button>
     <div id="board-container1"></div>
     <div id="board-container2"></div>
     <script>
@@ -22,6 +23,19 @@
         kcb1.boardManager.get(10).select();
         kcb1.boardManager.enableSelect();
         // kcb.boardManager.get(63).attacked()
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    kcb1.setFullScreen(true);
+                })
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().then(() => {
+                        kcb1.setFullScreen(false);
+                    })
+                }
+            }
+        }
     </script>
     <script>
         var container2 = document.getElementById("board-container2");
