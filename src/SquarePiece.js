@@ -101,7 +101,10 @@ class SquarePiece {
     }
 
     select() {
-        this.addClassName(SELECTED_CLASS_NAME);
+        if (this.piece) {
+            this.addClassName(SELECTED_CLASS_NAME);
+        }
+        return this.piece;
     }
 
     unselect() {

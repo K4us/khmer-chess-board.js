@@ -61,7 +61,7 @@ function addCss({ uniqueClassName, options }) {
             border: 0px;
             padding: 0px;
             margin: auto;
-            background-color: white;
+            background-color: #f4d1a6;
         }
         ${selector}.${POPUP_CLASS_NAME} {
             position: fixed;
@@ -75,7 +75,7 @@ function addCss({ uniqueClassName, options }) {
             border: 0px;
             padding: 0px;
             margin: auto;
-            background-color: white;
+            background-color: #ffc57d;
         }
         ${selector} tr {
             width: ${width}px;
@@ -83,7 +83,6 @@ function addCss({ uniqueClassName, options }) {
         }
         ${selector} td {
             user-select: none;
-            background-color: #f4d1a6;
             border: 1px solid white;
             padding: 0px;
             margin: 0px;

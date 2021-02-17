@@ -118,7 +118,18 @@ class BoardManager {
     enableSelect() {
         this._squares.forEach((s) => {
             return s.setOnClick(() => {
-                s.isSelected() ? s.unselect() : s.select();
+                const selectedList = this.getSelectedSquares();
+                if (selectedList.length) {
+                    const selectedSquare = selectedList[0];
+                    if (s === selectedSquare) {
+                        s.unselect();
+                    } else {
+                        console.log(selectedSquare.indexCode, 'to', s.indexCode);
+                        selectedSquare.unselect();
+                    }
+                } else {
+                    s.select();
+                }
             });
         });
     }
