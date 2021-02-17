@@ -9,18 +9,26 @@
 </head>
 
 <body>
-    <div id="board-container"></div>
+    <div id="board-container1"></div>
+    <div id="board-container2"></div>
     <script>
-        var container = document.getElementById("board-container");
-        var kcb = new KhmerChessBoard({
+        var container1 = document.getElementById("board-container1");
+        var kcb1 = new KhmerChessBoard({
             width: 600,
-            container: container
+            container: container1
         });
-        kcb.soundManager.enable();
-        kcb.loadRen('1h2kghb/1b2gq2/1tf5/8/8/FFFFFFFT/2HG4/B2KQGHB w ---- -- -.- ffffff');
-        kcb.boardManager.get(10).select();
-        kcb.boardManager.enableSelect();
+        kcb1.soundManager.enable();
+        kcb1.loadRen('1h2kghb/1b2gq2/1tf5/8/8/FFFFFFFT/2HG4/B2KQGHB w ---- -- -.- ffffff');
+        kcb1.boardManager.get(10).select();
+        kcb1.boardManager.enableSelect();
         // kcb.boardManager.get(63).attacked()
+    </script>
+    <script>
+        var container2 = document.getElementById("board-container2");
+        var kcb2 = new KhmerChessBoard({
+            width: 300,
+            container: container2
+        });
     </script>
 </body>
 

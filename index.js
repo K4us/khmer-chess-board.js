@@ -60,6 +60,7 @@ const constance = require('./src/constance');
 const addCss = require('./src/addCss');
 const addCssNote = require('./src/addCssNote');
 const drawBoardAndGraveyard = require('./src/drawBoardAndGraveyard');
+const uniqueIdHelper = require('./src/uniqueIdHelper');
 
 const {
     BORDER_WIDTH,
@@ -72,7 +73,8 @@ class KhmerChessBoard {
     static name = config.name;
     static version = config.version;
     options = {
-        width: 500
+        width: 500,
+        uniqueClassName: `kcb-${uniqueIdHelper.genId()}`
     };
 
     container = null;
@@ -100,9 +102,16 @@ class KhmerChessBoard {
         this.graveyardManager = new GraveyardManager(this, this.options);
         this.boardManager = new BoardManager(this, this.options);
 
-        addCss(this.options.width);
-        addCssNote(this.options.width);
+        addCss({
+            uniqueClassName: this.options.uniqueClassName,
+            width: this.options.width
+        });
+        addCssNote({
+            uniqueClassName: this.options.uniqueClassName,
+            width: this.options.width
+        });
         drawBoardAndGraveyard({
+            uniqueClassName: this.options.uniqueClassName,
             width: this.options.width,
             container: this.container,
             boardManager: this.boardManager,
@@ -121,6 +130,19 @@ class KhmerChessBoard {
     applyPieces() {
         this.graveyardManager.receivePieces(this.khmerChess.graveyard());
         this.boardManager.receivePieces(this.khmerChess.board());
+    }
+
+    destroy() {
+        const elements = document.querySelectorAll(`.${this.options.uniqueClassName}`);
+        console.log(elements);
+        elements.forEach((element) => {
+            element.parentElement.removeChild(element);
+        });
+        this.container = null;
+        this.graveyardManager = null;
+        this.boardManager = null;
+        this.soundManager = null;
+        this.khmerChess = null;
     }
 }
 

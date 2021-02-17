@@ -37,13 +37,11 @@ const {
     TABLE_CLASS
 } = require('./constance');
 
-function drawBoardAndGraveyard(options = {}) {
-    const { width, container, boardManager, graveyardManager } = options;
+function drawBoardAndGraveyard({ uniqueClassName, width, container, boardManager, graveyardManager }) {
     const sqWidth = squareWidth(width);
 
     const createTable = (parent = container) => {
         const table = document.createElement('table');
-        table.classList.add(TABLE_CLASS);
         parent.appendChild(table);
         return table;
     };
@@ -64,6 +62,8 @@ function drawBoardAndGraveyard(options = {}) {
     };
 
     const table = createTable();
+    table.classList.add(TABLE_CLASS);
+    table.classList.add(uniqueClassName);
     const tbody = createTbody(table);
 
     for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {

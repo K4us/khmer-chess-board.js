@@ -45,12 +45,13 @@ const {
 } = require('./constance');
 const appendCss = require('./appendCss');
 
-function addCss(width) {
+function addCss({ uniqueClassName, width }) {
     const sqWidth = squareWidth(width);
     const pieceFontSize = width / 12;
+    const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
 
     let css = `
-        ${CSS_TABLE_SELECTOR} {
+        ${selector} {
             table-layout: fixed;
             border-collapse: collapse;
             border-spacing: 0px;
@@ -61,7 +62,7 @@ function addCss(width) {
             margin: auto;
             background-color: white;
         }
-        ${CSS_TABLE_SELECTOR} td table {
+        ${selector} td table {
             table-layout: fixed;
             border-collapse: collapse;
             border-spacing: 0px;
@@ -71,11 +72,11 @@ function addCss(width) {
             margin: auto;
             background-color: white;
         }
-        ${CSS_TABLE_SELECTOR} tr {
+        ${selector} tr {
             width: ${width}px;
             height: ${sqWidth}px;
         }
-        ${CSS_TABLE_SELECTOR} td {
+        ${selector} td {
             user-select: none;
             background-color: #f4d1a6;
             border: 1px solid white;
@@ -86,19 +87,19 @@ function addCss(width) {
             background-repeat: no-repeat;
             cursor: pointer;
         }
-        ${CSS_TABLE_SELECTOR} td,
-        ${CSS_TABLE_SELECTOR} td::before,
-        ${CSS_TABLE_SELECTOR} td::after {
+        ${selector} td,
+        ${selector} td::before,
+        ${selector} td::after {
             font-size: ${pieceFontSize}px;
         }
-        ${CSS_TABLE_SELECTOR} td::after {
+        ${selector} td::after {
             opacity: 0.4;
         }
-        ${CSS_TABLE_SELECTOR} td::before {
+        ${selector} td::before {
             float: left;
         }
-        ${CSS_TABLE_SELECTOR} td:not(.graveyard)::before,
-        ${CSS_TABLE_SELECTOR} td:not(.graveyard)::after {
+        ${selector} td:not(.graveyard)::before,
+        ${selector} td:not(.graveyard)::after {
             width: ${sqWidth}px;
             height: ${sqWidth}px;
             background-size: ${sqWidth}px ${sqWidth}px;
@@ -108,7 +109,7 @@ function addCss(width) {
     `;
 
     css += `
-    ${CSS_TABLE_SELECTOR} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+    ${selector} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         background: radial-gradient(#f4d1a6, #e66465) !important;
     }`;
 
@@ -124,17 +125,17 @@ function addCss(width) {
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-                ${CSS_TABLE_SELECTOR} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
-                ${CSS_TABLE_SELECTOR} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
                 `;
         });
     });
 
-    appendCss(css);
+    appendCss(uniqueClassName, css);
 }
 
 module.exports = addCss;

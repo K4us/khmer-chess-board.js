@@ -25,22 +25,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
 'use strict';
 
-function appendCss(uniqueClassName, css) {
-    const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
-    style.classList.add(uniqueClassName);
-    head.appendChild(style);
-
-    style.type = 'text/css';
-    if (style.styleSheet) {
-        // This is required for IE8 and below.
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
+const randomString = (length = 8) => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-}
+    return result;
+};
 
-module.exports = appendCss;
+const uniqueIdHelper = {
+    _idList: [],
+    genId() {
+        let id = randomString(8);
+        while (~uniqueIdHelper._idList.indexOf(id)) {
+            id = randomString(4);
+        }
+        this._idList.push(id);
+        return id;
+    }
+};
+
+module.exports = uniqueIdHelper;
