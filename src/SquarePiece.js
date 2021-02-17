@@ -35,7 +35,6 @@ const {
     ATTACKED_ID_NAME,
     FLIPPED_CLASS
 } = require('./constance');
-const { genBackgroundNote } = require('./svg');
 
 class SquarePiece {
     _x = 0;
@@ -145,11 +144,6 @@ class SquarePiece {
 
     removeOnClick() {
         this.container.onclick = null;
-    }
-
-    addNote(tObjects, squareWidth, fSize) {
-        const backgroundImage = genBackgroundNote(tObjects, squareWidth, fSize);
-        this.container.style.backgroundImage = backgroundImage;
     }
 
     setFlipped(isUpsideDown) {

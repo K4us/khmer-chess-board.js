@@ -65,7 +65,7 @@ function addCssNote({ uniqueClassName, width }) {
         x: hx,
         y: sqWidth,
         t: boardHelper.HORIZONTAL_NOTE_LETTERS[i]
-    }]);
+    }], sqWidth, fSize);
     for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
         css += `
         ${selector} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
@@ -80,7 +80,7 @@ function addCssNote({ uniqueClassName, width }) {
         x: 0,
         y: vy,
         t: boardHelper.VERTICAL_NOTE_LETTERS[i]
-    }]);
+    }], sqWidth, fSize);
     for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
         css += `
             ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
@@ -102,7 +102,7 @@ function addCssNote({ uniqueClassName, width }) {
             y: vy,
             t: boardHelper.VERTICAL_NOTE_LETTERS[i]
         }
-    ]);
+    ], sqWidth, fSize);
     css += `
     ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
         background-image: ${bgImg(0)};
