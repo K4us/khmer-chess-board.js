@@ -1,11 +1,11 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/KhmerChessboard.js",
   "scripts": {
-    "start": "webpack serve --config webpack.config.dev.js --port 8082 --content-base public/ --open",
-    "build": "webpack --config webpack.config.js --mode production",
+    "start": "webpack serve --config webpack.config.dev.js",
+    "build": "webpack --config webpack.config.js",
     "build:prod": "webpack --config webpack.config.js -p",
     "build:esnext": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",

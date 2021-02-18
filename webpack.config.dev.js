@@ -18,6 +18,13 @@ module.exports = {
     mode: 'development',
     devtool: 'inline-source-map',
 
+    devServer: {
+        contentBase: path.join(__dirname, 'public'),
+        compress: true,
+        open: true,
+        port: 8081
+    },
+
     resolve: {
         extensions: ['.ts', '.js'],
         modules: [
@@ -58,9 +65,6 @@ module.exports = {
                 ]
             }
         ]
-    },
-
-    devtool: 'cheap-module-source-map',
-    devServer: {}
+    }
 };
 
