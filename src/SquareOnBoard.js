@@ -36,7 +36,7 @@ const {
     FLIPPED_CLASS
 } = require('./constance');
 
-class SquarePiece {
+class SquareOnBoard {
     _x = 0;
     _y = 0;
     get x() {
@@ -161,8 +161,8 @@ class SquarePiece {
 
     clone() {
         const div = document.createElement('div');
-        return new SquarePiece(this.x, this.y, div, this.piece);
+        return new SquareOnBoard(this.x, this.y, div, this.piece);
     }
 }
 
-module.exports = { SquarePiece };
+module.exports = { SquareOnBoard };

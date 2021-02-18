@@ -68,12 +68,12 @@ class KhmerChessBoard {
     static name = config.name;
     static version = config.version;
     options = new Options();
-    container = null;
+    container = document.createElement('div');
     graveyardManager = new GraveyardManager();
     boardManager = new BoardManager();
     soundManager = new SoundManager();
     khmerChess = new KhmerChess();
-    constructor(options = {}) {
+    setOptions(options = {}) {
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -89,8 +89,8 @@ class KhmerChessBoard {
             this.options.width = options.width;
         }
 
-        this.graveyardManager.setProps(this, this.options);
-        this.boardManager.setProps(this, this.options);
+        this.graveyardManager.setProps(this);
+        this.boardManager.setProps(this);
         this.render();
     }
 
@@ -142,8 +142,8 @@ class KhmerChessBoard {
     }
 
     applyPieces() {
-        this.graveyardManager.receivePieces(this.khmerChess.graveyard());
-        this.boardManager.receivePieces(this.khmerChess.board());
+        this.graveyardManager.renderKhmerChessPieces();
+        this.boardManager.renderKhmerChessPieces();
     }
 
     removeAllDomElements() {

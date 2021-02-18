@@ -29,21 +29,40 @@
 'use strict';
 
 const boardHelper = require('khmer-chess/src/board-helper');
+const { KhmerChess, Move } = require('khmer-chess');
 const {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS
 } = require('./constance');
+const { Piece } = require('khmer-chess/src/REN');
+
+class PieceMove {
+    piece = new Piece();
+    fromIndex = 0;
+    toIndex = 0;
+    constructor(piece, fromIndex, toIndex) {
+        this.piece = piece;
+        this.fromIndex = fromIndex;
+        this.toIndex = toIndex;
+    }
+
+    get kcMove() {
+        return new Move(
+            boardHelper.posToIndexCode(this.fromIndex),
+            boardHelper.posToIndexCode(this.toIndex));
+    }
+}
 
 class BoardManager {
     _squares = [];
     options = {};
     khmerChessBoard = null;
+    khmerChess = new KhmerChess();
     isUpsideDown = false;
-    _piecesFromKhmerChess = null;
-
-    setProps(khmerChessBoard, options) {
+    setProps(khmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
-        this.options = options;
+        this.khmerChess = khmerChessBoard.khmerChess;
+        this.options = khmerChessBoard.options;
     }
 
     put(i, squarePiece) {
@@ -124,8 +143,11 @@ class BoardManager {
                     if (s === selectedSquare) {
                         s.unselect();
                     } else {
-                        console.log(selectedSquare.indexCode, 'to', s.indexCode);
-                        selectedSquare.unselect();
+                        const pieceMove = new PieceMove(s.piece, selectedSquare.indexCode, s.indexCode);
+                        if (this.khmerChess.move(pieceMove.kcMove)) {
+                            console.log(selectedSquare.indexCode, 'to', s.indexCode);
+                        }
+                        this.clearSelectedSquares();
                     }
                 } else {
                     s.select();
@@ -145,9 +167,9 @@ class BoardManager {
         }
     }
 
-    receivePieces(pieces) {
+    renderKhmerChessPieces() {
         this.removePiecesFromSquares();
-        pieces.forEach((arr, i) => {
+        this.khmerChess.board().forEach((arr, i) => {
             arr.forEach((piece, j) => {
                 const square = this.getByXY(j, i);
                 if (piece) {

@@ -29,7 +29,7 @@
 'use strict';
 
 const { boardHelper } = require('khmer-chess');
-const { SquarePiece } = require('./SquarePiece');
+const { SquareOnBoard } = require('./SquareOnBoard');
 const {
     TD_GRAVEYARD_NUMBER,
     TABLE_CLASS
@@ -74,7 +74,7 @@ function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManag
         const tr = createTr(tbody);
         for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const squarePiece = new SquarePiece(j, boardHelper.ROW_NUMBER - i - 1, td, null);
+            const squarePiece = new SquareOnBoard(j, boardHelper.ROW_NUMBER - i - 1, td, null);
             const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
             boardManager.put(index, squarePiece);
         }
@@ -104,7 +104,7 @@ function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManag
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const squarePiece = new SquarePiece(i, 0, tdGraveyard, null, true);
+        const squarePiece = new SquareOnBoard(i, 0, tdGraveyard, null, true);
         graveyardManager.push(squarePiece);
     }
 

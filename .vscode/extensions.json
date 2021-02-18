@@ -5,6 +5,7 @@
         "editorconfig.editorconfig",
         "ritwickdey.liveserver",
         "wayou.vscode-todo-highlight",
-        "mhutchie.git-graph"
+        "mhutchie.git-graph",
+        "oouo-diogo-perdigao.docthis"
     ]
 }

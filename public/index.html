@@ -14,7 +14,8 @@
     <div id="board-container2"></div>
     <script>
         var container1 = document.getElementById("board-container1");
-        var kcb1 = new KhmerChessBoard({
+        var kcb1 = new KhmerChessBoard();
+        kcb1.setOptions({
             width: 600,
             container: container1
         });
@@ -40,7 +41,8 @@
     </script>
     <script>
         var container2 = document.getElementById("board-container2");
-        var kcb2 = new KhmerChessBoard({
+        var kcb2 = new KhmerChessBoard();
+        kcb2.setOptions({
             width: 300,
             container: container2
         });

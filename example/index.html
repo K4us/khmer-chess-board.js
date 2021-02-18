@@ -12,7 +12,8 @@
     <div id="board-container"></div>
     <script>
         var container = document.getElementById("board-container");
-        var kcb = new KhmerChessBoard({
+        var kcb = new KhmerChessBoard();
+        kcb.setOptions({
             width: 600,
             container: container
         });

@@ -28,16 +28,21 @@
 
 'use strict';
 
-const { TD_GRAVEYARD_NUMBER, GRAVEYARD_NOTE_PREFIX_CLASS } = require('./constance');
+const { KhmerChess } = require('khmer-chess');
+const {
+    TD_GRAVEYARD_NUMBER,
+    GRAVEYARD_NOTE_PREFIX_CLASS
+} = require('./constance');
 
 class GraveyardManager {
     squares = [];
     khmerChessBoard = null;
+    khmerChess = new KhmerChess();
     options = {};
-    _piecesFromKhmerChess = null;
-    setProps(khmerChessBoard, options) {
+    setProps(khmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
-        this.options = options;
+        this.khmerChess = khmerChessBoard.khmerChess;
+        this.options = khmerChessBoard.options;
     }
 
     push(squarePiece) {
@@ -69,10 +74,9 @@ class GraveyardManager {
         });
     }
 
-    receivePieces(pieces) {
-        this._piecesFromKhmerChess = pieces;
+    renderKhmerChessPieces() {
         this.removePiecesFromSquares();
-        this.applyPiecesFromKhmerChess(this._piecesFromKhmerChess);
+        this.applyPiecesFromKhmerChess(this.khmerChess.graveyard());
     }
 }
 
