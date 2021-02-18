@@ -20,7 +20,13 @@
     "no-return-await": 0,
     "comma-dangle": [
       "error",
-      "never"
+      {
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "only-multiline"
+      }
     ],
     "space-before-function-paren": "off"
   },
