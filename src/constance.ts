@@ -25,22 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-function appendCss(uniqueClassName, css) {
-    const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
-    style.classList.add(uniqueClassName);
-    head.appendChild(style);
-
-    style.type = 'text/css';
-    if (style.styleSheet) {
-        // This is required for IE8 and below.
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-}
-
-module.exports = appendCss;
+export const BORDER_WIDTH = 1;
+export const MIN_SQUARE_WIDTH = 5;
+export const TD_GRAVEYARD_NUMBER = 30;
+export const TABLE_CLASS = 'khmer-chess-board';
+export const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
+export const SELECTED_CLASS_NAME = 'selected';
+export const ATTACKED_ID_NAME = 'attacked';
+export const PIECE_CLASS_NAME = 'piece';
+export const POPUP_CLASS_NAME = 'popup';
+export const GRAVEYARD_NOTE_PREFIX_CLASS = 'note-gy';
+export const BOARD_NOTE_V_PREFIX_CLASS = 'note-board-v';
+export const BOARD_NOTE_H_PREFIX_CLASS = 'note-board-h';
+export const FLIPPED_CLASS = 'flipped';
+export const CSS_PSEUDO_HIGHLIGHT = '::after';
+export const CSS_PSEUDO_PIECE = '';
+export const CSS_PSEUDO_NOTE = '::before';

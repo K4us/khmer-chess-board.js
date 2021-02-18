@@ -25,9 +25,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
+import { KhmerChess, Piece } from 'khmer-chess';
+import {
+    TD_GRAVEYARD_NUMBER,
+    GRAVEYARD_NOTE_PREFIX_CLASS,
+} from './constance';
+import SquareOnBoard from './SquareOnBoard';
+import KhmerChessBoard from './KhmerChessboard';
 
-'use strict';
+export default class GraveyardManager {
+    _squares: SquareOnBoard[] = [];
+    khmerChessBoard: KhmerChessBoard;
+    khmerChess: KhmerChess;
+    options = {};
+    setProps(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+        this.khmerChess = khmerChessBoard.khmerChess;
+        this.options = khmerChessBoard.options;
+    }
 
-const { KhmerChessBoard } = require('./index');
+    push(squarePiece: SquareOnBoard) {
+        this._squares.push(squarePiece);
+    }
 
-window.KhmerChessBoard = KhmerChessBoard;
+    get(index: number) {
+        return this._squares[index];
+    }
+
+    setNote() {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const square = this.get(i);
+            square.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
+        }
+    }
+
+    removePiecesFromSquares() {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const square = this.get(i);
+            square.removePiece();
+        }
+    }
+
+    applyPiecesFromKhmerChess(pieces: Piece[]) {
+        pieces.forEach((piece, i) => {
+            const square = this.get(i);
+            square.setPiece(piece);
+        });
+    }
+
+    renderKhmerChessPieces() {
+        this.removePiecesFromSquares();
+        this.applyPiecesFromKhmerChess(this.khmerChess.graveyard());
+    }
+}

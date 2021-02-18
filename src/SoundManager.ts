@@ -25,18 +25,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
+import AUDIO from './audio';
 
-'use strict';
-
-const { AUDIO } = require('./audio');
-
-class SoundManager {
+export default class SoundManager {
     static MOVE_FLAG = 'm';
     static CAPTURE_FLAG = 'ct';
     static CHECK_FLAG = 'c';
-    move = null;
-    capture = null;
-    check = null;
+    move: HTMLAudioElement = null;
+    capture: HTMLAudioElement = null;
+    check: HTMLAudioElement = null;
     isEnable = false;
     disable() {
         this.isEnable = false;
@@ -63,7 +60,7 @@ class SoundManager {
         console.log('Sound is enabled');
     }
 
-    _addSound(src) {
+    _addSound(src: string) {
         const sound = document.createElement('audio');
         sound.src = src;
         sound.setAttribute('preload', 'auto');
@@ -73,23 +70,23 @@ class SoundManager {
         return sound;
     }
 
-    play(flag) {
+    play(flag: string) {
         if (!this.isEnable) {
             console.log('Sound is disable');
             return;
         }
         switch (flag) {
-        case SoundManager.MOVE_FLAG:
-            this.move && this.move.play();
-            break;
-        case SoundManager.CAPTURE_FLAG:
-            this.capture && this.capture.play();
-            break;
-        case SoundManager.CHECK_FLAG:
-            this.check && this.check.play();
-            break;
-        default:
-            console.log('Invalid sound flag');
+            case SoundManager.MOVE_FLAG:
+                this.move && this.move.play();
+                break;
+            case SoundManager.CAPTURE_FLAG:
+                this.capture && this.capture.play();
+                break;
+            case SoundManager.CHECK_FLAG:
+                this.check && this.check.play();
+                break;
+            default:
+                console.log('Invalid sound flag');
         }
     }
 
@@ -105,5 +102,3 @@ class SoundManager {
         this.play(SoundManager.CHECK_FLAG);
     }
 }
-
-module.exports = { SoundManager };

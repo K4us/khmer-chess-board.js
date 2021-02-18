@@ -25,22 +25,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const boardHelper = require('khmer-chess/src/board-helper');
-const { KhmerChess, Move } = require('khmer-chess');
-const {
+import { boardHelper } from 'khmer-chess';
+import { KhmerChess, Move } from 'khmer-chess';
+import {
     BOARD_NOTE_V_PREFIX_CLASS,
-    BOARD_NOTE_H_PREFIX_CLASS
-} = require('./constance');
-const { Piece } = require('khmer-chess/src/REN');
+    BOARD_NOTE_H_PREFIX_CLASS,
+} from './constance';
+import { Piece } from 'khmer-chess';
+import SquareOnBoard from './SquareOnBoard';
+import Options from './Options';
+import KhmerChessBoard from './KhmerChessboard';
 
 class PieceMove {
-    piece = new Piece();
+    piece: Piece = null;
     fromIndex = 0;
     toIndex = 0;
-    constructor(piece, fromIndex, toIndex) {
+    constructor(piece: Piece, fromIndex: number, toIndex: number) {
         this.piece = piece;
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
@@ -53,34 +53,35 @@ class PieceMove {
     }
 }
 
-class BoardManager {
-    _squares = [];
-    options = {};
-    khmerChessBoard = null;
-    khmerChess = new KhmerChess();
+export default class BoardManager {
+    _squares: SquareOnBoard[] = [];
+    options: Options;
+    khmerChessBoard: KhmerChessBoard;
+    khmerChess: KhmerChess;
     isUpsideDown = false;
-    setProps(khmerChessBoard) {
+    setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.khmerChess = khmerChessBoard.khmerChess;
         this.options = khmerChessBoard.options;
     }
 
-    put(i, squarePiece) {
+    put(i: number, squarePiece: SquareOnBoard) {
         this._squares[i] = squarePiece;
     }
 
-    get(index) {
-        return this._squares.find((square) => {
+    get(index: number) {
+        const filtered = this._squares.filter((square: SquareOnBoard) => {
             return square.index === index;
         });
+        return filtered[0];
     }
 
-    getByIndexCode(code) {
+    getByIndexCode(code: string) {
         const index = boardHelper.indexCodeToPos(code);
         return this.get(index);
     }
 
-    getByXY(x, y) {
+    getByXY(x: number, y: number) {
         const index = boardHelper.nerdXyToPos(x, y);
         return this.get(index);
     }
@@ -143,7 +144,7 @@ class BoardManager {
                     if (s === selectedSquare) {
                         s.unselect();
                     } else {
-                        const pieceMove = new PieceMove(s.piece, selectedSquare.indexCode, s.indexCode);
+                        const pieceMove = new PieceMove(s.piece, selectedSquare.index, s.index);
                         if (this.khmerChess.move(pieceMove.kcMove)) {
                             console.log(selectedSquare.indexCode, 'to', s.indexCode);
                         }
@@ -179,5 +180,3 @@ class BoardManager {
         });
     }
 }
-
-module.exports = { BoardManager };

@@ -1,3 +1,7 @@
+import BoardManager from './BoardManager';
+import GraveyardManager from './GraveyardManager';
+import Options from './Options';
+
 /*
  * Copyright (c) 2021, K4us
  * Author: Raksa Eng <eng.raksa@gmail.com>
@@ -25,23 +29,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const { boardHelper } = require('khmer-chess');
-const { SquareOnBoard } = require('./SquareOnBoard');
-const {
+import { boardHelper } from 'khmer-chess';
+import SquareOnBoard from './SquareOnBoard';
+import {
     TD_GRAVEYARD_NUMBER,
-    TABLE_CLASS
-} = require('./constance');
+    TABLE_CLASS,
+} from './constance';
 
-function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManager, graveyardManager }) {
+type Type = {
+    uniqueClassName: string;
+    options: Options;
+    container: HTMLElement;
+    boardManager: BoardManager;
+    graveyardManager: GraveyardManager;
+};
+export default function drawBoardAndGraveyard({
+    uniqueClassName, options, container, boardManager, graveyardManager }: Type) {
     const {
         width,
         squareWidth,
         graveyardContainerHeight,
         graveyardWidth,
-        graveyardContainerPadding
+        graveyardContainerPadding,
     } = options;
 
     const createTable = (parent = container) => {
@@ -49,17 +58,17 @@ function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManag
         parent.appendChild(table);
         return table;
     };
-    const createTbody = (parent) => {
+    const createTbody = (parent: HTMLTableElement) => {
         const tbody = document.createElement('tbody');
         parent.appendChild(tbody);
         return tbody;
     };
-    const createTr = (parent) => {
+    const createTr = (parent: HTMLTableSectionElement) => {
         const tr = document.createElement('tr');
         parent.appendChild(tr);
         return tr;
     };
-    const createTd = (parent) => {
+    const createTd = (parent: HTMLTableRowElement) => {
         const td = document.createElement('td');
         parent.appendChild(td);
         return td;
@@ -81,26 +90,26 @@ function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManag
     }
 
     const trGraveyardContainer = createTr(tbody);
-    trGraveyardContainer.style.height = graveyardContainerHeight;
+    trGraveyardContainer.style.height = `${graveyardContainerHeight}`;
     const tdGraveyardContainer = createTd(trGraveyardContainer);
     tdGraveyardContainer.classList.add('graveyard');
-    tdGraveyardContainer.addEventListener('mousewheel', function (e) {
+    tdGraveyardContainer.addEventListener('mousewheel', function (e: any) {
         this.scrollLeft -= (e.wheelDelta);
         e.preventDefault();
     }, false);
-    tdGraveyardContainer.style.width = width;
-    tdGraveyardContainer.style.height = graveyardContainerHeight;
+    tdGraveyardContainer.style.width = `${width}`;
+    tdGraveyardContainer.style.height = `${graveyardContainerHeight}`;
     tdGraveyardContainer.style.overflowX = 'scroll';
     tdGraveyardContainer.style.overflowY = 'hidden';
     tdGraveyardContainer.colSpan = 8;
-    tdGraveyardContainer.style.padding = graveyardContainerPadding;
+    tdGraveyardContainer.style.padding = `${graveyardContainerPadding}`;
     tdGraveyardContainer.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
     const tableGraveyard = createTable(tdGraveyardContainer);
-    tableGraveyard.style.width = graveyardWidth;
-    tableGraveyard.style.height = squareWidth;
+    tableGraveyard.style.width = `${graveyardWidth}`;
+    tableGraveyard.style.height = `${squareWidth}`;
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
-    trGraveyard.style.width = graveyardWidth;
+    trGraveyard.style.width = `${graveyardWidth}`;
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
@@ -110,5 +119,3 @@ function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManag
 
     options.boundingTableRect = table.getBoundingClientRect();
 }
-
-module.exports = drawBoardAndGraveyard;

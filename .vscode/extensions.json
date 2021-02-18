@@ -1,11 +1,10 @@
 {
     "recommendations": [
+        "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
         "streetsidesoftware.code-spell-checker",
-        "editorconfig.editorconfig",
         "ritwickdey.liveserver",
-        "wayou.vscode-todo-highlight",
         "mhutchie.git-graph",
-        "oouo-diogo-perdigao.docthis"
+        "wayou.vscode-todo-highlight"
     ]
 }

@@ -25,41 +25,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const { boardHelper } = require('khmer-chess');
-const {
+import { boardHelper, Piece } from 'khmer-chess';
+import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
-    FLIPPED_CLASS
-} = require('./constance');
+    FLIPPED_CLASS,
+} from './constance';
 
-class SquareOnBoard {
+export default class SquareOnBoard {
     _x = 0;
     _y = 0;
-    get x() {
+    get x(): number {
         return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._x - 1 : this._x;
     }
 
-    get y() {
+    get y(): number {
         return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._y - 1 : this._y;
     }
 
-    get index() {
+    get index(): number {
         return boardHelper.nerdXyToPos(this.x, this.y);
     }
 
-    get indexCode() {
+    get indexCode(): string {
         return boardHelper.xyToIndexCode(this.x, this.y);
     }
 
     isGraveyard = false;
-    container = document.createElement('td');
-    piece = null;
+    container: HTMLDivElement = document.createElement('td');
+    piece: Piece = null;
     isUpsideDown = false;
-    constructor(x, y, container, piece, isGraveyard) {
+    constructor(x: number, y: number, container: HTMLDivElement,
+        piece: Piece, isGraveyard = false) {
         this._x = x;
         this._y = y;
         this.container = container;
@@ -78,7 +76,7 @@ class SquareOnBoard {
         return piece;
     }
 
-    setPiece(piece) {
+    setPiece(piece: Piece) {
         this.removePiece();
         this.piece = piece;
         if (this.piece) {
@@ -88,15 +86,15 @@ class SquareOnBoard {
         }
     }
 
-    addClassName(className) {
+    addClassName(className: string) {
         this.container.classList.add(className);
     }
 
-    removeClassName(className) {
+    removeClassName(className: string) {
         this.container.classList.remove(className);
     }
 
-    hasClassName(className) {
+    hasClassName(className: string) {
         return this.container.classList.contains(className);
     }
 
@@ -115,7 +113,7 @@ class SquareOnBoard {
         return this.hasClassName(SELECTED_CLASS_NAME);
     }
 
-    attack(attacked) {
+    attack(attacked: boolean) {
         if (this.piece) {
             this.removeClassName(ATTACKED_ID_NAME);
             if (attacked) {
@@ -131,7 +129,7 @@ class SquareOnBoard {
 
     getProperties() {
         return {
-            className: this.container.className
+            className: this.container.className,
         };
     }
 
@@ -139,11 +137,11 @@ class SquareOnBoard {
         this.container.className = '';
     }
 
-    setProperties(prop) {
+    setProperties(prop: { className: string; }) {
         this.container.className = prop.className;
     }
 
-    setOnClick(listener) {
+    setOnClick(listener: (this: GlobalEventHandlers, ev: MouseEvent) => any) {
         this.container.onclick = listener;
     }
 
@@ -151,7 +149,7 @@ class SquareOnBoard {
         this.container.onclick = null;
     }
 
-    setFlipped(isUpsideDown) {
+    setFlipped(isUpsideDown: boolean) {
         this.removeClassName(FLIPPED_CLASS);
         this.isUpsideDown = isUpsideDown;
         if (isUpsideDown) {
@@ -164,5 +162,3 @@ class SquareOnBoard {
         return new SquareOnBoard(this.x, this.y, div, this.piece);
     }
 }
-
-module.exports = { SquareOnBoard };

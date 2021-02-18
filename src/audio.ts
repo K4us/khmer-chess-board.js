@@ -25,17 +25,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
 const move = require('../public/assets/Move.mp3').default;
 const capture = require('../public/assets/Capture.mp3').default;
 const check = require('../public/assets/Check.mp3').default;
 
-const AUDIO = {
+export default {
     move,
     capture,
-    check
+    check,
 };
-
-module.exports = { AUDIO };

@@ -49,23 +49,21 @@
   ┃ b ┃ h ┃ g ┃ q ┃ g ┃ h ┃ b ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ B ┃ H ┃ G ┃ Q ┃ G ┃ H ┃ B ┃
   ┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛
  */
-'use strict';
-
-const { GraveyardManager } = require('./src/GraveyardManager');
-const config = require('./package.json');
-const khmerChess = require('khmer-chess');
-const { SoundManager } = require('./src/SoundManager');
-const { BoardManager } = require('./src/BoardManager');
-const constance = require('./src/constance');
-const addCss = require('./src/addCss');
-const addCssNote = require('./src/addCssNote');
-const drawBoardAndGraveyard = require('./src/drawBoardAndGraveyard');
-const { Options } = require('./src/Options');
+const config = require('../package.json');
+import GraveyardManager from './GraveyardManager';
+import khmerChess from 'khmer-chess';
+import SoundManager from './SoundManager';
+import BoardManager from './BoardManager';
+import { POPUP_CLASS_NAME } from './constance';
+import addCss from './addCss';
+import addCssNote from './addCssNote';
+import drawBoardAndGraveyard from './drawBoardAndGraveyard';
+import Options from './Options';
 
 const { KhmerChess } = khmerChess;
 
-class KhmerChessBoard {
-    static name = config.name;
+export default class KhmerChessBoard {
+    static title = config.name;
     static version = config.version;
     options = new Options();
     container = document.createElement('div');
@@ -73,7 +71,10 @@ class KhmerChessBoard {
     boardManager = new BoardManager();
     soundManager = new SoundManager();
     khmerChess = new KhmerChess();
-    setOptions(options = {}) {
+    setOptions(options: {
+        container: HTMLDivElement;
+        width: number;
+    }) {
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -94,16 +95,16 @@ class KhmerChessBoard {
         this.render();
     }
 
-    setFullScreen(isFullScreen) {
+    setFullScreen(isFullScreen: boolean) {
         this.options.isFullScreen = isFullScreen;
         const elements = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
-        elements.forEach((element) => {
-            element.classList.remove(constance.POPUP_CLASS_NAME);
-            element.style.top = 0;
-            element.style.left = 0;
+        elements.forEach((element: HTMLTableElement) => {
+            element.classList.remove(POPUP_CLASS_NAME);
+            element.style.top = '0';
+            element.style.left = '0';
             element.style.transform = '';
             if (isFullScreen) {
-                element.classList.add(constance.POPUP_CLASS_NAME);
+                element.classList.add(POPUP_CLASS_NAME);
                 element.style.top = '50%';
                 element.style.left = '50%';
                 element.style.transform = `translate(-50%,-50%) scale(${this.options.scaleFit})`;
@@ -118,7 +119,7 @@ class KhmerChessBoard {
             options: this.options,
             container: this.container,
             boardManager: this.boardManager,
-            graveyardManager: this.graveyardManager
+            graveyardManager: this.graveyardManager,
         });
         this.boardManager.setNote();
         this.graveyardManager.setNote();
@@ -128,15 +129,15 @@ class KhmerChessBoard {
     addAllDomCss() {
         addCss({
             uniqueClassName: this.options.uniqueClassName,
-            options: this.options
+            options: this.options,
         });
         addCssNote({
             uniqueClassName: this.options.uniqueClassName,
-            options: this.options
+            options: this.options,
         });
     }
 
-    loadRen(renStr) {
+    loadRen(renStr: string) {
         this.khmerChess.load(renStr);
         this.applyPieces();
     }
@@ -171,12 +172,7 @@ class KhmerChessBoard {
     }
 }
 
-console.log(KhmerChess.name, KhmerChess.version);
-console.log(KhmerChessBoard.name, KhmerChessBoard.version);
+console.log(KhmerChess.title, KhmerChess.version);
+console.log(KhmerChessBoard.title, KhmerChessBoard.version);
 
-module.exports = {
-    KhmerChessBoard,
-    GraveyardManager,
-    ...khmerChess,
-    ...constance
-};
+(window as any).KhmerChessBoard = KhmerChessBoard;

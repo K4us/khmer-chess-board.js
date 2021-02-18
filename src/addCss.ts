@@ -25,27 +25,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const { boardHelper } = require('khmer-chess');
-const {
+import { boardHelper } from 'khmer-chess';
+import {
     PIECES_SVG,
     svgCSS,
-    WOOD_COLORS
-} = require('./svg');
-const {
+    WOOD_COLORS,
+} from './svg';
+import {
     CSS_TABLE_SELECTOR,
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
     CSS_PSEUDO_HIGHLIGHT,
     CSS_PSEUDO_PIECE,
-    POPUP_CLASS_NAME
-} = require('./constance');
-const appendCss = require('./appendCss');
+    POPUP_CLASS_NAME,
+} from './constance';
+import appendCss from './appendCss';
+import Options from './Options';
 
-function addCss({ uniqueClassName, options }) {
+export default function addCss({ uniqueClassName, options }: { uniqueClassName: string, options: Options }) {
     const { width, squareWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
@@ -141,5 +139,3 @@ function addCss({ uniqueClassName, options }) {
 
     appendCss(uniqueClassName, css);
 }
-
-module.exports = addCss;

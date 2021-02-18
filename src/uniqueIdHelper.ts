@@ -25,41 +25,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const BORDER_WIDTH = 1;
-const MIN_SQUARE_WIDTH = 5;
-const TD_GRAVEYARD_NUMBER = 30;
-const TABLE_CLASS = 'khmer-chess-board';
-const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
-const SELECTED_CLASS_NAME = 'selected';
-const ATTACKED_ID_NAME = 'attacked';
-const PIECE_CLASS_NAME = 'piece';
-const POPUP_CLASS_NAME = 'popup';
-const GRAVEYARD_NOTE_PREFIX_CLASS = 'note-gy';
-const BOARD_NOTE_V_PREFIX_CLASS = 'note-board-v';
-const BOARD_NOTE_H_PREFIX_CLASS = 'note-board-h';
-const FLIPPED_CLASS = 'flipped';
-const CSS_PSEUDO_HIGHLIGHT = '::after';
-const CSS_PSEUDO_PIECE = '';
-const CSS_PSEUDO_NOTE = '::before';
-
-module.exports = {
-    BORDER_WIDTH,
-    MIN_SQUARE_WIDTH,
-    TD_GRAVEYARD_NUMBER,
-    TABLE_CLASS,
-    CSS_TABLE_SELECTOR,
-    SELECTED_CLASS_NAME,
-    PIECE_CLASS_NAME,
-    ATTACKED_ID_NAME,
-    GRAVEYARD_NOTE_PREFIX_CLASS,
-    BOARD_NOTE_V_PREFIX_CLASS,
-    BOARD_NOTE_H_PREFIX_CLASS,
-    FLIPPED_CLASS,
-    CSS_PSEUDO_HIGHLIGHT,
-    CSS_PSEUDO_PIECE,
-    CSS_PSEUDO_NOTE,
-    POPUP_CLASS_NAME
+export function randomString(length = 8) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 };
+
+const _idList: string[] = [];
+export function genId() {
+    let id = randomString(8);
+    while (~_idList.indexOf(id)) {
+        id = randomString(4);
+    }
+    _idList.push(id);
+    return id;
+}

@@ -25,59 +25,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-
-'use strict';
-
-const { KhmerChess } = require('khmer-chess');
-const {
+import { boardHelper } from 'khmer-chess';
+import {
+    BORDER_WIDTH,
+    MIN_SQUARE_WIDTH,
     TD_GRAVEYARD_NUMBER,
-    GRAVEYARD_NOTE_PREFIX_CLASS
-} = require('./constance');
+} from './constance';
+import { genId } from './uniqueIdHelper';
 
-class GraveyardManager {
-    squares = [];
-    khmerChessBoard = null;
-    khmerChess = new KhmerChess();
-    options = {};
-    setProps(khmerChessBoard) {
-        this.khmerChessBoard = khmerChessBoard;
-        this.khmerChess = khmerChessBoard.khmerChess;
-        this.options = khmerChessBoard.options;
+const { ROW_NUMBER } = boardHelper;
+
+export default class Options {
+    _width = 500;
+    isFullScreen = false;
+    boundingTableRect: ClientRect = null;
+    uniqueClassName = `kcb-${genId()}`;
+    get width() {
+        return this._width;
     }
 
-    push(squarePiece) {
-        this.squares.push(squarePiece);
-    }
-
-    get(index) {
-        return this.squares[index];
-    }
-
-    setNote() {
-        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.get(i);
-            square.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
+    get scaleFit() {
+        const btr = this.boundingTableRect;
+        if (this.isFullScreen && btr) {
+            return document.documentElement.clientHeight / btr.height;
         }
+        return 1;
     }
 
-    removePiecesFromSquares() {
-        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.get(i);
-            square.removePiece();
-        }
+    set width(width) {
+        this._width = width;
     }
 
-    applyPiecesFromKhmerChess(pieces) {
-        pieces.forEach((piece, i) => {
-            const square = this.get(i);
-            square.setPiece(piece);
-        });
+    get squareWidth() {
+        const sqWidth = (this.width - (ROW_NUMBER - 1) * this.borderWidth) / ROW_NUMBER;
+        return sqWidth;
     }
 
-    renderKhmerChessPieces() {
-        this.removePiecesFromSquares();
-        this.applyPiecesFromKhmerChess(this.khmerChess.graveyard());
+    get graveyardContainerHeight() {
+        const gyCHeight = this.squareWidth + 10 * this.borderWidth;
+        return gyCHeight;
+    }
+
+    get minWidth() {
+        return (ROW_NUMBER - 1) * this.borderWidth + ROW_NUMBER * MIN_SQUARE_WIDTH;
+    }
+
+    get graveyardWidth() {
+        return this.borderWidth * (TD_GRAVEYARD_NUMBER - 1) + this.squareWidth * TD_GRAVEYARD_NUMBER;
+    }
+
+    get graveyardContainerPadding() {
+        return 8 * this.borderWidth * this.width / 600;
+    }
+
+    get borderWidth() {
+        return this.width * BORDER_WIDTH / this._width;
     }
 }
 
-module.exports = { GraveyardManager };
