@@ -36,23 +36,6 @@ import SquareOnBoard from './SquareOnBoard';
 import Options from './Options';
 import KhmerChessBoard from './KhmerChessboard';
 
-class PieceMove {
-    piece: Piece = null;
-    fromIndex = 0;
-    toIndex = 0;
-    constructor(piece: Piece, fromIndex: number, toIndex: number) {
-        this.piece = piece;
-        this.fromIndex = fromIndex;
-        this.toIndex = toIndex;
-    }
-
-    get kcMove() {
-        return new Move(
-            boardHelper.posToIndexCode(this.fromIndex),
-            boardHelper.posToIndexCode(this.toIndex));
-    }
-}
-
 export default class BoardManager {
     _squares: SquareOnBoard[] = [];
     options: Options;
@@ -144,8 +127,8 @@ export default class BoardManager {
                     if (s === selectedSquare) {
                         s.unselect();
                     } else {
-                        const pieceMove = new PieceMove(s.piece, selectedSquare.index, s.index);
-                        if (this.khmerChess.move(pieceMove.kcMove)) {
+                        const move = new Move(selectedSquare.indexCode, s.indexCode);
+                        if (this.khmerChess.move(move)) {
                             console.log(selectedSquare.indexCode, 'to', s.indexCode);
                         }
                         this.clearSelectedSquares();
