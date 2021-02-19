@@ -1,16 +1,16 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/KhmerChessboard.js",
+  "types": "src/KhmerChessboard.ts",
   "scripts": {
     "start": "webpack serve --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.js",
-    "build:prod": "webpack --config webpack.config.js -p",
     "build:esnext": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
-    "build:all": "npm run build:prod && npm run build:esnext",
+    "build:all": "npm run build && npm run build:esnext",
     "test": "karma start karma.config.js",
     "lint": "eslint . --ext .ts ./src",
     "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts"
