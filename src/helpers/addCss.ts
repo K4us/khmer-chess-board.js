@@ -30,7 +30,7 @@ import {
     PIECES_SVG,
     svgCSS,
     WOOD_COLORS,
-} from './svg';
+} from '../providers/svg';
 import {
     CSS_TABLE_SELECTOR,
     SELECTED_CLASS_NAME,
@@ -39,11 +39,11 @@ import {
     CSS_PSEUDO_HIGHLIGHT,
     CSS_PSEUDO_PIECE,
     POPUP_CLASS_NAME,
-} from './constance';
+} from '../providers/constance';
 import appendCss from './appendCss';
-import Options from './Options';
+import OptionsManager from '../OptionsManager';
 
-export default function addCss({ uniqueClassName, options }: { uniqueClassName: string, options: Options }) {
+export default function addCss({ uniqueClassName, options }: { uniqueClassName: string, options: OptionsManager }) {
     const { width, squareWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
@@ -81,7 +81,7 @@ export default function addCss({ uniqueClassName, options }: { uniqueClassName: 
         }
         ${selector} td {
             user-select: none;
-            border: 1px solid white;
+            border: 1px solid #9e9e9e87;
             padding: 0px;
             margin: 0px;
             max-width: ${squareWidth}px;

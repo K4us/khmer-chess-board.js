@@ -25,11 +25,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import Options from './Options';
+import OptionsManager from '../OptionsManager';
 
 import { boardHelper, HORIZONTAL_NOTE_LETTERS, ROW_NUMBER, VERTICAL_NOTE_LETTERS } from 'khmer-chess';
 import appendCss from './appendCss';
-import { genBackgroundNote } from './svg';
+import { genBackgroundNote } from '../providers/svg';
 import {
     TD_GRAVEYARD_NUMBER,
     CSS_TABLE_SELECTOR,
@@ -38,10 +38,10 @@ import {
     BOARD_NOTE_H_PREFIX_CLASS,
     FLIPPED_CLASS,
     CSS_PSEUDO_NOTE,
-} from './constance';
+} from '../providers/constance';
 
 export default function addCssNote({ uniqueClassName, options }:
-    { uniqueClassName: string, options: Options }) {
+    { uniqueClassName: string, options: OptionsManager }) {
     const { width, squareWidth } = options;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
     let css = '';

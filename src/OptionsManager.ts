@@ -29,11 +29,11 @@ import {
     BORDER_WIDTH,
     MIN_SQUARE_WIDTH,
     TD_GRAVEYARD_NUMBER,
-} from './constance';
-import { genId } from './uniqueIdHelper';
+} from './providers/constance';
+import { genId } from './helpers/uniqueIdHelper';
 import { ROW_NUMBER } from 'khmer-chess';
 
-export default class Options {
+export default class OptionsManager {
     _width = 500;
     isFullScreen = false;
     boundingTableRect: ClientRect = null;

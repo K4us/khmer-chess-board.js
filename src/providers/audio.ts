@@ -25,6 +25,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import KhmerChessBoard from './KhmerChessBoard';
+const move = require('../../public/assets/Move.mp3').default;
+const capture = require('../../public/assets/Capture.mp3').default;
+const check = require('../../public/assets/Check.mp3').default;
 
-(window as any).KhmerChessBoard = KhmerChessBoard;
+export default {
+    move,
+    capture,
+    check,
+};

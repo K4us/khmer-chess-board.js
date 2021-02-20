@@ -28,15 +28,15 @@
 import {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
-} from './constance';
-import SquareOnBoard from './SquareOnBoard';
-import Options from './Options';
+} from './providers/constance';
+import CellManager from './CellManager';
+import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
-import { boardHelper, KhmerChess, Move, ROW_NUMBER } from 'khmer-chess';
+import { boardHelper, KhmerChess, ROW_NUMBER } from 'khmer-chess';
 
 export default class BoardManager {
-    _squares: SquareOnBoard[] = [];
-    options: Options;
+    _squares: CellManager[] = [];
+    options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     isUpsideDown = false;
@@ -46,12 +46,12 @@ export default class BoardManager {
         this.options = khmerChessBoard.options;
     }
 
-    put(i: number, squarePiece: SquareOnBoard) {
+    put(i: number, squarePiece: CellManager) {
         this._squares[i] = squarePiece;
     }
 
     get(index: number) {
-        const filtered = this._squares.filter((square: SquareOnBoard) => {
+        const filtered = this._squares.filter((square: CellManager) => {
             return square.index === index;
         });
         return filtered[0];

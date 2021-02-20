@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import AUDIO from './audio';
+import AUDIO from './providers/audio';
 
 export default class SoundManager {
     static MOVE_FLAG = 'm';

@@ -25,7 +25,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper, PIECE_COLOR_BLACK, PIECE_COLOR_WHITE, PIECE_TYPE_BORK, PIECE_TYPE_KOL, PIECE_TYPE_NEANG, PIECE_TYPE_SDECH, PIECE_TYPE_SES, PIECE_TYPE_TOUK, PIECE_TYPE_TREY } from 'khmer-chess';
+import {
+   PIECE_COLOR_BLACK,
+   PIECE_COLOR_WHITE,
+   PIECE_TYPE_BORK,
+   PIECE_TYPE_KOL,
+   PIECE_TYPE_NEANG,
+   PIECE_TYPE_SDECH,
+   PIECE_TYPE_SES,
+   PIECE_TYPE_TOUK,
+   PIECE_TYPE_TREY,
+} from 'khmer-chess';
 
 export const WOOD_COLORS = {
    WHITE: '#ffffff',

@@ -31,9 +31,9 @@ import {
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
     FLIPPED_CLASS,
-} from './constance';
+} from './providers/constance';
 
-export default class SquareOnBoard {
+export default class CellManager {
     _x = 0;
     _y = 0;
     get x(): number {
@@ -159,6 +159,6 @@ export default class SquareOnBoard {
 
     clone() {
         const div = document.createElement('div');
-        return new SquareOnBoard(this.x, this.y, div, this.piece);
+        return new CellManager(this.x, this.y, div, this.piece);
     }
 }

@@ -29,12 +29,12 @@ import { KhmerChess, Piece } from 'khmer-chess';
 import {
     TD_GRAVEYARD_NUMBER,
     GRAVEYARD_NOTE_PREFIX_CLASS,
-} from './constance';
-import SquareOnBoard from './SquareOnBoard';
+} from './providers/constance';
+import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 
 export default class GraveyardManager {
-    _squares: SquareOnBoard[] = [];
+    _squares: CellManager[] = [];
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     options = {};
@@ -44,7 +44,7 @@ export default class GraveyardManager {
         this.options = khmerChessBoard.options;
     }
 
-    push(squarePiece: SquareOnBoard) {
+    push(squarePiece: CellManager) {
         this._squares.push(squarePiece);
     }
 

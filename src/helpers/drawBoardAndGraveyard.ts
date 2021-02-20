@@ -1,6 +1,6 @@
-import BoardManager from './BoardManager';
-import GraveyardManager from './GraveyardManager';
-import Options from './Options';
+import BoardManager from '../BoardManager';
+import GraveyardManager from '../GraveyardManager';
+import OptionsManager from '../OptionsManager';
 
 /*
  * Copyright (c) 2021, K4us
@@ -30,15 +30,15 @@ import Options from './Options';
  *
  *---------------------------------------------------------------------------- */
 import { boardHelper, ROW_NUMBER } from 'khmer-chess';
-import SquareOnBoard from './SquareOnBoard';
+import CellManager from '../CellManager';
 import {
     TD_GRAVEYARD_NUMBER,
     TABLE_CLASS,
-} from './constance';
+} from '../providers/constance';
 
 type Type = {
     uniqueClassName: string;
-    options: Options;
+    options: OptionsManager;
     container: HTMLElement;
     boardManager: BoardManager;
     graveyardManager: GraveyardManager;
@@ -83,7 +83,7 @@ export default function drawBoardAndGraveyard({
         const tr = createTr(tbody);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const squarePiece = new SquareOnBoard(j, ROW_NUMBER - i - 1, td, null);
+            const squarePiece = new CellManager(j, ROW_NUMBER - i - 1, td, null);
             const index = boardHelper.nerdXyToPos(j, ROW_NUMBER - i - 1);
             boardManager.put(index, squarePiece);
         }
@@ -113,7 +113,7 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const squarePiece = new SquareOnBoard(i, 0, tdGraveyard, null, true);
+        const squarePiece = new CellManager(i, 0, tdGraveyard, null, true);
         graveyardManager.push(squarePiece);
     }
 

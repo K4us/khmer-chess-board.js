@@ -49,22 +49,22 @@
   ┃ b ┃ h ┃ g ┃ q ┃ g ┃ h ┃ b ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ f ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ F ┃ B ┃ H ┃ G ┃ Q ┃ G ┃ H ┃ B ┃
   ┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛
  */
-const config = require('../package.json');
+import config from '../package.json';
 import GraveyardManager from './GraveyardManager';
 import SoundManager from './SoundManager';
 import BoardManager from './BoardManager';
-import { POPUP_CLASS_NAME } from './constance';
-import addCss from './addCss';
-import addCssNote from './addCssNote';
-import drawBoardAndGraveyard from './drawBoardAndGraveyard';
-import Options from './Options';
+import { POPUP_CLASS_NAME } from './providers/constance';
+import addCss from './helpers/addCss';
+import addCssNote from './helpers/addCssNote';
+import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
+import OptionsManager from './OptionsManager';
 import { KhmerChess } from 'khmer-chess';
 
 export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
     container: HTMLDivElement;
-    options: Options;
+    options: OptionsManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
@@ -74,7 +74,7 @@ export default class KhmerChessBoard {
         width: number;
     }) {
 
-        this.options = new Options();
+        this.options = new OptionsManager();
         this.graveyardManager = new GraveyardManager();
         this.boardManager = new BoardManager();
         this.khmerChess = new KhmerChess();
