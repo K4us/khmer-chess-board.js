@@ -25,15 +25,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper } from 'khmer-chess';
 import {
     BORDER_WIDTH,
     MIN_SQUARE_WIDTH,
     TD_GRAVEYARD_NUMBER,
 } from './constance';
 import { genId } from './uniqueIdHelper';
-
-const { ROW_NUMBER } = boardHelper;
+import { ROW_NUMBER } from 'khmer-chess';
 
 export default class Options {
     _width = 500;

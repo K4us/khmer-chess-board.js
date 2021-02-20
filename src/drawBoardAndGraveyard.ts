@@ -29,7 +29,7 @@ import Options from './Options';
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper } from 'khmer-chess';
+import { boardHelper, ROW_NUMBER } from 'khmer-chess';
 import SquareOnBoard from './SquareOnBoard';
 import {
     TD_GRAVEYARD_NUMBER,
@@ -79,12 +79,12 @@ export default function drawBoardAndGraveyard({
     table.classList.add(uniqueClassName);
     const tbody = createTbody(table);
 
-    for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+    for (let i = 0; i < ROW_NUMBER; i++) {
         const tr = createTr(tbody);
-        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+        for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const squarePiece = new SquareOnBoard(j, boardHelper.ROW_NUMBER - i - 1, td, null);
-            const index = boardHelper.nerdXyToPos(j, boardHelper.ROW_NUMBER - i - 1);
+            const squarePiece = new SquareOnBoard(j, ROW_NUMBER - i - 1, td, null);
+            const index = boardHelper.nerdXyToPos(j, ROW_NUMBER - i - 1);
             boardManager.put(index, squarePiece);
         }
     }

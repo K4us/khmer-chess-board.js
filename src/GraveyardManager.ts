@@ -31,7 +31,7 @@ import {
     GRAVEYARD_NOTE_PREFIX_CLASS,
 } from './constance';
 import SquareOnBoard from './SquareOnBoard';
-import KhmerChessBoard from './KhmerChessboard';
+import KhmerChessBoard from './KhmerChessBoard';
 
 export default class GraveyardManager {
     _squares: SquareOnBoard[] = [];

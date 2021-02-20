@@ -51,7 +51,6 @@
  */
 const config = require('../package.json');
 import GraveyardManager from './GraveyardManager';
-import khmerChess from 'khmer-chess';
 import SoundManager from './SoundManager';
 import BoardManager from './BoardManager';
 import { POPUP_CLASS_NAME } from './constance';
@@ -59,22 +58,28 @@ import addCss from './addCss';
 import addCssNote from './addCssNote';
 import drawBoardAndGraveyard from './drawBoardAndGraveyard';
 import Options from './Options';
-
-const { KhmerChess } = khmerChess;
+import { KhmerChess } from 'khmer-chess';
 
 export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
-    options = new Options();
-    container = document.createElement('div');
-    graveyardManager = new GraveyardManager();
-    boardManager = new BoardManager();
-    soundManager = new SoundManager();
-    khmerChess = new KhmerChess();
+    container: HTMLDivElement;
+    options: Options;
+    graveyardManager: GraveyardManager;
+    boardManager: BoardManager;
+    khmerChess: KhmerChess;
+    soundManager: SoundManager;
     setOptions(options: {
         container: HTMLDivElement;
         width: number;
     }) {
+
+        this.options = new Options();
+        this.graveyardManager = new GraveyardManager();
+        this.boardManager = new BoardManager();
+        this.khmerChess = new KhmerChess();
+        this.soundManager = new SoundManager();
+
         if (!options.container) {
             throw new Error('Container is required!');
         }

@@ -1,4 +1,4 @@
-import KhmerChessBoard from './KhmerChessboard';
+import KhmerChessBoard from './KhmerChessBoard';
 
 describe('Greeter', () => {
     it('should greet', () => {

@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper, Piece } from 'khmer-chess';
+import { boardHelper, Piece, ROW_NUMBER } from 'khmer-chess';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -37,11 +37,11 @@ export default class SquareOnBoard {
     _x = 0;
     _y = 0;
     get x(): number {
-        return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._x - 1 : this._x;
+        return this.isUpsideDown ? ROW_NUMBER - this._x - 1 : this._x;
     }
 
     get y(): number {
-        return this.isUpsideDown ? boardHelper.ROW_NUMBER - this._y - 1 : this._y;
+        return this.isUpsideDown ? ROW_NUMBER - this._y - 1 : this._y;
     }
 
     get index(): number {

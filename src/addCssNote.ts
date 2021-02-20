@@ -27,7 +27,7 @@
  *---------------------------------------------------------------------------- */
 import Options from './Options';
 
-import { boardHelper } from 'khmer-chess';
+import { boardHelper, HORIZONTAL_NOTE_LETTERS, ROW_NUMBER, VERTICAL_NOTE_LETTERS } from 'khmer-chess';
 import appendCss from './appendCss';
 import { genBackgroundNote } from './svg';
 import {
@@ -50,7 +50,7 @@ export default function addCssNote({ uniqueClassName, options }:
         const bgImg = genBackgroundNote([{
             x: squareWidth / 2 - squareWidth / 10,
             y: squareWidth,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[i],
+            t: VERTICAL_NOTE_LETTERS[i],
         }], squareWidth, fSize);
         css += `
         ${selector} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
@@ -64,30 +64,30 @@ export default function addCssNote({ uniqueClassName, options }:
     let bgImg = (i: number) => genBackgroundNote([{
         x: hx,
         y: squareWidth,
-        t: boardHelper.HORIZONTAL_NOTE_LETTERS[i],
+        t: HORIZONTAL_NOTE_LETTERS[i],
     }], squareWidth, fSize);
-    for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+    for (let i = 0; i < ROW_NUMBER; i++) {
         css += `
         ${selector} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg(i)};
         }
         ${selector} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
-            background-image: ${bgImg(boardHelper.ROW_NUMBER - i - 1)};
+            background-image: ${bgImg(ROW_NUMBER - i - 1)};
         }
         `;
     }
     bgImg = (i) => genBackgroundNote([{
         x: 0,
         y: vy,
-        t: boardHelper.VERTICAL_NOTE_LETTERS[i],
+        t: VERTICAL_NOTE_LETTERS[i],
     }], squareWidth, fSize);
-    for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+    for (let j = 0; j < ROW_NUMBER; j++) {
         css += `
             ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
                 background-image: ${bgImg(j)};
             }
             ${selector} td.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
-                background-image: ${bgImg(boardHelper.ROW_NUMBER - j - 1)};
+                background-image: ${bgImg(ROW_NUMBER - j - 1)};
             }
             `;
     }
@@ -96,11 +96,11 @@ export default function addCssNote({ uniqueClassName, options }:
         {
             x: hx,
             y: squareWidth,
-            t: boardHelper.HORIZONTAL_NOTE_LETTERS[i],
+            t: HORIZONTAL_NOTE_LETTERS[i],
         }, {
             x: 0,
             y: vy,
-            t: boardHelper.VERTICAL_NOTE_LETTERS[i],
+            t: VERTICAL_NOTE_LETTERS[i],
         },
     ], squareWidth, fSize);
     css += `

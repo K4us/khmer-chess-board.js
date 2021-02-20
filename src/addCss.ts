@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper } from 'khmer-chess';
+import { boardHelper, PIECE_COLOR_BLACK } from 'khmer-chess';
 import {
     PIECES_SVG,
     svgCSS,
@@ -117,7 +117,7 @@ export default function addCss({ uniqueClassName, options }: { uniqueClassName: 
 
     boardHelper.getColorArray().forEach((color) => {
         boardHelper.getPieceCharArray().forEach((type) => {
-            const woodColor = color === boardHelper.PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
+            const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.attacked(woodColor)}</style>
                 ${PIECES_SVG[color + type]}

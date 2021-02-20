@@ -25,6 +25,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import KhmerChessBoard from './KhmerChessboard';
+import KhmerChessBoard from './KhmerChessBoard';
 
 (window as any).KhmerChessBoard = KhmerChessBoard;

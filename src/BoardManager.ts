@@ -25,16 +25,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper } from 'khmer-chess';
-import { KhmerChess, Move } from 'khmer-chess';
 import {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
 } from './constance';
-import { Piece } from 'khmer-chess';
 import SquareOnBoard from './SquareOnBoard';
 import Options from './Options';
-import KhmerChessBoard from './KhmerChessboard';
+import KhmerChessBoard from './KhmerChessBoard';
+import { boardHelper, KhmerChess, Move, ROW_NUMBER } from 'khmer-chess';
 
 export default class BoardManager {
     _squares: SquareOnBoard[] = [];
@@ -127,8 +125,9 @@ export default class BoardManager {
                     if (s === selectedSquare) {
                         s.unselect();
                     } else {
-                        const move = new Move(selectedSquare.indexCode, s.indexCode);
-                        if (this.khmerChess.move(move)) {
+                        // TODO: 
+                        const move = this.khmerChess.move(selectedSquare.index, s.index);
+                        if (move !== null) {
                             console.log(selectedSquare.indexCode, 'to', s.indexCode);
                         }
                         this.clearSelectedSquares();
@@ -141,11 +140,11 @@ export default class BoardManager {
     }
 
     setNote() {
-        for (let i = 0; i < boardHelper.ROW_NUMBER; i++) {
+        for (let i = 0; i < ROW_NUMBER; i++) {
             const square = this.getByXY(i, 0);
             square.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
         }
-        for (let j = 0; j < boardHelper.ROW_NUMBER; j++) {
+        for (let j = 0; j < ROW_NUMBER; j++) {
             const square = this.getByXY(0, j);
             square.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
         }
