@@ -32,7 +32,7 @@ import {
 import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
-import { boardHelper, KhmerChess, ROW_NUMBER } from 'khmer-chess';
+import { KhmerChess, Point, ROW_NUMBER } from 'khmer-chess';
 
 export default class BoardManager {
     _squares: CellManager[] = [];
@@ -52,18 +52,18 @@ export default class BoardManager {
 
     get(index: number) {
         const filtered = this._squares.filter((square: CellManager) => {
-            return square.index === index;
+            return square.point.index === index;
         });
         return filtered[0];
     }
 
-    getByIndexCode(code: string) {
-        const index = boardHelper.indexCodeToPos(code);
+    getByIndexCode(indexCode: string) {
+        const index = Point.indexCodeToIndex(indexCode);
         return this.get(index);
     }
 
     getByXY(x: number, y: number) {
-        const index = boardHelper.nerdXyToPos(x, y);
+        const index = Point.xyToIndex(x, y);
         return this.get(index);
     }
 
@@ -83,11 +83,11 @@ export default class BoardManager {
         this.applyFlippingFlag();
         // restore
         backupPiecesList.forEach((clonedSquare) => {
-            const square = this.getByXY(clonedSquare.x, clonedSquare.y);
+            const square = this.getByXY(clonedSquare.point.x, clonedSquare.point.y);
             square.setPiece(clonedSquare.piece);
         });
         backupSelectedList.forEach((clonedSquare) => {
-            const square = this.getByXY(clonedSquare.x, clonedSquare.y);
+            const square = this.getByXY(clonedSquare.point.x, clonedSquare.point.y);
             square.select();
         });
     }
@@ -126,9 +126,9 @@ export default class BoardManager {
                         s.unselect();
                     } else {
                         // TODO: 
-                        const move = this.khmerChess.move(selectedSquare.index, s.index);
+                        const move = this.khmerChess.move(selectedSquare.point.index, s.point.index);
                         if (move !== null) {
-                            console.log(selectedSquare.indexCode, 'to', s.indexCode);
+                            console.log(selectedSquare.point.indexCode, 'to', s.point.indexCode);
                         }
                         this.clearSelectedSquares();
                     }

@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper, PIECE_COLOR_BLACK } from 'khmer-chess';
+import { Piece, PIECE_COLOR_BLACK } from 'khmer-chess';
 import {
     PIECES_SVG,
     svgCSS,
@@ -43,7 +43,8 @@ import {
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
 
-export default function addCss({ uniqueClassName, options }: { uniqueClassName: string, options: OptionsManager }) {
+export default function addCss({ uniqueClassName, options }:
+    { uniqueClassName: string, options: OptionsManager }) {
     const { width, squareWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
@@ -115,8 +116,8 @@ export default function addCss({ uniqueClassName, options }: { uniqueClassName: 
         background: radial-gradient(#f4d1a6, #e66465) !important;
     }`;
 
-    boardHelper.getColorArray().forEach((color) => {
-        boardHelper.getPieceCharArray().forEach((type) => {
+    Piece.getColorArray().forEach((color) => {
+        Piece.getPieceCharArray().forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.attacked(woodColor)}</style>

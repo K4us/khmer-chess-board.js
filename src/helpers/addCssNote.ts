@@ -27,7 +27,11 @@
  *---------------------------------------------------------------------------- */
 import OptionsManager from '../OptionsManager';
 
-import { boardHelper, HORIZONTAL_NOTE_LETTERS, ROW_NUMBER, VERTICAL_NOTE_LETTERS } from 'khmer-chess';
+import {
+    HORIZONTAL_NOTE_LETTERS,
+    ROW_NUMBER,
+    VERTICAL_NOTE_LETTERS,
+} from 'khmer-chess';
 import appendCss from './appendCss';
 import { genBackgroundNote } from '../providers/svg';
 import {

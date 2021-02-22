@@ -29,7 +29,10 @@ import OptionsManager from '../OptionsManager';
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper, ROW_NUMBER } from 'khmer-chess';
+import {
+    Point,
+    ROW_NUMBER,
+} from 'khmer-chess';
 import CellManager from '../CellManager';
 import {
     TD_GRAVEYARD_NUMBER,
@@ -83,8 +86,8 @@ export default function drawBoardAndGraveyard({
         const tr = createTr(tbody);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const squarePiece = new CellManager(j, ROW_NUMBER - i - 1, td, null);
-            const index = boardHelper.nerdXyToPos(j, ROW_NUMBER - i - 1);
+            const squarePiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
+            const index = Point.xyToIndex(j, ROW_NUMBER - i - 1);
             boardManager.put(index, squarePiece);
         }
     }
@@ -113,7 +116,7 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const squarePiece = new CellManager(i, 0, tdGraveyard, null, true);
+        const squarePiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
         graveyardManager.push(squarePiece);
     }
 

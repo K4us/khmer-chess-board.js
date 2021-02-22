@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { boardHelper, Piece, ROW_NUMBER } from 'khmer-chess';
+import { Point, Piece, ROW_NUMBER } from 'khmer-chess';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -34,32 +34,14 @@ import {
 } from './providers/constance';
 
 export default class CellManager {
-    _x = 0;
-    _y = 0;
-    get x(): number {
-        return this.isUpsideDown ? ROW_NUMBER - this._x - 1 : this._x;
-    }
-
-    get y(): number {
-        return this.isUpsideDown ? ROW_NUMBER - this._y - 1 : this._y;
-    }
-
-    get index(): number {
-        return boardHelper.nerdXyToPos(this.x, this.y);
-    }
-
-    get indexCode(): string {
-        return boardHelper.xyToIndexCode(this.x, this.y);
-    }
-
+    point: Point;
     isGraveyard = false;
     container: HTMLDivElement = document.createElement('td');
     piece: Piece = null;
     isUpsideDown = false;
-    constructor(x: number, y: number, container: HTMLDivElement,
+    constructor(point: Point, container: HTMLDivElement,
         piece: Piece, isGraveyard = false) {
-        this._x = x;
-        this._y = y;
+        this.point = point;
         this.container = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
@@ -159,6 +141,7 @@ export default class CellManager {
 
     clone() {
         const div = document.createElement('div');
-        return new CellManager(this.x, this.y, div, this.piece);
+        return new CellManager(new Point(this.point.x, this.point.y)
+            , div, this.piece);
     }
 }
