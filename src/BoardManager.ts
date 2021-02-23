@@ -127,10 +127,19 @@ export default class BoardManager {
                     } else {
                         // TODO: 
                         const move = this.khmerChess.move(selectedSquare.point.index, s.point.index);
-                        if (move !== null) {
-                            console.log(selectedSquare.point.indexCode, 'to', s.point.indexCode);
-                        }
                         this.clearSelectedSquares();
+                        if (move !== null) {
+                            if (move.captured) {
+                                const fromBSquare = this.get(move.captured.fromBoardPoint.index);
+                                const deadPiece = fromBSquare.removePiece();
+                                const toGYSquare = this.khmerChessBoard.graveyardManager.get(move.captured.toGraveyardPoint.index);
+                                toGYSquare.setPiece(deadPiece);
+                            }
+                            const fromSquare = this.get(move.moveFrom.index);
+                            const piece = fromSquare.removePiece();
+                            const toSquare = this.get(move.moveTo.index);
+                            toSquare.setPiece(piece);
+                        }
                     }
                 } else {
                     s.select();
