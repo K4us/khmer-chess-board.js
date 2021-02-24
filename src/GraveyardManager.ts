@@ -66,8 +66,8 @@ export default class GraveyardManager {
         }
     }
 
-    applyPiecesFromKhmerChess(pieces: Piece[]) {
-        pieces.forEach((piece, i) => {
+    applyPiecesFromKhmerChess() {
+        this.khmerChess.piecesInGraveyard.forEach((piece, i) => {
             const cell = this.get(i);
             cell.setPiece(piece);
         });
@@ -75,6 +75,6 @@ export default class GraveyardManager {
 
     renderKhmerChessPieces() {
         this.removePiecesFromCells();
-        this.applyPiecesFromKhmerChess(this.khmerChess.graveyard());
+        this.applyPiecesFromKhmerChess();
     }
 }

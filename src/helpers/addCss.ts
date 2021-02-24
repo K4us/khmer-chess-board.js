@@ -116,8 +116,8 @@ export default function addCss({ uniqueClassName, options }:
         background: radial-gradient(#f4d1a6, #e66465) !important;
     }`;
 
-    Piece.getColorArray().forEach((color) => {
-        Piece.getPieceCharArray().forEach((type) => {
+    Piece.colorChars.forEach((color) => {
+        Piece.pieceChars.forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.attacked(woodColor)}</style>

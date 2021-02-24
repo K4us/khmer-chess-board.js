@@ -109,16 +109,6 @@ export default class CellManager {
         return this.hasClassName(ATTACKED_ID_NAME);
     }
 
-    getProperties() {
-        return {
-            className: this.container.className,
-        };
-    }
-
-    clear() {
-        this.container.className = '';
-    }
-
     setProperties(prop: { className: string; }) {
         this.container.className = prop.className;
     }

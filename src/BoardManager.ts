@@ -52,7 +52,7 @@ class BoardEventController extends EventHandler {
         });
     }
     attemptMove(fromCell: CellManager, toCell: CellManager) {
-        this._addPropEvent(BoardEventController.ATTEMPT_MOVE    , {
+        this._addPropEvent(BoardEventController.ATTEMPT_MOVE, {
             fromCell,
             toCell,
         });
@@ -93,7 +93,7 @@ export default class BoardManager {
         this._cellManagers.forEach((cell) => {
             return cell.setOnClick(() => {
                 this.boaEventController.click(cell);
-                const selectedList = this.getSelectedCells();
+                const selectedList = this.selectedCells;
                 if (selectedList.length) {
                     const selectedCell = selectedList[0];
                     if (cell === selectedCell) {
@@ -135,7 +135,7 @@ export default class BoardManager {
         const backupPiecesList = this._cellManagers.map((cell) => {
             return cell.clone();
         });
-        const backupSelectedList = this.getSelectedCells().map((cell) => {
+        const backupSelectedList = this.selectedCells.map((cell) => {
             return cell.clone();
         });
         // clear
@@ -154,7 +154,7 @@ export default class BoardManager {
         });
     }
 
-    getSelectedCells() {
+    get selectedCells() {
         return this._cellManagers.filter((cell) => {
             return cell.isSelected();
         });
@@ -191,13 +191,9 @@ export default class BoardManager {
 
     renderKhmerChessPieces() {
         this.removePiecesFromCells();
-        this.khmerChess.board().forEach((arr, i) => {
-            arr.forEach((piece, j) => {
-                const cell = this.getByXY(j, i);
-                if (piece) {
-                    cell.setPiece(piece);
-                }
-            });
+        this.khmerChess.piecesInBoard.forEach((piece, i) => {
+            const cell = this.get(i);
+            cell.setPiece(piece);
         });
     }
     addOnCellClickEventListener(listener: ListenerType<CellManager>) {
