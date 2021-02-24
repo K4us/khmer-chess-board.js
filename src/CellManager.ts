@@ -144,4 +144,8 @@ export default class CellManager {
         return new CellManager(new Point(this.point.x, this.point.y)
             , div, this.piece);
     }
+
+    scrollIntoView() {
+        this.container.scrollIntoView();
+    }
 }

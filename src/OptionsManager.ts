@@ -54,13 +54,13 @@ export default class OptionsManager {
         this._width = width;
     }
 
-    get squareWidth() {
+    get cellWidth() {
         const sqWidth = (this.width - (ROW_NUMBER - 1) * this.borderWidth) / ROW_NUMBER;
         return sqWidth;
     }
 
     get graveyardContainerHeight() {
-        const gyCHeight = this.squareWidth + 10 * this.borderWidth;
+        const gyCHeight = this.cellWidth + 10 * this.borderWidth;
         return gyCHeight;
     }
 
@@ -69,7 +69,7 @@ export default class OptionsManager {
     }
 
     get graveyardWidth() {
-        return this.borderWidth * (TD_GRAVEYARD_NUMBER - 1) + this.squareWidth * TD_GRAVEYARD_NUMBER;
+        return this.borderWidth * (TD_GRAVEYARD_NUMBER - 1) + this.cellWidth * TD_GRAVEYARD_NUMBER;
     }
 
     get graveyardContainerPadding() {

@@ -102,7 +102,7 @@ export default class KhmerChessBoard {
         this.boardManager.enableClick();
         this.boardManager.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
             const move = this.khmerChess.move(fromCell.point.index, toCell.point.index);
-            this.boardManager.clearSelectedSquares();
+            this.boardManager.clearSelectedCells();
             if (move !== null) {
                 this.applyMove(move);
             }
@@ -187,15 +187,18 @@ export default class KhmerChessBoard {
 
     applyMove(move: Move) {
         if (move.captured) {
-            const fromBSquare = this.boardManager.get(move.captured.fromBoardPoint.index);
-            const deadPiece = fromBSquare.removePiece();
-            const toGYSquare = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
-            toGYSquare.setPiece(deadPiece);
+            const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
+            const deadPiece = fromBCell.removePiece();
+            const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
+            toGYCell.setPiece(deadPiece);
+
+            this.soundManager.playCapture();
         }
-        const fromSquare = this.boardManager.get(move.moveFrom.index);
-        const piece = fromSquare.removePiece();
-        const toSquare = this.boardManager.get(move.moveTo.index);
-        toSquare.setPiece(piece);
+        const fromCell = this.boardManager.get(move.moveFrom.index);
+        const piece = fromCell.removePiece();
+        const toCell = this.boardManager.get(move.moveTo.index);
+        toCell.setPiece(piece);
+        this.soundManager.playMove();
     }
 }
 

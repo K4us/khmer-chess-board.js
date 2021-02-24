@@ -93,13 +93,13 @@ export default class BoardManager {
         this._cellManagers.forEach((cell) => {
             return cell.setOnClick(() => {
                 this.boaEventController.click(cell);
-                const selectedList = this.getSelectedSquares();
+                const selectedList = this.getSelectedCells();
                 if (selectedList.length) {
-                    const selectedSquare = selectedList[0];
-                    if (cell === selectedSquare) {
+                    const selectedCell = selectedList[0];
+                    if (cell === selectedCell) {
                         cell.unselect();
                     } else {
-                        this.boaEventController.attemptMove(selectedSquare, cell);
+                        this.boaEventController.attemptMove(selectedCell, cell);
                     }
                 } else {
                     cell.select();
@@ -108,13 +108,13 @@ export default class BoardManager {
         });
     }
 
-    put(i: number, squarePiece: CellManager) {
-        this._cellManagers[i] = squarePiece;
+    put(i: number, cellPiece: CellManager) {
+        this._cellManagers[i] = cellPiece;
     }
 
     get(index: number) {
-        const filtered = this._cellManagers.filter((square: CellManager) => {
-            return square.point.index === index;
+        const filtered = this._cellManagers.filter((cell: CellManager) => {
+            return cell.point.index === index;
         });
         return filtered[0];
     }
@@ -132,70 +132,70 @@ export default class BoardManager {
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
         // backup
-        const backupPiecesList = this._cellManagers.map((square) => {
-            return square.clone();
+        const backupPiecesList = this._cellManagers.map((cell) => {
+            return cell.clone();
         });
-        const backupSelectedList = this.getSelectedSquares().map((square) => {
-            return square.clone();
+        const backupSelectedList = this.getSelectedCells().map((cell) => {
+            return cell.clone();
         });
         // clear
-        this.clearSelectedSquares();
-        this.removePiecesFromSquares();
+        this.clearSelectedCells();
+        this.removePiecesFromCells();
         // flip
         this.applyFlippingFlag();
         // restore
-        backupPiecesList.forEach((clonedSquare) => {
-            const square = this.getByXY(clonedSquare.point.x, clonedSquare.point.y);
-            square.setPiece(clonedSquare.piece);
+        backupPiecesList.forEach((clonedCell) => {
+            const cell = this.getByXY(clonedCell.point.x, clonedCell.point.y);
+            cell.setPiece(clonedCell.piece);
         });
-        backupSelectedList.forEach((clonedSquare) => {
-            const square = this.getByXY(clonedSquare.point.x, clonedSquare.point.y);
-            square.select();
-        });
-    }
-
-    getSelectedSquares() {
-        return this._cellManagers.filter((square) => {
-            return square.isSelected();
+        backupSelectedList.forEach((clonedCell) => {
+            const cell = this.getByXY(clonedCell.point.x, clonedCell.point.y);
+            cell.select();
         });
     }
 
-    clearSelectedSquares() {
+    getSelectedCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.isSelected();
+        });
+    }
+
+    clearSelectedCells() {
         this._cellManagers.forEach((s) => {
             return s.unselect();
         });
     }
 
-    removePiecesFromSquares() {
+    removePiecesFromCells() {
         this._cellManagers.forEach((s) => {
             return s.removePiece();
         });
     }
 
     applyFlippingFlag() {
-        this._cellManagers.forEach((square) => {
-            square.setFlipped(this.isUpsideDown);
+        this._cellManagers.forEach((cell) => {
+            cell.setFlipped(this.isUpsideDown);
         });
     }
 
     setNote() {
         for (let i = 0; i < ROW_NUMBER; i++) {
-            const square = this.getByXY(i, 0);
-            square.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
+            const cell = this.getByXY(i, 0);
+            cell.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
         }
         for (let j = 0; j < ROW_NUMBER; j++) {
-            const square = this.getByXY(0, j);
-            square.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
+            const cell = this.getByXY(0, j);
+            cell.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
         }
     }
 
     renderKhmerChessPieces() {
-        this.removePiecesFromSquares();
+        this.removePiecesFromCells();
         this.khmerChess.board().forEach((arr, i) => {
             arr.forEach((piece, j) => {
-                const square = this.getByXY(j, i);
+                const cell = this.getByXY(j, i);
                 if (piece) {
-                    square.setPiece(piece);
+                    cell.setPiece(piece);
                 }
             });
         });

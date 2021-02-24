@@ -50,7 +50,7 @@ export default function drawBoardAndGraveyard({
     uniqueClassName, options, container, boardManager, graveyardManager }: Type) {
     const {
         width,
-        squareWidth,
+        cellWidth,
         graveyardContainerHeight,
         graveyardWidth,
         graveyardContainerPadding,
@@ -86,9 +86,9 @@ export default function drawBoardAndGraveyard({
         const tr = createTr(tbody);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const squarePiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
+            const cellPiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
             const index = Point.xyToIndex(j, ROW_NUMBER - i - 1);
-            boardManager.put(index, squarePiece);
+            boardManager.put(index, cellPiece);
         }
     }
 
@@ -109,15 +109,15 @@ export default function drawBoardAndGraveyard({
     tdGraveyardContainer.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
     const tableGraveyard = createTable(tdGraveyardContainer);
     tableGraveyard.style.width = `${graveyardWidth}`;
-    tableGraveyard.style.height = `${squareWidth}`;
+    tableGraveyard.style.height = `${cellWidth}`;
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
     trGraveyard.style.width = `${graveyardWidth}`;
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const squarePiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
-        graveyardManager.push(squarePiece);
+        const cellPiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
+        graveyardManager.push(cellPiece);
     }
 
     options.boundingTableRect = table.getBoundingClientRect();

@@ -36,19 +36,6 @@ module.exports = {
     module: {
         rules: [
             /****************
-            * PRE-LOADERS
-            *****************/
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        plugins: ['@babel/plugin-proposal-class-properties']
-                    }
-                }
-            },
-            /****************
             * LOADERS
             *****************/
             {

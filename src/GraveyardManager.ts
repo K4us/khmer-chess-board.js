@@ -34,7 +34,7 @@ import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 
 export default class GraveyardManager {
-    _squares: CellManager[] = [];
+    _cells: CellManager[] = [];
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     options = {};
@@ -44,37 +44,37 @@ export default class GraveyardManager {
         this.options = khmerChessBoard.options;
     }
 
-    push(squarePiece: CellManager) {
-        this._squares.push(squarePiece);
+    push(cellPiece: CellManager) {
+        this._cells.push(cellPiece);
     }
 
     get(index: number) {
-        return this._squares[index];
+        return this._cells[index];
     }
 
     setNote() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.get(i);
-            square.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
+            const cell = this.get(i);
+            cell.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
         }
     }
 
-    removePiecesFromSquares() {
+    removePiecesFromCells() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
-            const square = this.get(i);
-            square.removePiece();
+            const cell = this.get(i);
+            cell.removePiece();
         }
     }
 
     applyPiecesFromKhmerChess(pieces: Piece[]) {
         pieces.forEach((piece, i) => {
-            const square = this.get(i);
-            square.setPiece(piece);
+            const cell = this.get(i);
+            cell.setPiece(piece);
         });
     }
 
     renderKhmerChessPieces() {
-        this.removePiecesFromSquares();
+        this.removePiecesFromCells();
         this.applyPiecesFromKhmerChess(this.khmerChess.graveyard());
     }
 }

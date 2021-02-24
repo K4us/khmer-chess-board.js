@@ -46,16 +46,16 @@ import {
 
 export default function addCssNote({ uniqueClassName, options }:
     { uniqueClassName: string, options: OptionsManager }) {
-    const { width, squareWidth } = options;
+    const { width, cellWidth } = options;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
     let css = '';
     const fSize = 15 * width / 600;
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const bgImg = genBackgroundNote([{
-            x: squareWidth / 2 - squareWidth / 10,
-            y: squareWidth,
+            x: cellWidth / 2 - cellWidth / 10,
+            y: cellWidth,
             t: VERTICAL_NOTE_LETTERS[i],
-        }], squareWidth, fSize);
+        }], cellWidth, fSize);
         css += `
         ${selector} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg};
@@ -63,13 +63,13 @@ export default function addCssNote({ uniqueClassName, options }:
         `;
     }
 
-    const hx = squareWidth / 2 - squareWidth / 10;
-    const vy = squareWidth / 2 + squareWidth / 10;
+    const hx = cellWidth / 2 - cellWidth / 10;
+    const vy = cellWidth / 2 + cellWidth / 10;
     let bgImg = (i: number) => genBackgroundNote([{
         x: hx,
-        y: squareWidth,
+        y: cellWidth,
         t: HORIZONTAL_NOTE_LETTERS[i],
-    }], squareWidth, fSize);
+    }], cellWidth, fSize);
     for (let i = 0; i < ROW_NUMBER; i++) {
         css += `
         ${selector} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
@@ -84,7 +84,7 @@ export default function addCssNote({ uniqueClassName, options }:
         x: 0,
         y: vy,
         t: VERTICAL_NOTE_LETTERS[i],
-    }], squareWidth, fSize);
+    }], cellWidth, fSize);
     for (let j = 0; j < ROW_NUMBER; j++) {
         css += `
             ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
@@ -99,14 +99,14 @@ export default function addCssNote({ uniqueClassName, options }:
     bgImg = (i) => genBackgroundNote([
         {
             x: hx,
-            y: squareWidth,
+            y: cellWidth,
             t: HORIZONTAL_NOTE_LETTERS[i],
         }, {
             x: 0,
             y: vy,
             t: VERTICAL_NOTE_LETTERS[i],
         },
-    ], squareWidth, fSize);
+    ], cellWidth, fSize);
     css += `
     ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
         background-image: ${bgImg(0)};

@@ -45,7 +45,7 @@ import OptionsManager from '../OptionsManager';
 
 export default function addCss({ uniqueClassName, options }:
     { uniqueClassName: string, options: OptionsManager }) {
-    const { width, squareWidth } = options;
+    const { width, cellWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
 
@@ -78,15 +78,15 @@ export default function addCss({ uniqueClassName, options }:
         }
         ${selector} tr {
             width: ${width}px;
-            height: ${squareWidth}px;
+            height: ${cellWidth}px;
         }
         ${selector} td {
             user-select: none;
             border: 1px solid #9e9e9e87;
             padding: 0px;
             margin: 0px;
-            max-width: ${squareWidth}px;
-            max-height: ${squareWidth}px;
+            max-width: ${cellWidth}px;
+            max-height: ${cellWidth}px;
             background-repeat: no-repeat;
             cursor: pointer;
         }
@@ -103,9 +103,9 @@ export default function addCss({ uniqueClassName, options }:
         }
         ${selector} td:not(.graveyard)::before,
         ${selector} td:not(.graveyard)::after {
-            width: ${squareWidth}px;
-            height: ${squareWidth}px;
-            background-size: ${squareWidth}px ${squareWidth}px;
+            width: ${cellWidth}px;
+            height: ${cellWidth}px;
+            background-size: ${cellWidth}px ${cellWidth}px;
             display: block;
             content: ' ';
         }

@@ -439,11 +439,11 @@ type NoteText = {
    y: number,
    t: string
 }
-export function genBackgroundNote(tObjects: Array<NoteText>, squareWidth: number, fSize: number) {
+export function genBackgroundNote(tObjects: Array<NoteText>, cellWidth: number, fSize: number) {
    const text = tObjects.map((obj) => {
       return `<text x='${obj.x}' y='${obj.y}' fill='grey' font-size='${fSize}'>${obj.t}</text>`;
    }).join('');
-   const svg = `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${squareWidth}px' width='${squareWidth}px'>
+   const svg = `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='${cellWidth}px' width='${cellWidth}px'>
       ${text}
    </svg>`;
    return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
