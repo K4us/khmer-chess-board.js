@@ -161,14 +161,20 @@ export default class BoardManager {
     }
 
     clearSelectedCells() {
-        this._cellManagers.forEach((s) => {
-            return s.unselect();
+        this._cellManagers.forEach((cell) => {
+            return cell.unselect();
+        });
+    }
+
+    clearHighlightCells() {
+        this._cellManagers.forEach((cell) => {
+            return cell.clearMovedHighlight();
         });
     }
 
     removePiecesFromCells() {
-        this._cellManagers.forEach((s) => {
-            return s.removePiece();
+        this._cellManagers.forEach((cell) => {
+            return cell.removePiece();
         });
     }
 

@@ -31,6 +31,8 @@ import {
     PIECE_CLASS_NAME,
     ATTACKED_ID_NAME,
     FLIPPED_CLASS,
+    MOVED_CLASS_NAME,
+    CAN_MOVE_CLASS_NAME,
 } from './providers/constance';
 
 export default class CellManager {
@@ -141,5 +143,31 @@ export default class CellManager {
             block: 'end',
             inline: 'nearest',
         });
+    }
+
+    movePieceTo(toCell: CellManager) {
+        const piece = this.removePiece();
+        toCell.setPiece(piece);
+        this.highlightMoved();
+        toCell.highlightMoved();
+    }
+
+    movePieceToGraveyard(toCell: CellManager) {
+        const deadPiece = this.removePiece();
+        toCell.setPiece(deadPiece);
+        toCell.scrollIntoView();
+    }
+
+    highlightMoved() {
+        this.addClassName(MOVED_CLASS_NAME);
+    }
+    clearMovedHighlight() {
+        this.removeClassName(MOVED_CLASS_NAME);
+    }
+    highlightCanMove() {
+        this.addClassName(CAN_MOVE_CLASS_NAME);
+    }
+    clearCanMovedHighlight() {
+        this.removeClassName(CAN_MOVE_CLASS_NAME);
     }
 }

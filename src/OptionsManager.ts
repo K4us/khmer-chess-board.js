@@ -27,7 +27,7 @@
  *---------------------------------------------------------------------------- */
 import {
     BORDER_WIDTH,
-    MIN_SQUARE_WIDTH,
+    MIN_CELL_WIDTH,
     TD_GRAVEYARD_NUMBER,
 } from './providers/constance';
 import { genId } from './helpers/uniqueIdHelper';
@@ -65,7 +65,7 @@ export default class OptionsManager {
     }
 
     get minWidth() {
-        return (ROW_NUMBER - 1) * this.borderWidth + ROW_NUMBER * MIN_SQUARE_WIDTH;
+        return (ROW_NUMBER - 1) * this.borderWidth + ROW_NUMBER * MIN_CELL_WIDTH;
     }
 
     get graveyardWidth() {

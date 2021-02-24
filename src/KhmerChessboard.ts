@@ -186,18 +186,16 @@ export default class KhmerChessBoard {
     }
 
     applyMove(move: Move) {
+        this.boardManager.clearHighlightCells();
         if (move.captured) {
             const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
-            const deadPiece = fromBCell.removePiece();
             const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
-            toGYCell.setPiece(deadPiece);
-            toGYCell.scrollIntoView();
+            fromBCell.movePieceToGraveyard(toGYCell);
             this.soundManager.playCapture();
         }
         const fromCell = this.boardManager.get(move.moveFrom.index);
-        const piece = fromCell.removePiece();
         const toCell = this.boardManager.get(move.moveTo.index);
-        toCell.setPiece(piece);
+        fromCell.movePieceTo(toCell);
         this.soundManager.playMove();
     }
 }

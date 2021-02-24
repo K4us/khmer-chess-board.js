@@ -39,6 +39,8 @@ import {
     CSS_PSEUDO_HIGHLIGHT,
     CSS_PSEUDO_PIECE,
     POPUP_CLASS_NAME,
+    MOVED_CLASS_NAME,
+    CAN_MOVE_CLASS_NAME,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
@@ -110,10 +112,20 @@ export default function addCss({ uniqueClassName, options }:
             content: ' ';
         }
     `;
-
+    // moved cells
+    css += `
+    ${selector} td.${MOVED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+        background: radial-gradient(#c0aeee99, #94e9d788) !important;
+    }`;
+    // selected pice
     css += `
     ${selector} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
-        background: radial-gradient(#f4d1a6, #e66465) !important;
+        background: radial-gradient(#ff00f599, #ef646577) !important;
+    }`;
+    // can move
+    css += `
+    ${selector} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+        background: radial-gradient(#ff00f500, #ff00f588) !important;
     }`;
 
     Piece.colorChars.forEach((color) => {

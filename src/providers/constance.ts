@@ -26,11 +26,13 @@
  *
  *---------------------------------------------------------------------------- */
 export const BORDER_WIDTH = 1;
-export const MIN_SQUARE_WIDTH = 5;
+export const MIN_CELL_WIDTH = 5;
 export const TD_GRAVEYARD_NUMBER = 30;
 export const TABLE_CLASS = 'khmer-chess-board';
 export const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
 export const SELECTED_CLASS_NAME = 'selected';
+export const CAN_MOVE_CLASS_NAME = 'can-move';
+export const MOVED_CLASS_NAME = 'moved';
 export const ATTACKED_ID_NAME = 'attacked';
 export const PIECE_CLASS_NAME = 'piece';
 export const POPUP_CLASS_NAME = 'popup';
