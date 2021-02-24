@@ -89,12 +89,20 @@ export default class CellManager {
         return this.piece;
     }
 
-    unselect() {
+    deselect() {
         this.removeClassName(SELECTED_CLASS_NAME);
     }
 
-    isSelected() {
+    get isSelected() {
         return this.hasClassName(SELECTED_CLASS_NAME);
+    }
+
+    get isCanMove() {
+        return this.hasClassName(CAN_MOVE_CLASS_NAME);
+    }
+
+    get isMoved() {
+        return this.hasClassName(MOVED_CLASS_NAME);
     }
 
     attack(attacked: boolean) {
@@ -107,7 +115,7 @@ export default class CellManager {
         return this.piece;
     }
 
-    isAttacked() {
+    get isAttacked() {
         return this.hasClassName(ATTACKED_ID_NAME);
     }
 
@@ -148,8 +156,8 @@ export default class CellManager {
     movePieceTo(toCell: CellManager) {
         const piece = this.removePiece();
         toCell.setPiece(piece);
-        this.highlightMoved();
-        toCell.highlightMoved();
+        this.moved();
+        toCell.moved();
     }
 
     movePieceToGraveyard(toCell: CellManager) {
@@ -158,16 +166,16 @@ export default class CellManager {
         toCell.scrollIntoView();
     }
 
-    highlightMoved() {
+    moved() {
         this.addClassName(MOVED_CLASS_NAME);
     }
-    clearMovedHighlight() {
+    clearMoved() {
         this.removeClassName(MOVED_CLASS_NAME);
     }
-    highlightCanMove() {
+    setCanMove() {
         this.addClassName(CAN_MOVE_CLASS_NAME);
     }
-    clearCanMovedHighlight() {
+    clearCanMoved() {
         this.removeClassName(CAN_MOVE_CLASS_NAME);
     }
 }

@@ -42,14 +42,26 @@ import {
 
 class BoardEventController extends EventHandler {
     static CLICK = 'click';
+    static SELECTED = 'selected';
+    static DESELECTED = 'deselected';
     static ATTEMPT_MOVE = 'attempt-move';
     constructor() {
         super({
             events: {
                 CLICK: BoardEventController.CLICK,
+                SELECTED: BoardEventController.SELECTED,
                 ATTEMPT_MOVE: BoardEventController.ATTEMPT_MOVE,
             },
         });
+    }
+    click(cellManager: CellManager) {
+        this._addPropEvent(BoardEventController.CLICK, cellManager);
+    }
+    selected(cellManager: CellManager) {
+        this._addPropEvent(BoardEventController.SELECTED, cellManager);
+    }
+    deselected(cellManager: CellManager) {
+        this._addPropEvent(BoardEventController.DESELECTED, cellManager);
     }
     attemptMove(fromCell: CellManager, toCell: CellManager) {
         this._addPropEvent(BoardEventController.ATTEMPT_MOVE, {
@@ -57,14 +69,23 @@ class BoardEventController extends EventHandler {
             toCell,
         });
     }
-    click(cellManager: CellManager) {
-        this._addPropEvent(BoardEventController.CLICK, cellManager);
-    }
     addOnCellClickEventListener(listener: ListenerType<CellManager>) {
         this._addOnEventListener(BoardEventController.CLICK, listener);
     }
     removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
         this._removeOnEventListener(BoardEventController.CLICK, listener);
+    }
+    addOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+        this._addOnEventListener(BoardEventController.SELECTED, listener);
+    }
+    removeOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+        this._removeOnEventListener(BoardEventController.SELECTED, listener);
+    }
+    addOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+        this._addOnEventListener(BoardEventController.DESELECTED, listener);
+    }
+    removeOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+        this._removeOnEventListener(BoardEventController.DESELECTED, listener);
     }
     addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
         this._addOnEventListener(BoardEventController.ATTEMPT_MOVE, listener);
@@ -97,12 +118,14 @@ export default class BoardManager {
                 if (selectedList.length) {
                     const selectedCell = selectedList[0];
                     if (cell === selectedCell) {
-                        cell.unselect();
+                        cell.deselect();
+                        this.boaEventController.deselected(selectedCell);
                     } else {
                         this.boaEventController.attemptMove(selectedCell, cell);
                     }
                 } else {
                     cell.select();
+                    this.boaEventController.selected(cell);
                 }
             });
         });
@@ -156,25 +179,41 @@ export default class BoardManager {
 
     get selectedCells() {
         return this._cellManagers.filter((cell) => {
-            return cell.isSelected();
+            return cell.isSelected;
+        });
+    }
+    get canMoveCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.isCanMove;
+        });
+    }
+    get movedCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.isMoved;
         });
     }
 
     clearSelectedCells() {
-        this._cellManagers.forEach((cell) => {
-            return cell.unselect();
+        this.selectedCells.forEach((cell) => {
+            cell.deselect();
+            this.boaEventController.deselected(cell);
+        });
+    }
+    clearCanMoveCells() {
+        this.canMoveCells.forEach((cell) => {
+            cell.clearCanMoved();
         });
     }
 
-    clearHighlightCells() {
-        this._cellManagers.forEach((cell) => {
-            return cell.clearMovedHighlight();
+    clearMovedCells() {
+        this.movedCells.forEach((cell) => {
+            cell.clearMoved();
         });
     }
 
     removePiecesFromCells() {
         this._cellManagers.forEach((cell) => {
-            return cell.removePiece();
+            cell.removePiece();
         });
     }
 
@@ -207,6 +246,18 @@ export default class BoardManager {
     }
     removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
         this.boaEventController.removeOnCellClickEventListener(listener);
+    }
+    addOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.addOnCellSelectedEventListener(listener);
+    }
+    removeOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.removeOnCellSelectedEventListener(listener);
+    }
+    addOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.addOnCellDeselectedEventListener(listener);
+    }
+    removeOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.removeOnCellDeselectedEventListener(listener);
     }
     addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
         this.boaEventController.addOnAttemptMoveEventListener(listener);

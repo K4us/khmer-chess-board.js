@@ -120,7 +120,7 @@ export default function addCss({ uniqueClassName, options }:
     // selected pice
     css += `
     ${selector} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
-        background: radial-gradient(#ff00f599, #ef646577) !important;
+        background: radial-gradient(#ff00f577, #ef646577) !important;
     }`;
     // can move
     css += `

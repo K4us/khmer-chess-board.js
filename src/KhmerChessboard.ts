@@ -100,6 +100,16 @@ export default class KhmerChessBoard {
         this.render();
 
         this.boardManager.enableClick();
+        this.boardManager.addOnCellSelectedEventListener((cell) => {
+            const points = this.khmerChess.getCanMovePointsByPoint(cell.point);
+            points.forEach((point) => {
+                const cell = this.boardManager.get(point.index);
+                cell.setCanMove();
+            });
+        });
+        this.boardManager.addOnCellDeselectedEventListener((cell) => {
+            this.boardManager.clearCanMoveCells();
+        });
         this.boardManager.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
             const move = this.khmerChess.move(fromCell.point.index, toCell.point.index);
             this.boardManager.clearSelectedCells();
@@ -186,7 +196,7 @@ export default class KhmerChessBoard {
     }
 
     applyMove(move: Move) {
-        this.boardManager.clearHighlightCells();
+        this.boardManager.clearMovedCells();
         if (move.captured) {
             const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
             const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
