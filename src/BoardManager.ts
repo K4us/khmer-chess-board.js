@@ -32,26 +32,88 @@ import {
 import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
-import { KhmerChess, Point, ROW_NUMBER } from 'khmer-chess';
+import {
+    KhmerChess,
+    Point,
+    ROW_NUMBER,
+    ListenerType,
+    EventHandler,
+} from 'khmer-chess';
+
+class BoardEventController extends EventHandler {
+    static CLICK = 'click';
+    static ATTEMPT_MOVE = 'attempt-move';
+    constructor() {
+        super({
+            events: {
+                CLICK: BoardEventController.CLICK,
+                ATTEMPT_MOVE: BoardEventController.ATTEMPT_MOVE,
+            },
+        });
+    }
+    attemptMove(fromCell: CellManager, toCell: CellManager) {
+        this._addPropEvent(BoardEventController.ATTEMPT_MOVE    , {
+            fromCell,
+            toCell,
+        });
+    }
+    click(cellManager: CellManager) {
+        this._addPropEvent(BoardEventController.CLICK, cellManager);
+    }
+    addOnCellClickEventListener(listener: ListenerType<CellManager>) {
+        this._addOnEventListener(BoardEventController.CLICK, listener);
+    }
+    removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
+        this._removeOnEventListener(BoardEventController.CLICK, listener);
+    }
+    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+        this._addOnEventListener(BoardEventController.ATTEMPT_MOVE, listener);
+    }
+    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+        this._removeOnEventListener(BoardEventController.ATTEMPT_MOVE, listener);
+    }
+}
 
 export default class BoardManager {
-    _squares: CellManager[] = [];
+    _cellManagers: CellManager[] = [];
     options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     isUpsideDown = false;
+    boaEventController: BoardEventController;
+    constructor() {
+        this.boaEventController = new BoardEventController();
+    }
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.khmerChess = khmerChessBoard.khmerChess;
         this.options = khmerChessBoard.options;
     }
+    enableClick() {
+        this._cellManagers.forEach((cell) => {
+            return cell.setOnClick(() => {
+                this.boaEventController.click(cell);
+                const selectedList = this.getSelectedSquares();
+                if (selectedList.length) {
+                    const selectedSquare = selectedList[0];
+                    if (cell === selectedSquare) {
+                        cell.unselect();
+                    } else {
+                        this.boaEventController.attemptMove(selectedSquare, cell);
+                    }
+                } else {
+                    cell.select();
+                }
+            });
+        });
+    }
 
     put(i: number, squarePiece: CellManager) {
-        this._squares[i] = squarePiece;
+        this._cellManagers[i] = squarePiece;
     }
 
     get(index: number) {
-        const filtered = this._squares.filter((square: CellManager) => {
+        const filtered = this._cellManagers.filter((square: CellManager) => {
             return square.point.index === index;
         });
         return filtered[0];
@@ -70,7 +132,7 @@ export default class BoardManager {
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
         // backup
-        const backupPiecesList = this._squares.map((square) => {
+        const backupPiecesList = this._cellManagers.map((square) => {
             return square.clone();
         });
         const backupSelectedList = this.getSelectedSquares().map((square) => {
@@ -93,58 +155,26 @@ export default class BoardManager {
     }
 
     getSelectedSquares() {
-        return this._squares.filter((square) => {
+        return this._cellManagers.filter((square) => {
             return square.isSelected();
         });
     }
 
     clearSelectedSquares() {
-        this._squares.forEach((s) => {
+        this._cellManagers.forEach((s) => {
             return s.unselect();
         });
     }
 
     removePiecesFromSquares() {
-        this._squares.forEach((s) => {
+        this._cellManagers.forEach((s) => {
             return s.removePiece();
         });
     }
 
     applyFlippingFlag() {
-        this._squares.forEach((square) => {
+        this._cellManagers.forEach((square) => {
             square.setFlipped(this.isUpsideDown);
-        });
-    }
-
-    enableSelect() {
-        this._squares.forEach((s) => {
-            return s.setOnClick(() => {
-                const selectedList = this.getSelectedSquares();
-                if (selectedList.length) {
-                    const selectedSquare = selectedList[0];
-                    if (s === selectedSquare) {
-                        s.unselect();
-                    } else {
-                        // TODO: 
-                        const move = this.khmerChess.move(selectedSquare.point.index, s.point.index);
-                        this.clearSelectedSquares();
-                        if (move !== null) {
-                            if (move.captured) {
-                                const fromBSquare = this.get(move.captured.fromBoardPoint.index);
-                                const deadPiece = fromBSquare.removePiece();
-                                const toGYSquare = this.khmerChessBoard.graveyardManager.get(move.captured.toGraveyardPoint.index);
-                                toGYSquare.setPiece(deadPiece);
-                            }
-                            const fromSquare = this.get(move.moveFrom.index);
-                            const piece = fromSquare.removePiece();
-                            const toSquare = this.get(move.moveTo.index);
-                            toSquare.setPiece(piece);
-                        }
-                    }
-                } else {
-                    s.select();
-                }
-            });
         });
     }
 
@@ -169,5 +199,17 @@ export default class BoardManager {
                 }
             });
         });
+    }
+    addOnCellClickEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.addOnCellClickEventListener(listener);
+    }
+    removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
+        this.boaEventController.removeOnCellClickEventListener(listener);
+    }
+    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+        this.boaEventController.addOnAttemptMoveEventListener(listener);
+    }
+    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+        this.boaEventController.removeOnAttemptMoveEventListener(listener);
     }
 }

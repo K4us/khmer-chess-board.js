@@ -58,7 +58,7 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import { KhmerChess } from 'khmer-chess';
+import { KhmerChess, Move } from 'khmer-chess';
 
 export default class KhmerChessBoard {
     static title = config.name;
@@ -98,6 +98,15 @@ export default class KhmerChessBoard {
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
         this.render();
+
+        this.boardManager.enableClick();
+        this.boardManager.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
+            const move = this.khmerChess.move(fromCell.point.index, toCell.point.index);
+            this.boardManager.clearSelectedSquares();
+            if (move !== null) {
+                this.applyMove(move);
+            }
+        });
     }
 
     setFullScreen(isFullScreen: boolean) {
@@ -174,6 +183,19 @@ export default class KhmerChessBoard {
         this.boardManager = null;
         this.soundManager = null;
         this.khmerChess = null;
+    }
+
+    applyMove(move: Move) {
+        if (move.captured) {
+            const fromBSquare = this.boardManager.get(move.captured.fromBoardPoint.index);
+            const deadPiece = fromBSquare.removePiece();
+            const toGYSquare = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
+            toGYSquare.setPiece(deadPiece);
+        }
+        const fromSquare = this.boardManager.get(move.moveFrom.index);
+        const piece = fromSquare.removePiece();
+        const toSquare = this.boardManager.get(move.moveTo.index);
+        toSquare.setPiece(piece);
     }
 }
 

@@ -32,7 +32,7 @@
     "Board"
   ],
   "dependencies": {
-    "khmer-chess": "^1.0.18"
+    "khmer-chess": "^1.0.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
