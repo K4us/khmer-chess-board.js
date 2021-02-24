@@ -146,6 +146,10 @@ export default class CellManager {
     }
 
     scrollIntoView() {
-        this.container.scrollIntoView();
+        this.container.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+            inline: 'nearest',
+        });
     }
 }

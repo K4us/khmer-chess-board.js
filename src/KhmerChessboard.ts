@@ -191,7 +191,7 @@ export default class KhmerChessBoard {
             const deadPiece = fromBCell.removePiece();
             const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
             toGYCell.setPiece(deadPiece);
-
+            toGYCell.scrollIntoView();
             this.soundManager.playCapture();
         }
         const fromCell = this.boardManager.get(move.moveFrom.index);
