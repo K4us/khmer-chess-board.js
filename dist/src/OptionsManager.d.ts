@@ -5,7 +5,7 @@ export default class OptionsManager {
     uniqueClassName: string;
     width: number;
     readonly scaleFit: number;
-    readonly squareWidth: number;
+    readonly cellWidth: number;
     readonly graveyardContainerHeight: number;
     readonly minWidth: number;
     readonly graveyardWidth: number;

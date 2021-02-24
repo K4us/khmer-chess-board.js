@@ -1,16 +1,16 @@
-import { KhmerChess, Piece } from 'khmer-chess';
+import { KhmerChess } from 'khmer-chess';
 import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 export default class GraveyardManager {
-    _squares: CellManager[];
+    _cells: CellManager[];
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     options: {};
     setProps(khmerChessBoard: KhmerChessBoard): void;
-    push(squarePiece: CellManager): void;
+    push(cellPiece: CellManager): void;
     get(index: number): CellManager;
     setNote(): void;
-    removePiecesFromSquares(): void;
-    applyPiecesFromKhmerChess(pieces: Piece[]): void;
+    removePiecesFromCells(): void;
+    applyPiecesFromKhmerChess(): void;
     renderKhmerChessPieces(): void;
 }

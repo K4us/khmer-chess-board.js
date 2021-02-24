@@ -12,14 +12,12 @@ export default class CellManager {
     removeClassName(className: string): void;
     hasClassName(className: string): boolean;
     select(): Piece;
-    unselect(): void;
-    isSelected(): boolean;
+    deselect(): void;
+    readonly isSelected: boolean;
+    readonly isCanMove: boolean;
+    readonly isMoved: boolean;
     attack(attacked: boolean): Piece;
-    isAttacked(): boolean;
-    getProperties(): {
-        className: string;
-    };
-    clear(): void;
+    readonly isAttacked: boolean;
     setProperties(prop: {
         className: string;
     }): void;
@@ -27,4 +25,11 @@ export default class CellManager {
     removeOnClick(): void;
     setFlipped(isUpsideDown: boolean): void;
     clone(): CellManager;
+    scrollIntoView(): void;
+    movePieceTo(toCell: CellManager): void;
+    movePieceToGraveyard(toCell: CellManager): void;
+    moved(): void;
+    clearMoved(): void;
+    setCanMove(): void;
+    clearCanMoved(): void;
 }

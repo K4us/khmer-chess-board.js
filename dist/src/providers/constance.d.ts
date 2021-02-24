@@ -1,9 +1,11 @@
 export declare const BORDER_WIDTH = 1;
-export declare const MIN_SQUARE_WIDTH = 5;
+export declare const MIN_CELL_WIDTH = 5;
 export declare const TD_GRAVEYARD_NUMBER = 30;
 export declare const TABLE_CLASS = "khmer-chess-board";
 export declare const CSS_TABLE_SELECTOR: string;
 export declare const SELECTED_CLASS_NAME = "selected";
+export declare const CAN_MOVE_CLASS_NAME = "can-move";
+export declare const MOVED_CLASS_NAME = "moved";
 export declare const ATTACKED_ID_NAME = "attacked";
 export declare const PIECE_CLASS_NAME = "piece";
 export declare const POPUP_CLASS_NAME = "popup";

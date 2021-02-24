@@ -14,5 +14,5 @@ declare type NoteText = {
     y: number;
     t: string;
 };
-export declare function genBackgroundNote(tObjects: Array<NoteText>, squareWidth: number, fSize: number): string;
+export declare function genBackgroundNote(tObjects: Array<NoteText>, cellWidth: number, fSize: number): string;
 export {};
