@@ -37,63 +37,8 @@ import {
     Point,
     ROW_NUMBER,
     ListenerType,
-    EventHandler,
 } from 'khmer-chess';
-
-class BoardEventController extends EventHandler {
-    static CLICK = 'click';
-    static SELECTED = 'selected';
-    static DESELECTED = 'deselected';
-    static ATTEMPT_MOVE = 'attempt-move';
-    constructor() {
-        super({
-            events: {
-                CLICK: BoardEventController.CLICK,
-                SELECTED: BoardEventController.SELECTED,
-                ATTEMPT_MOVE: BoardEventController.ATTEMPT_MOVE,
-            },
-        });
-    }
-    click(cellManager: CellManager) {
-        this._addPropEvent(BoardEventController.CLICK, cellManager);
-    }
-    selected(cellManager: CellManager) {
-        this._addPropEvent(BoardEventController.SELECTED, cellManager);
-    }
-    deselected(cellManager: CellManager) {
-        this._addPropEvent(BoardEventController.DESELECTED, cellManager);
-    }
-    attemptMove(fromCell: CellManager, toCell: CellManager) {
-        this._addPropEvent(BoardEventController.ATTEMPT_MOVE, {
-            fromCell,
-            toCell,
-        });
-    }
-    addOnCellClickEventListener(listener: ListenerType<CellManager>) {
-        this._addOnEventListener(BoardEventController.CLICK, listener);
-    }
-    removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
-        this._removeOnEventListener(BoardEventController.CLICK, listener);
-    }
-    addOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
-        this._addOnEventListener(BoardEventController.SELECTED, listener);
-    }
-    removeOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
-        this._removeOnEventListener(BoardEventController.SELECTED, listener);
-    }
-    addOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
-        this._addOnEventListener(BoardEventController.DESELECTED, listener);
-    }
-    removeOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
-        this._removeOnEventListener(BoardEventController.DESELECTED, listener);
-    }
-    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
-        this._addOnEventListener(BoardEventController.ATTEMPT_MOVE, listener);
-    }
-    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
-        this._removeOnEventListener(BoardEventController.ATTEMPT_MOVE, listener);
-    }
-}
+import BoardManagerEventController from './BoardManagerEventController';
 
 export default class BoardManager {
     _cellManagers: CellManager[] = [];
@@ -101,9 +46,9 @@ export default class BoardManager {
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     isUpsideDown = false;
-    boaEventController: BoardEventController;
+    boaEventController: BoardManagerEventController;
     constructor() {
-        this.boaEventController = new BoardEventController();
+        this.boaEventController = new BoardManagerEventController();
     }
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
@@ -138,6 +83,12 @@ export default class BoardManager {
     get(index: number) {
         const filtered = this._cellManagers.filter((cell: CellManager) => {
             return cell.point.index === index;
+        });
+        return filtered[0];
+    }
+    getKing(color: string) {
+        const filtered = this._cellManagers.filter((cell: CellManager) => {
+            return cell.piece && cell.piece.isTypeKing && cell.piece.color === color;
         });
         return filtered[0];
     }
@@ -208,6 +159,12 @@ export default class BoardManager {
     clearMovedCells() {
         this.movedCells.forEach((cell) => {
             cell.clearMoved();
+        });
+    }
+
+    clearAttackCells() {
+        this.movedCells.forEach((cell) => {
+            cell.attack(false);
         });
     }
 

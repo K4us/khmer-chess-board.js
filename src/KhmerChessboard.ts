@@ -58,7 +58,7 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import { KhmerChess, Move } from 'khmer-chess';
+import { BoardEvent, KhmerChess, Move } from 'khmer-chess';
 
 export default class KhmerChessBoard {
     static title = config.name;
@@ -115,6 +115,14 @@ export default class KhmerChessBoard {
             this.boardManager.clearSelectedCells();
             if (move !== null) {
                 this.applyMove(move);
+            }
+        });
+        this.khmerChess.addBoardEventListener((boardEvent: BoardEvent) => {
+            if (boardEvent.isAttack) {
+                const cell = this.boardManager.get(boardEvent.actorPieceIndex.point.index);
+                cell.attack(true);
+                const king = this.boardManager.getKing(cell.piece.colorOpponent);
+                king.attack(true);
             }
         });
     }
@@ -197,6 +205,7 @@ export default class KhmerChessBoard {
 
     applyMove(move: Move) {
         this.boardManager.clearMovedCells();
+        this.boardManager.clearAttackCells();
         if (move.captured) {
             const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
             const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
@@ -207,6 +216,7 @@ export default class KhmerChessBoard {
         const toCell = this.boardManager.get(move.moveTo.index);
         fromCell.movePieceTo(toCell);
         this.soundManager.playMove();
+        this.khmerChess.checkBoardEvent();
     }
 }
 
