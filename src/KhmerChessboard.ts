@@ -123,6 +123,10 @@ export default class KhmerChessBoard {
                 cell.attack(true);
                 const king = this.boardManager.getKing(cell.piece.colorOpponent);
                 king.attack(true);
+            } else if (boardEvent.isWin) {
+                const cell = this.boardManager.get(boardEvent.actorPieceIndex.point.index);
+                const king = this.boardManager.getKing(cell.piece.color);
+                console.log(`${king.piece.title} wins`);
             }
         });
     }

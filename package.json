@@ -1,6 +1,6 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/KhmerChessboard.js",
   "types": "src/KhmerChessboard.ts",
@@ -32,7 +32,7 @@
     "Board"
   ],
   "dependencies": {
-    "khmer-chess": "^1.0.23"
+    "khmer-chess": "^1.0.25"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

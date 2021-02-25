@@ -143,6 +143,11 @@ export default class BoardManager {
             return cell.isMoved;
         });
     }
+    get attackedCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.isAttacked;
+        });
+    }
 
     clearSelectedCells() {
         this.selectedCells.forEach((cell) => {
@@ -163,7 +168,7 @@ export default class BoardManager {
     }
 
     clearAttackCells() {
-        this.movedCells.forEach((cell) => {
+        this.attackedCells.forEach((cell) => {
             cell.attack(false);
         });
     }
