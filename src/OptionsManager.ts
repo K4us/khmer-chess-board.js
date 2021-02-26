@@ -36,16 +36,22 @@ import { ROW_NUMBER } from 'khmer-chess';
 export default class OptionsManager {
     _width = 500;
     isFullScreen = false;
-    boundingTableRect: ClientRect = null;
-    uniqueClassName = `kcb-${genId()}`;
+    uniqueClassName = '';
+    constructor() {
+        this.uniqueClassName = `kcb-${genId()}`;
+    }
     get width() {
         return this._width;
     }
 
-    get scaleFit() {
-        const btr = this.boundingTableRect;
+    getScaleFit(btr: ClientRect) {
         if (this.isFullScreen && btr) {
-            return document.documentElement.clientHeight / btr.height;
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            if (vw < vh) {
+                return vw / btr.width;
+            }
+            return vh / btr.height;
         }
         return 1;
     }

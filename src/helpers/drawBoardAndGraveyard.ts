@@ -93,7 +93,9 @@ export default function drawBoardAndGraveyard({
     }
 
     const trGraveyardContainer = createTr(tbody);
+    trGraveyardContainer.classList.add('tr-graveyard');
     trGraveyardContainer.style.height = `${graveyardContainerHeight}`;
+
     const tdGraveyardContainer = createTd(trGraveyardContainer);
     tdGraveyardContainer.classList.add('graveyard');
     tdGraveyardContainer.addEventListener('mousewheel', function (e: any) {
@@ -121,6 +123,4 @@ export default function drawBoardAndGraveyard({
         const cellPiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
         graveyardManager.push(cellPiece);
     }
-
-    options.boundingTableRect = table.getBoundingClientRect();
 }

@@ -133,17 +133,28 @@ export default class KhmerChessBoard {
 
     setFullScreen(isFullScreen: boolean) {
         this.options.isFullScreen = isFullScreen;
-        const elements = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
-        elements.forEach((element: HTMLTableElement) => {
-            element.classList.remove(POPUP_CLASS_NAME);
-            element.style.top = '0';
-            element.style.left = '0';
-            element.style.transform = '';
+        const tables = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
+        tables.forEach((table: HTMLTableElement) => {
+            const trGraveyards = table.querySelectorAll('tr.tr-graveyard');
+            trGraveyards.forEach((trGraveyard: HTMLTableRowElement) => {
+                trGraveyard.style.display = '';
+            });
+            table.classList.remove(POPUP_CLASS_NAME);
+            table.style.top = '0';
+            table.style.left = '0';
+            table.style.transform = '';
+            table.style.zIndex = null;
+
             if (isFullScreen) {
-                element.classList.add(POPUP_CLASS_NAME);
-                element.style.top = '50%';
-                element.style.left = '50%';
-                element.style.transform = `translate(-50%,-50%) scale(${this.options.scaleFit})`;
+                trGraveyards.forEach((trGraveyard: HTMLTableRowElement) => {
+                    trGraveyard.style.display = 'none';
+                });
+                table.classList.add(POPUP_CLASS_NAME);
+                table.style.top = '50%';
+                table.style.left = '50%';
+                const scaleFit = this.options.getScaleFit(table.getBoundingClientRect());
+                table.style.transform = `translate(-50%,-50%) scale(${scaleFit})`;
+                table.style.zIndex = '9999';
             }
         });
     }
