@@ -100,16 +100,18 @@ export default function drawBoardAndGraveyard({
         this.scrollLeft -= (e.wheelDelta);
         e.preventDefault();
     }, false);
-    tdGraveyardContainer.style.width = `${width}`;
-    tdGraveyardContainer.style.height = `${graveyardContainerHeight}`;
-    tdGraveyardContainer.style.overflowX = 'scroll';
-    tdGraveyardContainer.style.overflowY = 'hidden';
     tdGraveyardContainer.colSpan = 8;
-    tdGraveyardContainer.style.padding = `${graveyardContainerPadding}`;
-    tdGraveyardContainer.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
-    const tableGraveyard = createTable(tdGraveyardContainer);
+
+    const div = document.createElement('div');
+    div.style.overflowX = 'scroll';
+    div.style.overflowY = 'hidden';
+
+    tdGraveyardContainer.appendChild(div);
+    const tableGraveyard = createTable(div);
     tableGraveyard.style.width = `${graveyardWidth}`;
     tableGraveyard.style.height = `${cellWidth}`;
+    tableGraveyard.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
+
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
     trGraveyard.style.width = `${graveyardWidth}`;
