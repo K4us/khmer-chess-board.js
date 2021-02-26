@@ -21,7 +21,7 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'public'),
         compress: true,
-        open: true,
+        open: "Firefox Developer Edition",
         port: 8081
     },
 
