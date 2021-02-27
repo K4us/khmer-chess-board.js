@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <button onclick="document.documentElement.requestFullscreen();">Full Screen</button>
     <div id="board-container"></div>
     <script>
         var container = document.getElementById("board-container");
@@ -19,6 +20,13 @@
             container: container
         });
         kcb.soundManager.enable();
+        document.addEventListener('fullscreenchange', (event) => {
+            if (document.fullscreenElement) {
+                kcb.setFullScreen(true);
+            } else {
+                kcb.setFullScreen(false);
+            }
+        });
     </script>
 </body>
 
