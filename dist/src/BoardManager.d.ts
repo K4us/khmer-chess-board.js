@@ -29,7 +29,8 @@ export default class BoardManager {
     clearAttackCells(): void;
     removePiecesFromCells(): void;
     applyFlippingFlag(): void;
-    setNote(): void;
+    setCellNote(): void;
+    clearCellNote(): void;
     renderKhmerChessPieces(): void;
     addOnCellClickEventListener(listener: ListenerType<CellManager>): void;
     removeOnCellClickEventListener(listener: ListenerType<CellManager>): void;

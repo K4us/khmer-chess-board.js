@@ -32,12 +32,13 @@ import {
 } from './providers/constance';
 import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
+import OptionsManager from './OptionsManager';
 
 export default class GraveyardManager {
     _cells: CellManager[] = [];
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
-    options = {};
+    options: OptionsManager;
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.khmerChess = khmerChessBoard.khmerChess;
@@ -52,10 +53,20 @@ export default class GraveyardManager {
         return this._cells[index];
     }
 
-    setNote() {
+    setCellNote() {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const cell = this.get(i);
             cell.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
+            if (this.options.isEnglish) {
+                cell.addClassName(this.options.enClass);
+            }
+        }
+    }
+    clearCellNote() {
+        for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
+            const cell = this.get(i);
+            cell.removeClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
+            cell.removeClassName(this.options.enClass);
         }
     }
 

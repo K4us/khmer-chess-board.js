@@ -18,6 +18,8 @@ export default class KhmerChessBoard {
     }): void;
     setFullScreen(isFullScreen: boolean): void;
     render(): void;
+    setLocale(locale: string): void;
+    setCellNote(): void;
     addAllDomCss(): void;
     loadRen(renStr: string): void;
     applyPieces(): void;

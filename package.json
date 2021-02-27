@@ -1,6 +1,6 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/KhmerChessboard.js",
   "types": "src/KhmerChessboard.ts",
@@ -32,13 +32,15 @@
     "Board"
   ],
   "dependencies": {
-    "k4us-share": "^1.0.4",
-    "khmer-chess": "^1.0.25"
+    "k4us-share": "^1.0.5",
+    "khmer-chess": "^1.0.26"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.13.8",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jasmine": "2.8.7",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
@@ -52,6 +54,7 @@
     "karma-phantomjs-launcher": "1.0.4",
     "karma-webpack": "3.0.0",
     "source-map-loader": "0.2.3",
+    "svg-inline-loader": "^0.8.2",
     "tslint-loader": "3.6.0",
     "typescript": "3.5.1",
     "webpack": "^5.21.2",

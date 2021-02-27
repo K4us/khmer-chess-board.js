@@ -185,14 +185,32 @@ export default class BoardManager {
         });
     }
 
-    setNote() {
+    setCellNote() {
         for (let i = 0; i < ROW_NUMBER; i++) {
             const cell = this.getByXY(i, 0);
             cell.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
+            if (this.options.isEnglish) {
+                cell.addClassName(this.options.enClass);
+            }
         }
         for (let j = 0; j < ROW_NUMBER; j++) {
             const cell = this.getByXY(0, j);
             cell.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
+            if (this.options.isEnglish) {
+                cell.addClassName(this.options.enClass);
+            }
+        }
+    }
+    clearCellNote() {
+        for (let i = 0; i < ROW_NUMBER; i++) {
+            const cell = this.getByXY(i, 0);
+            cell.removeClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
+            cell.removeClassName(this.options.enClass);
+        }
+        for (let j = 0; j < ROW_NUMBER; j++) {
+            const cell = this.getByXY(0, j);
+            cell.removeClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
+            cell.removeClassName(this.options.enClass);
         }
     }
 

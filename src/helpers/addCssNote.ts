@@ -29,8 +29,10 @@ import OptionsManager from '../OptionsManager';
 
 import {
     HORIZONTAL_NOTE_LETTERS,
+    HORIZONTAL_NOTE_LETTERS_ENGLISH,
     ROW_NUMBER,
     VERTICAL_NOTE_LETTERS,
+    VERTICAL_NOTE_LETTERS_ENGLISH,
 } from 'khmer-chess';
 import appendCss from './appendCss';
 import { genBackgroundNote } from '../providers/svg';
@@ -44,8 +46,10 @@ import {
     CSS_PSEUDO_NOTE,
 } from '../providers/constance';
 
-export default function addCssNote({ uniqueClassName, options }:
-    { uniqueClassName: string, options: OptionsManager }) {
+export default function addCssNote({ uniqueClassName, options, isEnglish }:
+    { uniqueClassName: string, options: OptionsManager, isEnglish?: boolean }) {
+    const verticalLetters = isEnglish ? VERTICAL_NOTE_LETTERS_ENGLISH : VERTICAL_NOTE_LETTERS;
+    const horizontalLetters = isEnglish ? HORIZONTAL_NOTE_LETTERS_ENGLISH : HORIZONTAL_NOTE_LETTERS;
     const { width, cellWidth } = options;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
     let css = '';
@@ -54,10 +58,10 @@ export default function addCssNote({ uniqueClassName, options }:
         const bgImg = genBackgroundNote([{
             x: cellWidth / 2 - cellWidth / 10,
             y: cellWidth,
-            t: VERTICAL_NOTE_LETTERS[i],
+            t: verticalLetters[i],
         }], cellWidth, fSize);
         css += `
-        ${selector} td.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
+        ${selector} td${isEnglish ? '.' + options.enClass : ''}.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg};
         }
         `;
@@ -68,14 +72,14 @@ export default function addCssNote({ uniqueClassName, options }:
     let bgImg = (i: number) => genBackgroundNote([{
         x: hx,
         y: cellWidth,
-        t: HORIZONTAL_NOTE_LETTERS[i],
+        t: horizontalLetters[i],
     }], cellWidth, fSize);
     for (let i = 0; i < ROW_NUMBER; i++) {
         css += `
-        ${selector} td.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
+        ${selector} td${isEnglish ? '.' + options.enClass : ''}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg(i)};
         }
-        ${selector} td.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
+        ${selector} td${isEnglish ? '.' + options.enClass : ''}.${FLIPPED_CLASS}.${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
             background-image: ${bgImg(ROW_NUMBER - i - 1)};
         }
         `;
@@ -83,14 +87,14 @@ export default function addCssNote({ uniqueClassName, options }:
     bgImg = (i) => genBackgroundNote([{
         x: 0,
         y: vy,
-        t: VERTICAL_NOTE_LETTERS[i],
+        t: verticalLetters[i],
     }], cellWidth, fSize);
     for (let j = 0; j < ROW_NUMBER; j++) {
         css += `
-            ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
+            ${selector} td${isEnglish ? '.' + options.enClass : ''}.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
                 background-image: ${bgImg(j)};
             }
-            ${selector} td.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
+            ${selector} td${isEnglish ? '.' + options.enClass : ''}.flipped.${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}${CSS_PSEUDO_NOTE} {
                 background-image: ${bgImg(ROW_NUMBER - j - 1)};
             }
             `;
@@ -100,18 +104,18 @@ export default function addCssNote({ uniqueClassName, options }:
         {
             x: hx,
             y: cellWidth,
-            t: HORIZONTAL_NOTE_LETTERS[i],
+            t: horizontalLetters[i],
         }, {
             x: 0,
             y: vy,
-            t: VERTICAL_NOTE_LETTERS[i],
+            t: verticalLetters[i],
         },
     ], cellWidth, fSize);
     css += `
-    ${selector} td.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
+    ${selector} td${isEnglish ? '.' + options.enClass : ''}.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
         background-image: ${bgImg(0)};
     }
-    ${selector} td.${FLIPPED_CLASS}.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
+    ${selector} td${isEnglish ? '.' + options.enClass : ''}.${FLIPPED_CLASS}.${BOARD_NOTE_V_PREFIX_CLASS}-1.${BOARD_NOTE_H_PREFIX_CLASS}-1${CSS_PSEUDO_NOTE} {
         background-image: ${bgImg(7)};
     }
     `;

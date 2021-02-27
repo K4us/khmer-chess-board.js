@@ -1,10 +1,12 @@
 export default class OptionsManager {
     _width: number;
     isFullScreen: boolean;
-    boundingTableRect: ClientRect;
     uniqueClassName: string;
+    isEnglish: boolean;
+    constructor();
     width: number;
-    readonly scaleFit: number;
+    readonly enClass: string;
+    getScaleFit(btr: ClientRect): number;
     readonly cellWidth: number;
     readonly graveyardContainerHeight: number;
     readonly minWidth: number;

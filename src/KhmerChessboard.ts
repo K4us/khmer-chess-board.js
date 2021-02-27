@@ -168,9 +168,26 @@ export default class KhmerChessBoard {
             boardManager: this.boardManager,
             graveyardManager: this.graveyardManager,
         });
-        this.boardManager.setNote();
-        this.graveyardManager.setNote();
+        this.setCellNote();
         this.applyPieces();
+    }
+
+    setLocale(locale: string) {
+        const locales = ['en', 'km'];
+        if (!~locales.indexOf(locale)) {
+            console.log(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`);
+        } else {
+            this.options.isEnglish = locale === locales[0];
+            this.setCellNote();
+        }
+    }
+
+    setCellNote() {
+        this.boardManager.clearCellNote();
+        this.graveyardManager.clearCellNote();
+
+        this.boardManager.setCellNote();
+        this.graveyardManager.setCellNote();
     }
 
     addAllDomCss() {
@@ -182,10 +199,15 @@ export default class KhmerChessBoard {
             uniqueClassName: this.options.uniqueClassName,
             options: this.options,
         });
+        addCssNote({
+            uniqueClassName: this.options.uniqueClassName,
+            options: this.options,
+            isEnglish: true,
+        });
     }
 
     loadRen(renStr: string) {
-        this.khmerChess.load(renStr);
+        this.khmerChess.loadRENStr(renStr);
         this.applyPieces();
     }
 
@@ -232,6 +254,8 @@ export default class KhmerChessBoard {
         fromCell.movePieceTo(toCell);
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
+        console.log(move.getMessage(this.options.isEnglish));
+
     }
 }
 

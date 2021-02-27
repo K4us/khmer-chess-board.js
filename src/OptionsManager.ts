@@ -37,11 +37,15 @@ export default class OptionsManager {
     _width = 500;
     isFullScreen = false;
     uniqueClassName = '';
+    isEnglish = false;
     constructor() {
         this.uniqueClassName = `kcb-${genId()}`;
     }
     get width() {
         return this._width;
+    }
+    get enClass() {
+        return 'en';
     }
 
     getScaleFit(btr: ClientRect) {

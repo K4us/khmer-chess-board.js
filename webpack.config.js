@@ -37,12 +37,16 @@ module.exports = {
                 use: 'awesome-typescript-loader'
             },
             {
-                test: /\.(jpe?g|png|ttf|eot|svg|woff(2)?|mp3)(\?[a-z0-9=&.]+)?$/,
+                test: /\.(jpe?g|png|ttf|eot|woff(2)?|mp3)(\?[a-z0-9=&.]+)?$/,
                 use: [
                     {
                         loader: 'file-loader'
                     }
                 ]
+            },
+            {
+                test: /\.svg$/,
+                loader: 'svg-inline-loader'
             }
         ]
     },
