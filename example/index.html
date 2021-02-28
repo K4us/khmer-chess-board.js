@@ -11,6 +11,7 @@
 
 <body>
     <button onclick="document.documentElement.requestFullscreen();">Full Screen</button>
+    <button onclick="screenshot();">Screenshot</button>
     <div id="board-container"></div>
     <script>
         var container = document.getElementById("board-container");
@@ -27,6 +28,14 @@
                 kcb.setFullScreen(false);
             }
         });
+    </script>
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function screenshot() {
+            html2canvas(document.querySelector("table." + kcb.options.uniqueClassName)).then(canvas => {
+                document.body.appendChild(canvas)
+            });
+        }
     </script>
 </body>
 
