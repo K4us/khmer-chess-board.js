@@ -139,7 +139,7 @@ export const PIECES_SVG = {
  `,
    [`${PIECE_COLOR_BLACK}${PIECE_TYPE_TRANSFORM_FISH}`]: `
     ${SVG_FILTER}
-    <path fill="${WOOD_COLORS.WHITE}" filter="url(#${filterId})"
+    <path fill="${WOOD_COLORS.BLACK}" filter="url(#${filterId})"
     d="${transformFishSVG.pathData[0]}" />
  `,
 };
@@ -166,6 +166,12 @@ export const svgCSS = {
    }`,
    notAttacked: (color: string) => `path {
    }`,
+   turn: (color: string) => `path {
+      stroke: #ff007810;
+      stroke-width: 70px;
+      stroke-linejoin: round;
+   }
+   `,
 };
 
 type NoteText = {

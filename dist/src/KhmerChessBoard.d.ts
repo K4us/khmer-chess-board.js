@@ -6,14 +6,14 @@ import { KhmerChess, Move } from 'khmer-chess';
 export default class KhmerChessBoard {
     static title: string;
     static version: string;
-    container: HTMLDivElement;
+    container: HTMLElement;
     options: OptionsManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
     soundManager: SoundManager;
     setOptions(options: {
-        container: HTMLDivElement;
+        container: HTMLElement;
         width: number;
     }): void;
     setFullScreen(isFullScreen: boolean): void;
@@ -27,4 +27,5 @@ export default class KhmerChessBoard {
     removeAllDomCss(): void;
     destroy(): void;
     applyMove(move: Move): void;
+    start(): void;
 }

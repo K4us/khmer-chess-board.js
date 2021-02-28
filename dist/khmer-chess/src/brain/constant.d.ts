@@ -1,12 +1,24 @@
 export declare const PIECE_COLOR_WHITE = "w";
 export declare const PIECE_COLOR_BLACK = "b";
-export declare const PIECE_TYPE_TOUK = "b";
-export declare const PIECE_TYPE_SES = "h";
-export declare const PIECE_TYPE_KOL = "g";
-export declare const PIECE_TYPE_SDECH = "k";
-export declare const PIECE_TYPE_NEANG = "q";
-export declare const PIECE_TYPE_TREY = "f";
-export declare const PIECE_TYPE_BORK = "t";
+export declare const COLOR_NAMES: {
+    [key: string]: string;
+};
+export declare const COLOR_NAMES_ENGLISH: {
+    [key: string]: string;
+};
+export declare const PIECE_TYPE_BOAT = "b";
+export declare const PIECE_TYPE_HORSE = "h";
+export declare const PIECE_TYPE_GENERAL = "g";
+export declare const PIECE_TYPE_KING = "k";
+export declare const PIECE_TYPE_QUEEN = "q";
+export declare const PIECE_TYPE_FISH = "f";
+export declare const PIECE_TYPE_TRANSFORM_FISH = "t";
+export declare const PIECE_NAMES: {
+    [key: string]: string;
+};
+export declare const PIECE_NAMES_ENGLISH: {
+    [key: string]: string;
+};
 export declare const EMPTY_PIECE = ".";
 export declare const PIECE_COLOR_EMPTY = ".";
 export declare const BOARD_SEPARATOR = "/";
@@ -17,8 +29,5 @@ export declare const CELL_COUNT: number;
 export declare const HORIZONTAL_CODE_LETTERS = "abcdefgh";
 export declare const HORIZONTAL_NOTE_LETTERS: string[];
 export declare const VERTICAL_NOTE_LETTERS: string[];
-export declare const HORIZONTAL_NOTE_LETTERS_ASCII = "abcdefgh";
-export declare const VERTICAL_NOTE_LETTERS_ASCII: string[];
-export declare const pieceHash: {
-    [key: string]: string;
-};
+export declare const HORIZONTAL_NOTE_LETTERS_ENGLISH = "abcdefgh";
+export declare const VERTICAL_NOTE_LETTERS_ENGLISH: string[];

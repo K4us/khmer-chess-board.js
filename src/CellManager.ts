@@ -29,10 +29,11 @@ import { Point, Piece, ROW_NUMBER } from 'khmer-chess';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
-    ATTACKED_ID_NAME,
+    ATTACKED_CLASS_NAME,
     FLIPPED_CLASS,
     MOVED_CLASS_NAME,
     CAN_MOVE_CLASS_NAME,
+    TURN_CLASS_NAME,
 } from './providers/constance';
 
 export default class CellManager {
@@ -107,16 +108,30 @@ export default class CellManager {
 
     attack(attacked: boolean) {
         if (this.piece) {
-            this.removeClassName(ATTACKED_ID_NAME);
+            this.removeClassName(ATTACKED_CLASS_NAME);
             if (attacked) {
-                this.addClassName(ATTACKED_ID_NAME);
+                this.addClassName(ATTACKED_CLASS_NAME);
+            }
+        }
+        return this.piece;
+    }
+
+    turn(attacked: boolean) {
+        if (this.piece) {
+            this.removeClassName(TURN_CLASS_NAME);
+            if (attacked) {
+                this.addClassName(TURN_CLASS_NAME);
             }
         }
         return this.piece;
     }
 
     get isAttacked() {
-        return this.hasClassName(ATTACKED_ID_NAME);
+        return this.hasClassName(ATTACKED_CLASS_NAME);
+    }
+
+    get isTurn() {
+        return this.hasClassName(TURN_CLASS_NAME);
     }
 
     setProperties(prop: { className: string; }) {

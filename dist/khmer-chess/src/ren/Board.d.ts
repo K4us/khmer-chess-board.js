@@ -11,6 +11,7 @@ export default class Board {
     compress(str: string): string;
     extract(str: string): string;
     toStringFull(): string;
+    toStringFullNoSeparate(): string;
     toString(): string;
     getPieceAtIndex(index: number): Piece | null;
 }

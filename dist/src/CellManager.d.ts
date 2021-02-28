@@ -17,7 +17,9 @@ export default class CellManager {
     readonly isCanMove: boolean;
     readonly isMoved: boolean;
     attack(attacked: boolean): Piece;
+    turn(attacked: boolean): Piece;
     readonly isAttacked: boolean;
+    readonly isTurn: boolean;
     setProperties(prop: {
         className: string;
     }): void;

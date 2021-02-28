@@ -1,9 +1,8 @@
 import Point from '../ren/Point';
 import Piece from '../ren/Piece';
-import PieceIndex from '../ren/PieceIndex';
+import { PieceIndex } from '../ren';
 declare class BoardHelper {
     getCharPieceFromString(piecesString: string, index: number): string;
-    getPieceProperties(pieceCode: string): Piece;
     getCharPieceInPos(index: number, piecesString: string): string;
     getPieceByIndex(index: number, piecesString: string): {
         isValidPiece: boolean;
@@ -12,12 +11,11 @@ declare class BoardHelper {
     convertMask: (point1: Point, index: number, color: string) => number;
     getPieceCanMovePoses(index: number, piece: Piece): number[];
     getPieceCanMovePosesValid(index: number, piece: Piece, piecesString: string): number[];
-    replacePiecesStringAtIndex(piecesString: string, c: string, index: number): string;
+    replacePiecesStringAtIndex(piecesString: string, charCode: string, index: number): string;
     injectPiece(piecesString: string, index1: number, index2: number): string;
-    getPieceCode(piece: Piece): string;
     getKingWillInDanger(color: string, piecesString: string): Point[];
     getKingInDanger(color: string, piecesString: string): Point[] | null;
-    generatePosesCanMove(index: number, piece: Piece, piecesString: string, isHaveMoved: boolean): Point[];
+    genCanMovePointsByPiecePoint(index: number, piece: Piece, piecesString: string, isHasMoved?: boolean): Point[];
     isCharPiecesInBoard(code: string, piecesString: string): boolean;
     getPiecesInBoard(piecesString: string): string[];
     isHaveCaptured(piecesString: string): boolean;
@@ -26,11 +24,12 @@ declare class BoardHelper {
         blackPieces: PieceIndex[];
     };
     extractPiecesToArray(piecesString: string): {
-        [x: string]: string[];
+        [key: string]: string[];
     };
     isStateCount(c: string, piecesString: string): boolean;
     checkCountable(color: string, piecesString: string): boolean;
     checkCount(color: string, piecesString: string, force: boolean): number[];
+    isUpgradable(piece: Piece, point: Point): boolean;
 }
 declare const _default: BoardHelper;
 export default _default;

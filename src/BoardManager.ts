@@ -128,6 +128,20 @@ export default class BoardManager {
         });
     }
 
+    get pieceCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.piece;
+        });
+    }
+    get pieceInTurnCells() {
+        const turn = this.khmerChess.turn;
+        return this._cellManagers.filter((cell) => {
+            // if(cell.point.index == 46){
+            //     debugger
+            // }
+            return cell.piece && cell.piece.color === turn;
+        });
+    }
     get selectedCells() {
         return this._cellManagers.filter((cell) => {
             return cell.isSelected;
@@ -146,6 +160,11 @@ export default class BoardManager {
     get attackedCells() {
         return this._cellManagers.filter((cell) => {
             return cell.isAttacked;
+        });
+    }
+    get turnCells() {
+        return this._cellManagers.filter((cell) => {
+            return cell.isTurn;
         });
     }
 
@@ -170,6 +189,12 @@ export default class BoardManager {
     clearAttackCells() {
         this.attackedCells.forEach((cell) => {
             cell.attack(false);
+        });
+    }
+
+    clearTurnCells() {
+        this.turnCells.forEach((cell) => {
+            cell.turn(false);
         });
     }
 
@@ -221,6 +246,17 @@ export default class BoardManager {
             cell.setPiece(piece);
         });
     }
+
+    turn(turn: string) {
+        this.khmerChess.turn = turn;
+        this._cellManagers.forEach((cell) => {
+            cell.turn(false);
+        });
+        this.pieceInTurnCells.forEach((cell) => {
+            cell.turn(true);
+        });
+    }
+
     addOnCellClickEventListener(listener: ListenerType<CellManager>) {
         this.boaEventController.addOnCellClickEventListener(listener);
     }

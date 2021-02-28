@@ -4,6 +4,8 @@ export default class Point {
     readonly index: number;
     readonly graveyardIndex: number;
     readonly indexCode: string;
+    readonly title: string;
+    readonly titleEnglish: string;
     readonly h: string;
     readonly v: number;
     constructor(x: number, y: number);

@@ -1,19 +1,33 @@
 export default class Piece {
     type: string;
     color: string;
+    readonly colorOpponent: "w" | "b";
     readonly pieceCharCode: string;
+    readonly pieceCharCodeWhite: string;
+    readonly title: string;
+    readonly titleEnglish: string;
+    _isTypeEqual(type: string): boolean;
+    readonly isTypeKing: boolean;
+    readonly isTypeQueen: boolean;
+    readonly isTypeBoat: boolean;
+    readonly isTypeHorse: boolean;
+    readonly isTypeGeneral: boolean;
+    readonly isTypeFish: boolean;
+    readonly isTypeTransformedFish: boolean;
+    readonly isColorBlack: boolean;
+    readonly isColorWhite: boolean;
     constructor(type: string, color: string);
     static fromCharCode(charCode: string): Piece;
-    toOriginPiece(): Piece;
+    readonly originPiece: Piece;
     static readonly pieceChars: string[];
     static readonly colorChars: string[];
     static toWhiteCharCode(charCode: string): string;
     static isWhiteCharCode(charCode: string): boolean;
     static toBlackCharCode(charCode: string): string;
     static toNormalCharCode(charCode: string): string;
-    static isValidPiece(piece: string): boolean;
-    static isWhiteColor(c: string): boolean;
-    static isBlackColor(c: string): boolean;
+    static isValidPiece(charCode: string): boolean;
+    static isWhiteColor(color: string): boolean;
+    static isBlackColor(color: string): boolean;
     static oppositeColor(color: any): "w" | "b";
     static isValidPiecesString(str: string, onlyPiece?: boolean): boolean;
 }

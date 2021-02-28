@@ -35,12 +35,13 @@ import {
     CSS_TABLE_SELECTOR,
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
-    ATTACKED_ID_NAME,
+    ATTACKED_CLASS_NAME,
     CSS_PSEUDO_HIGHLIGHT,
     CSS_PSEUDO_PIECE,
     POPUP_CLASS_NAME,
     MOVED_CLASS_NAME,
     CAN_MOVE_CLASS_NAME,
+    TURN_CLASS_NAME,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
@@ -127,7 +128,7 @@ export default function addCss({ uniqueClassName, options }:
     ${selector} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         background: radial-gradient(#ff00f500, #ff00f588) !important;
     }`;
-
+    // Attacked
     Piece.colorChars.forEach((color) => {
         Piece.pieceChars.forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
@@ -140,11 +141,26 @@ export default function addCss({ uniqueClassName, options }:
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-                ${selector} td.${PIECE_CLASS_NAME}.${ATTACKED_ID_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} td.${PIECE_CLASS_NAME}.${ATTACKED_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
                 ${selector} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
+                }
+                `;
+        });
+    });
+    // Turn
+    Piece.colorChars.forEach((color) => {
+        Piece.pieceChars.forEach((type) => {
+            const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
+            const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+                <style>${svgCSS.turn(woodColor)}</style>
+                ${PIECES_SVG[color + type]}
+            </svg>`;
+            css += `
+                ${selector} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
                 `;
         });

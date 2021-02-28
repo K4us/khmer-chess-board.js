@@ -58,19 +58,19 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import { BoardEvent, KhmerChess, Move } from 'khmer-chess';
+import { BoardEvent, KhmerChess, Move, Piece, PIECE_COLOR_WHITE } from 'khmer-chess';
 
 export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
-    container: HTMLDivElement;
+    container: HTMLElement;
     options: OptionsManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
     soundManager: SoundManager;
     setOptions(options: {
-        container: HTMLDivElement;
+        container: HTMLElement;
         width: number;
     }) {
 
@@ -254,8 +254,14 @@ export default class KhmerChessBoard {
         fromCell.movePieceTo(toCell);
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
-        console.log(move.getMessage(this.options.isEnglish));
+        const turn = Piece.oppositeColor(this.khmerChess.turn);
+        this.boardManager.turn(turn);
 
+        console.log(move.getMessage(this.options.isEnglish));
+    }
+
+    start() {
+        this.boardManager.turn(PIECE_COLOR_WHITE);
     }
 }
 

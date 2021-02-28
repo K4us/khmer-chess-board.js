@@ -25,4 +25,5 @@ export default class Move implements MovePropType {
         isJumping: boolean;
         capturedPiece: string;
     };
+    getMessage(isEnglish?: boolean): string;
 }

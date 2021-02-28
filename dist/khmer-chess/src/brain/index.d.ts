@@ -4,5 +4,6 @@ export { default as boardHelper } from './boardHelper';
 export { default as genMask } from './genMask';
 export { default as jsis } from './jsis';
 export { default as HVPont } from './HVPont';
-export { default as moveHelper } from './moveHelper';
+export { default as MoveHelper } from './MoveHelper';
+export { OptionsType, CalCountPropsType } from './MoveHelper';
 export * from './constant';
