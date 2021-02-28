@@ -1,6 +1,6 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "src/KhmerChessboard.ts",
   "scripts": {
