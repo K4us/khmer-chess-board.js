@@ -111,11 +111,7 @@ export default class KhmerChessBoard {
             this.boardManager.clearCanMoveCells();
         });
         this.boardManager.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
-            const move = this.khmerChess.move(fromCell.point.index, toCell.point.index);
-            this.boardManager.clearSelectedCells();
-            if (move !== null) {
-                this.applyMove(move);
-            }
+            this.move(fromCell.point.index, toCell.point.index);
         });
         this.khmerChess.addBoardEventListener((boardEvent: BoardEvent) => {
             if (boardEvent.isAttack) {
@@ -129,6 +125,14 @@ export default class KhmerChessBoard {
                 console.log(`${king.piece.title} wins`);
             }
         });
+    }
+
+    move(fromIndex: number, toIndex: number) {
+        const move = this.khmerChess.move(fromIndex, toIndex);
+        this.boardManager.clearSelectedCells();
+        if (move !== null) {
+            this.applyMove(move);
+        }
     }
 
     setFullScreen(isFullScreen: boolean) {
@@ -255,13 +259,12 @@ export default class KhmerChessBoard {
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);
-        this.boardManager.turn(turn);
-
         console.log(move.getMessage(this.options.isEnglish));
+        this.boardManager.changeTurn(turn);
     }
 
     start() {
-        this.boardManager.turn(PIECE_COLOR_WHITE);
+        this.boardManager.changeTurn(PIECE_COLOR_WHITE);
     }
 }
 

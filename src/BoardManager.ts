@@ -60,17 +60,24 @@ export default class BoardManager {
             return cell.setOnClick(() => {
                 this.boaEventController.click(cell);
                 const selectedList = this.selectedCells;
-                if (selectedList.length) {
-                    const selectedCell = selectedList[0];
+                const selectedCell = selectedList[0];
+                if (selectedCell) {
                     if (cell === selectedCell) {
                         cell.deselect();
-                        this.boaEventController.deselected(selectedCell);
+                        return this.boaEventController.deselected(selectedCell);
                     } else {
-                        this.boaEventController.attemptMove(selectedCell, cell);
+                        if (cell.isCanMove) {
+                            return this.boaEventController.attemptMove(selectedCell, cell);
+                        }
                     }
-                } else {
+                }
+                if (cell.isCanSelect) {
+                    if (selectedCell) {
+                        selectedCell.deselect();
+                        this.boaEventController.deselected(selectedCell);
+                    }
                     cell.select();
-                    this.boaEventController.selected(cell);
+                    return this.boaEventController.selected(cell);
                 }
             });
         });
@@ -247,7 +254,7 @@ export default class BoardManager {
         });
     }
 
-    turn(turn: string) {
+    changeTurn(turn: string) {
         this.khmerChess.turn = turn;
         this._cellManagers.forEach((cell) => {
             cell.turn(false);
@@ -255,6 +262,7 @@ export default class BoardManager {
         this.pieceInTurnCells.forEach((cell) => {
             cell.turn(true);
         });
+        this.boaEventController.changeTurn();
     }
 
     addOnCellClickEventListener(listener: ListenerType<CellManager>) {
@@ -280,5 +288,11 @@ export default class BoardManager {
     }
     removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
         this.boaEventController.removeOnAttemptMoveEventListener(listener);
+    }
+    addOnChangeTurnEventListener(listener: ListenerType<any>) {
+        this.boaEventController.addOnChangeTurnEventListener(listener);
+    }
+    removeOnChangeTurnEventListener(listener: ListenerType<any>) {
+        this.boaEventController.removeOnChangeTurnEventListener(listener);
     }
 }

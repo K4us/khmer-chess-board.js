@@ -106,6 +106,10 @@ export default class CellManager {
         return this.hasClassName(MOVED_CLASS_NAME);
     }
 
+    get isCanSelect() {
+        return this.hasClassName(TURN_CLASS_NAME);
+    }
+
     attack(attacked: boolean) {
         if (this.piece) {
             this.removeClassName(ATTACKED_CLASS_NAME);
