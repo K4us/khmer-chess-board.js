@@ -6,9 +6,12 @@ export declare const PIECES_SVG: {
     [x: string]: string;
 };
 export declare const svgCSS: {
-    attacked: (color: string) => string;
-    notAttacked: (color: string) => string;
-    turn: (color: string) => string;
+    attacked: (color?: string) => string;
+    notAttacked: (color?: string) => string;
+    turn: (color?: string) => string;
+    selected: (color?: string) => string;
+    moved: (color?: string) => string;
+    canMove: (color?: string) => string;
 };
 declare type NoteText = {
     x: number;

@@ -116,28 +116,28 @@ export default function addCss({ uniqueClassName, options }:
     // moved cells
     css += `
     ${selector} td.${MOVED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
-        background: radial-gradient(#c0aeee99, #94e9d788) !important;
+        ${svgCSS.moved()}
     }`;
     // selected pice
     css += `
     ${selector} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
-        background: radial-gradient(#ff00f577, #ef646577) !important;
+        ${svgCSS.selected()}
     }`;
     // can move
     css += `
     ${selector} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
-        background: radial-gradient(#ff00f500, #ff00f588) !important;
+        ${svgCSS.canMove()}
     }`;
     // Attacked
     Piece.colorChars.forEach((color) => {
         Piece.pieceChars.forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.attacked(woodColor)}</style>
+                <style>${svgCSS.attacked()}</style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
             const notAttackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.notAttacked(woodColor)}</style>
+                <style>${svgCSS.notAttacked()}</style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
@@ -155,7 +155,7 @@ export default function addCss({ uniqueClassName, options }:
         Piece.pieceChars.forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.turn(woodColor)}</style>
+                <style>${svgCSS.turn()}</style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `

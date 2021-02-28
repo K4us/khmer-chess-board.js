@@ -145,7 +145,7 @@ export const PIECES_SVG = {
 };
 
 export const svgCSS = {
-   attacked: (color: string) => `path {
+   attacked: (color?: string) => `path {
       stroke: red;
       stroke-width: 1px;
       stroke-linejoin: round;
@@ -164,14 +164,17 @@ export const svgCSS = {
          stroke-width: 20px;
       }
    }`,
-   notAttacked: (color: string) => `path {
+   notAttacked: (color?: string) => `path {
    }`,
-   turn: (color: string) => `path {
-      stroke: #ff007810;
-      stroke-width: 70px;
+   turn: (color?: string) => `path {
+      stroke: #3d8a365f;
+      stroke-width: 10px;
       stroke-linejoin: round;
    }
    `,
+   selected: (color?: string) => 'background: radial-gradient(#ff00f577, #3d8a3677) !important;',
+   moved: (color?: string) => 'background: radial-gradient(#c0aeee99, #94e9d788) !important;',
+   canMove: (color?: string) => 'background: radial-gradient(#ff00f500, #3d8a3677) !important;',
 };
 
 type NoteText = {
