@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { Point, Piece, ROW_NUMBER } from 'khmer-chess';
+import { Point, Piece, ROW_NUMBER, CELL_COUNT } from 'khmer-chess';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -152,6 +152,11 @@ export default class CellManager {
 
     setFlipped(isUpsideDown: boolean) {
         this.removeClassName(FLIPPED_CLASS);
+        if (this.isUpsideDown !== isUpsideDown) {
+            const xy = Point.indexToXY(CELL_COUNT - 1 - this.point.index);
+            this.point.x = xy.x;
+            this.point.y = xy.y;
+        }
         this.isUpsideDown = isUpsideDown;
         if (isUpsideDown) {
             this.addClassName(FLIPPED_CLASS);
