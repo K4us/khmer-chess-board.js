@@ -128,10 +128,24 @@ export default function addCss({ uniqueClassName, options }:
     ${selector} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         ${svgCSS.canMove()}
     }`;
-    // Attacked
+    // Turn
     Piece.colorChars.forEach((color) => {
         Piece.pieceChars.forEach((type) => {
             const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
+            const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
+                <style>${svgCSS.turn()}</style>
+                ${PIECES_SVG[color + type]}
+            </svg>`;
+            css += `
+                ${selector} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
+                }
+                `;
+        });
+    });
+    // Attacked
+    Piece.colorChars.forEach((color) => {
+        Piece.pieceChars.forEach((type) => {
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.attacked()}</style>
                 ${PIECES_SVG[color + type]}
@@ -146,21 +160,6 @@ export default function addCss({ uniqueClassName, options }:
                 }
                 ${selector} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
-                }
-                `;
-        });
-    });
-    // Turn
-    Piece.colorChars.forEach((color) => {
-        Piece.pieceChars.forEach((type) => {
-            const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
-            const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.turn()}</style>
-                ${PIECES_SVG[color + type]}
-            </svg>`;
-            css += `
-                ${selector} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
-                    background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
                 `;
         });
