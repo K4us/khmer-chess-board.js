@@ -51,14 +51,14 @@ export default class CellManager {
     }
 
     removePiece() {
-        const piece = this.piece;
-        if (piece) {
-            this.removeClassName(PIECE_CLASS_NAME);
-            this.removeClassName(`type-${piece.type}`);
-            this.removeClassName(`color-${piece.color}`);
-            this.piece = null;
-        }
-        return piece;
+        this.removeClassName(PIECE_CLASS_NAME);
+        Piece.colorChars.forEach((color) => {
+            this.removeClassName(`color-${color}`);
+        });
+        Piece.pieceChars.forEach((type) => {
+            this.removeClassName(`type-${type}`);
+        });
+        this.piece = null;
     }
 
     setPiece(piece: Piece) {
@@ -171,14 +171,16 @@ export default class CellManager {
     }
 
     movePieceTo(toCell: CellManager) {
-        const piece = this.removePiece();
+        const piece = this.piece;
+        this.removePiece();
         toCell.setPiece(piece);
         this.moved();
         toCell.moved();
     }
 
     movePieceToGraveyard(toCell: CellManager) {
-        const deadPiece = this.removePiece();
+        const deadPiece = this.piece;
+        this.removePiece();
         toCell.setPiece(deadPiece);
         toCell.scrollIntoView();
     }
