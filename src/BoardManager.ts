@@ -63,7 +63,7 @@ export default class BoardManager {
                 const selectedCell = selectedList[0];
                 if (selectedCell) {
                     if (cell === selectedCell) {
-                        cell.deselect();
+                        cell.select(false);
                         return this.boaEventController.deselected(selectedCell);
                     } else {
                         if (cell.isCanMove) {
@@ -73,10 +73,10 @@ export default class BoardManager {
                 }
                 if (cell.isCanSelect) {
                     if (selectedCell) {
-                        selectedCell.deselect();
+                        selectedCell.select(false);
                         this.boaEventController.deselected(selectedCell);
                     }
-                    cell.select();
+                    cell.select(true);
                     return this.boaEventController.selected(cell);
                 }
             });
@@ -131,7 +131,7 @@ export default class BoardManager {
         });
         backupSelectedList.forEach((clonedCell) => {
             const cell = this.getByXY(clonedCell.point.x, clonedCell.point.y);
-            cell.select();
+            cell.select(true);
         });
     }
 
@@ -177,7 +177,7 @@ export default class BoardManager {
 
     clearSelectedCells() {
         this.selectedCells.forEach((cell) => {
-            cell.deselect();
+            cell.select(false);
             this.boaEventController.deselected(cell);
         });
     }

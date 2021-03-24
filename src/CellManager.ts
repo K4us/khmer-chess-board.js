@@ -83,15 +83,11 @@ export default class CellManager {
         return this.container.classList.contains(className);
     }
 
-    select() {
-        if (this.piece) {
+    select(selected: boolean) {
+        this.removeClassName(SELECTED_CLASS_NAME);
+        if (selected && this.piece) {
             this.addClassName(SELECTED_CLASS_NAME);
         }
-        return this.piece;
-    }
-
-    deselect() {
-        this.removeClassName(SELECTED_CLASS_NAME);
     }
 
     get isSelected() {
@@ -121,13 +117,10 @@ export default class CellManager {
     }
 
     turn(attacked: boolean) {
-        if (this.piece) {
-            this.removeClassName(TURN_CLASS_NAME);
-            if (attacked) {
-                this.addClassName(TURN_CLASS_NAME);
-            }
+        this.removeClassName(TURN_CLASS_NAME);
+        if (attacked) {
+            this.addClassName(TURN_CLASS_NAME);
         }
-        return this.piece;
     }
 
     get isAttacked() {
