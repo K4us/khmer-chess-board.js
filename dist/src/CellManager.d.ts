@@ -6,19 +6,18 @@ export default class CellManager {
     piece: Piece;
     isUpsideDown: boolean;
     constructor(point: Point, container: HTMLDivElement, piece: Piece, isGraveyard?: boolean);
-    removePiece(): Piece;
+    removePiece(): void;
     setPiece(piece: Piece): void;
     addClassName(className: string): void;
     removeClassName(className: string): void;
     hasClassName(className: string): boolean;
-    select(): Piece;
-    deselect(): void;
+    select(selected: boolean): void;
     readonly isSelected: boolean;
     readonly isCanMove: boolean;
     readonly isMoved: boolean;
     readonly isCanSelect: boolean;
     attack(attacked: boolean): Piece;
-    turn(attacked: boolean): Piece;
+    turn(attacked: boolean): void;
     readonly isAttacked: boolean;
     readonly isTurn: boolean;
     setProperties(prop: {
