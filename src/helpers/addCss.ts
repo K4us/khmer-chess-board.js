@@ -42,6 +42,8 @@ import {
     MOVED_CLASS_NAME,
     CAN_MOVE_CLASS_NAME,
     TURN_CLASS_NAME,
+    GRAVEYARD_CLASS_NAME,
+    TR_PIECE_CLASS_NAME,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
@@ -69,7 +71,7 @@ export default function addCss({ uniqueClassName, options }:
             position: fixed;
             box-shadow: 10px 10px 80px #000000, -10px -10px 80px #000000;
         }
-        ${selector} td table {
+        ${selector} table.${GRAVEYARD_CLASS_NAME} {
             table-layout: fixed;
             border-collapse: collapse;
             border-spacing: 0px;
@@ -79,11 +81,11 @@ export default function addCss({ uniqueClassName, options }:
             margin: auto;
             background-color: #ffc57d;
         }
-        ${selector} tr {
+        ${selector} .${TR_PIECE_CLASS_NAME} {
             width: ${width}px;
             height: ${cellWidth}px;
         }
-        ${selector} td {
+        ${selector} .${TR_PIECE_CLASS_NAME} td {
             user-select: none;
             border: 1px solid #9e9e9e87;
             padding: 0px;
@@ -93,19 +95,19 @@ export default function addCss({ uniqueClassName, options }:
             background-repeat: no-repeat;
             cursor: pointer;
         }
-        ${selector} td,
-        ${selector} td::before,
-        ${selector} td::after {
+        ${selector} .${TR_PIECE_CLASS_NAME} td,
+        ${selector} .${TR_PIECE_CLASS_NAME} td::before,
+        ${selector} .${TR_PIECE_CLASS_NAME} td::after {
             font-size: ${pieceFontSize}px;
         }
-        ${selector} td::after {
+        ${selector} .${TR_PIECE_CLASS_NAME} td::after {
             opacity: 0.4;
         }
-        ${selector} td::before {
+        ${selector} .${TR_PIECE_CLASS_NAME} td::before {
             float: left;
         }
-        ${selector} td:not(.graveyard)::before,
-        ${selector} td:not(.graveyard)::after {
+        ${selector} .${TR_PIECE_CLASS_NAME} td:not(.graveyard)::before,
+        ${selector} .${TR_PIECE_CLASS_NAME} td:not(.graveyard)::after {
             width: ${cellWidth}px;
             height: ${cellWidth}px;
             background-size: ${cellWidth}px ${cellWidth}px;
@@ -115,17 +117,17 @@ export default function addCss({ uniqueClassName, options }:
     `;
     // moved cells
     css += `
-    ${selector} td.${MOVED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+    ${selector} .${TR_PIECE_CLASS_NAME} td.${MOVED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         ${svgCSS.moved()}
     }`;
     // selected pice
     css += `
-    ${selector} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+    ${selector} .${TR_PIECE_CLASS_NAME} td.${SELECTED_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         ${svgCSS.selected()}
     }`;
     // can move
     css += `
-    ${selector} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
+    ${selector} .${TR_PIECE_CLASS_NAME} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         ${svgCSS.canMove()}
     }`;
     // Turn
@@ -137,7 +139,7 @@ export default function addCss({ uniqueClassName, options }:
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-                ${selector} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
                 `;
@@ -155,10 +157,10 @@ export default function addCss({ uniqueClassName, options }:
                 ${PIECES_SVG[color + type]}
             </svg>`;
             css += `
-                ${selector} td.${PIECE_CLASS_NAME}.${ATTACKED_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.${ATTACKED_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
-                ${selector} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
                 `;

@@ -58,8 +58,15 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import { BoardEvent, KhmerChess, Move, Piece, PIECE_COLOR_WHITE } from 'khmer-chess';
+import {
+    BoardEvent,
+    KhmerChess,
+    Move,
+    Piece,
+    PIECE_COLOR_WHITE,
+} from 'khmer-chess';
 import MessageManager from './MessageManager';
+import PlayerManager from './PlayerManager';
 
 export default class KhmerChessBoard {
     static title = config.name;
@@ -67,6 +74,7 @@ export default class KhmerChessBoard {
     container: HTMLElement;
     domBoard: HTMLElement;
     options: OptionsManager;
+    playerManager: PlayerManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
@@ -78,6 +86,7 @@ export default class KhmerChessBoard {
     }) {
 
         this.options = new OptionsManager();
+        this.playerManager = new PlayerManager();
         this.graveyardManager = new GraveyardManager();
         this.boardManager = new BoardManager();
         this.khmerChess = new KhmerChess();
@@ -99,6 +108,7 @@ export default class KhmerChessBoard {
             this.options.width = options.width;
         }
 
+        this.playerManager.setProps(this);
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
         this.messageManager.setProps(this);
@@ -158,7 +168,11 @@ export default class KhmerChessBoard {
 
     render() {
         this.addAllDomCss();
-        const { domBoard, domGraveyard } = drawBoardAndGraveyard({
+        const {
+            domBoard,
+            domGraveyard,
+            playerContainer,
+        } = drawBoardAndGraveyard({
             uniqueClassName: this.options.uniqueClassName,
             options: this.options,
             container: this.container,
@@ -170,6 +184,7 @@ export default class KhmerChessBoard {
         this.setCellNote();
         this.applyPieces();
         this.messageManager.draw();
+        this.playerManager.draw(playerContainer);
     }
 
     setLocale(locale: string) {

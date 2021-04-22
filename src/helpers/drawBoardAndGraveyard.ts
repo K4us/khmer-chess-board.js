@@ -37,6 +37,8 @@ import CellManager from '../CellManager';
 import {
     TD_GRAVEYARD_NUMBER,
     TABLE_CLASS,
+    GRAVEYARD_CLASS_NAME,
+    TR_PIECE_CLASS_NAME,
 } from '../providers/constance';
 
 type Type = {
@@ -84,6 +86,7 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < ROW_NUMBER; i++) {
         const tr = createTr(tbody);
+        tr.classList.add('tr-piece');
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
             const cellPiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
@@ -91,6 +94,18 @@ export default function drawBoardAndGraveyard({
             boardManager.put(index, cellPiece);
         }
     }
+
+    const trPlayerContainer = createTr(tbody);
+    trPlayerContainer.classList.add('tr-player');
+    trPlayerContainer.style.height = `${graveyardContainerHeight / 3}`;
+
+    const tdPlayerContainer = createTd(trPlayerContainer);
+    tdPlayerContainer.classList.add('player');
+    tdPlayerContainer.addEventListener('mousewheel', function (e: any) {
+        this.scrollLeft -= (e.wheelDelta);
+        e.preventDefault();
+    }, false);
+    tdPlayerContainer.colSpan = 8;
 
     const trGraveyardContainer = createTr(tbody);
     trGraveyardContainer.classList.add('tr-graveyard');
@@ -110,12 +125,14 @@ export default function drawBoardAndGraveyard({
 
     tdGraveyardContainer.appendChild(div);
     const tableGraveyard = createTable(div);
+    tableGraveyard.classList.add(GRAVEYARD_CLASS_NAME);
     tableGraveyard.style.width = `${graveyardWidth}`;
     tableGraveyard.style.height = `${cellWidth}`;
     tableGraveyard.style.boxShadow = `inset 0 0 ${width / 60}px #000000`;
 
     const tbodyGraveyard = createTbody(tableGraveyard);
     const trGraveyard = createTr(tbodyGraveyard);
+    trGraveyard.classList.add(TR_PIECE_CLASS_NAME);
     trGraveyard.style.width = `${graveyardWidth}`;
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
@@ -124,5 +141,9 @@ export default function drawBoardAndGraveyard({
         graveyardManager.push(cellPiece);
     }
 
-    return { domBoard: table, domGraveyard: tableGraveyard };
+    return {
+        domBoard: table,
+        domGraveyard: tableGraveyard,
+        playerContainer: tdPlayerContainer,
+    };
 }
