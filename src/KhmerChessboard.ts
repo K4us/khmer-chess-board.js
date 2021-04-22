@@ -270,7 +270,7 @@ export default class KhmerChessBoard {
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);
-        console.log(move.getMessage(this.options.isEnglish));
+        this.playerManager.add(move.toString(), move.getMessage(this.options.isEnglish));
         this.boardManager.changeTurn(turn);
     }
 
