@@ -39,12 +39,15 @@ export default class GraveyardManager {
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     options: OptionsManager;
+    domGraveyard: HTMLElement;
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.khmerChess = khmerChessBoard.khmerChess;
         this.options = khmerChessBoard.options;
     }
-
+    setDom(domGraveyard: HTMLElement) {
+        this.domGraveyard = domGraveyard;
+    }
     push(cellPiece: CellManager) {
         this._cells.push(cellPiece);
     }

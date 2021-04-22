@@ -123,4 +123,6 @@ export default function drawBoardAndGraveyard({
         const cellPiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
         graveyardManager.push(cellPiece);
     }
+
+    return { domBoard: table, domGraveyard: tableGraveyard };
 }

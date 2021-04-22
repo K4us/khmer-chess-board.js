@@ -59,16 +59,19 @@ import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
 import { BoardEvent, KhmerChess, Move, Piece, PIECE_COLOR_WHITE } from 'khmer-chess';
+import MessageManager from './MessageManager';
 
 export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
     container: HTMLElement;
+    domBoard: HTMLElement;
     options: OptionsManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
     soundManager: SoundManager;
+    messageManager: MessageManager;
     setOptions(options: {
         container: HTMLElement;
         width: number;
@@ -79,6 +82,7 @@ export default class KhmerChessBoard {
         this.boardManager = new BoardManager();
         this.khmerChess = new KhmerChess();
         this.soundManager = new SoundManager();
+        this.messageManager = new MessageManager();
 
         if (!options.container) {
             throw new Error('Container is required!');
@@ -97,6 +101,7 @@ export default class KhmerChessBoard {
 
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
+        this.messageManager.setProps(this);
         this.render();
 
         this.boardManager.enableClick();
@@ -133,43 +138,38 @@ export default class KhmerChessBoard {
 
     setFullScreen(isFullScreen: boolean) {
         this.options.isFullScreen = isFullScreen;
-        const tables = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
-        tables.forEach((table: HTMLTableElement) => {
-            const trGraveyards = table.querySelectorAll('tr.tr-graveyard');
-            trGraveyards.forEach((trGraveyard: HTMLTableRowElement) => {
-                trGraveyard.style.display = '';
-            });
-            table.classList.remove(POPUP_CLASS_NAME);
-            table.style.top = '0';
-            table.style.left = '0';
-            table.style.transform = '';
-            table.style.zIndex = null;
+        const table = this.domBoard;
 
-            if (isFullScreen) {
-                trGraveyards.forEach((trGraveyard: HTMLTableRowElement) => {
-                    trGraveyard.style.display = 'none';
-                });
-                table.classList.add(POPUP_CLASS_NAME);
-                table.style.top = '50%';
-                table.style.left = '50%';
-                const scaleFit = this.options.getScaleFit(table.getBoundingClientRect());
-                table.style.transform = `translate(-50%,-50%) scale(${scaleFit})`;
-                table.style.zIndex = '9999';
-            }
-        });
+        table.classList.remove(POPUP_CLASS_NAME);
+        table.style.top = '0';
+        table.style.left = '0';
+        table.style.transform = '';
+        table.style.zIndex = null;
+
+        if (isFullScreen) {
+            table.classList.add(POPUP_CLASS_NAME);
+            table.style.top = '50%';
+            table.style.left = '50%';
+            const scaleFit = this.options.getScaleFit(table.getBoundingClientRect());
+            table.style.transform = `translate(-50%,-50%) scale(${scaleFit})`;
+            table.style.zIndex = '9999';
+        }
     }
 
     render() {
         this.addAllDomCss();
-        drawBoardAndGraveyard({
+        const { domBoard, domGraveyard } = drawBoardAndGraveyard({
             uniqueClassName: this.options.uniqueClassName,
             options: this.options,
             container: this.container,
             boardManager: this.boardManager,
             graveyardManager: this.graveyardManager,
         });
+        this.domBoard = domBoard;
+        this.graveyardManager.setDom(domGraveyard);
         this.setCellNote();
         this.applyPieces();
+        this.messageManager.draw();
     }
 
     setLocale(locale: string) {
