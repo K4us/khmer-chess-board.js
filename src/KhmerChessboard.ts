@@ -72,7 +72,7 @@ import PieceShadowManager from './PieceShadowManager';
 export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
-    container: HTMLElement;
+    containerDom: HTMLElement;
     domBoard: HTMLElement;
     options: OptionsManager;
     playerManager: PlayerManager;
@@ -99,7 +99,7 @@ export default class KhmerChessBoard {
         if (!options.container) {
             throw new Error('Container is required!');
         }
-        this.container = options.container;
+        this.containerDom = options.container;
 
         if (options.width < this.options.minWidth) {
             throw new Error(`Board width must more than ${this.options.minWidth} `);
@@ -119,17 +119,18 @@ export default class KhmerChessBoard {
         this.render();
 
         this.boardManager.enableClick();
-        this.boardManager.addOnCellSelectedEventListener((cell) => {
+        const boardEventController = this.boardManager.boardEventController;
+        boardEventController.addOnCellSelectedEventListener((cell) => {
             const points = this.khmerChess.getCanMovePointsByPoint(cell.point);
             points.forEach((point) => {
                 const cell = this.boardManager.get(point.index);
                 cell.setCanMove();
             });
         });
-        this.boardManager.addOnCellDeselectedEventListener((cell) => {
+        boardEventController.addOnCellDeselectedEventListener((cell) => {
             this.boardManager.clearCanMoveCells();
         });
-        this.boardManager.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
+        boardEventController.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
             this.move(fromCell.point.index, toCell.point.index);
         });
         this.khmerChess.addBoardEventListener((boardEvent: BoardEvent) => {
@@ -180,7 +181,7 @@ export default class KhmerChessBoard {
         } = drawBoardAndGraveyard({
             uniqueClassName: this.options.uniqueClassName,
             options: this.options,
-            container: this.container,
+            container: this.containerDom,
             boardManager: this.boardManager,
             graveyardManager: this.graveyardManager,
         });
@@ -254,7 +255,7 @@ export default class KhmerChessBoard {
 
     destroy() {
         this.removeAllDomElements();
-        this.container = null;
+        this.containerDom = null;
         this.graveyardManager = null;
         this.boardManager = null;
         this.soundManager = null;

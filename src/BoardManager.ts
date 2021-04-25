@@ -36,9 +36,8 @@ import {
     KhmerChess,
     Point,
     ROW_NUMBER,
-    ListenerType,
 } from 'khmer-chess';
-import BoardManagerEventController from './BoardManagerEventController';
+import BoardManagerEventController from './event/BoardManagerEventController';
 
 export default class BoardManager {
     _cellManagers: CellManager[] = [];
@@ -46,9 +45,9 @@ export default class BoardManager {
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     isUpsideDown = false;
-    boaEventController: BoardManagerEventController;
+    boardEventController: BoardManagerEventController<CellManager>;
     constructor() {
-        this.boaEventController = new BoardManagerEventController();
+        this.boardEventController = new BoardManagerEventController();
     }
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
@@ -58,26 +57,26 @@ export default class BoardManager {
     enableClick() {
         this._cellManagers.forEach((cell) => {
             return cell.setOnClick(() => {
-                this.boaEventController.click(cell);
+                this.boardEventController.click(cell);
                 const selectedList = this.selectedCells;
                 const selectedCell = selectedList[0];
                 if (selectedCell) {
                     if (cell === selectedCell) {
                         cell.select(false);
-                        return this.boaEventController.deselected(selectedCell);
+                        return this.boardEventController.deselected(selectedCell);
                     } else {
                         if (cell.isCanMove) {
-                            return this.boaEventController.attemptMove(selectedCell, cell);
+                            return this.boardEventController.attemptMove(selectedCell, cell);
                         }
                     }
                 }
                 if (cell.isCanSelect) {
                     if (selectedCell) {
                         selectedCell.select(false);
-                        this.boaEventController.deselected(selectedCell);
+                        this.boardEventController.deselected(selectedCell);
                     }
                     cell.select(true);
-                    return this.boaEventController.selected(cell);
+                    return this.boardEventController.selected(cell);
                 }
             });
         });
@@ -178,7 +177,7 @@ export default class BoardManager {
     clearSelectedCells() {
         this.selectedCells.forEach((cell) => {
             cell.select(false);
-            this.boaEventController.deselected(cell);
+            this.boardEventController.deselected(cell);
         });
     }
     clearCanMoveCells() {
@@ -262,37 +261,6 @@ export default class BoardManager {
         this.pieceInTurnCells.forEach((cell) => {
             cell.turn(true);
         });
-        this.boaEventController.changeTurn();
-    }
-
-    addOnCellClickEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.addOnCellClickEventListener(listener);
-    }
-    removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.removeOnCellClickEventListener(listener);
-    }
-    addOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.addOnCellSelectedEventListener(listener);
-    }
-    removeOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.removeOnCellSelectedEventListener(listener);
-    }
-    addOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.addOnCellDeselectedEventListener(listener);
-    }
-    removeOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
-        this.boaEventController.removeOnCellDeselectedEventListener(listener);
-    }
-    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
-        this.boaEventController.addOnAttemptMoveEventListener(listener);
-    }
-    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
-        this.boaEventController.removeOnAttemptMoveEventListener(listener);
-    }
-    addOnChangeTurnEventListener(listener: ListenerType<any>) {
-        this.boaEventController.addOnChangeTurnEventListener(listener);
-    }
-    removeOnChangeTurnEventListener(listener: ListenerType<any>) {
-        this.boaEventController.removeOnChangeTurnEventListener(listener);
+        this.boardEventController.changeTurn();
     }
 }

@@ -28,28 +28,79 @@
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import appendCss from './helpers/appendCss';
+import PlayManagerEventController from './event/PlayManagerEventController';
+
+class MoveData {
+    renData: string;
+    dom: HTMLElement;
+    constructor({ containerDom, renData, title, str, onClick }: {
+        containerDom: HTMLElement,
+        renData: string,
+        title: string,
+        str: string,
+        onClick: Function,
+    }) {
+        this.renData = renData;
+        const span = document.createElement('span');
+        span.title = title;
+        span.innerText = str;
+        containerDom.appendChild(span);
+        this.dom = span;
+        span.onclick = () => {
+            if (!this.isCurrent) {
+                onClick();
+            }
+        };
+    }
+    get isCurrent() {
+        return this.dom.classList.contains('current');
+    }
+    current(b: boolean) {
+        this.dom.classList.remove('current');
+        if (b) {
+            this.dom.classList.add('current');
+        }
+    }
+}
 
 export default class PlayerManager {
     khmerChessBoard: KhmerChessBoard;
     options: OptionsManager;
     containerClassName = 'player-table';
-    container: HTMLElement;
-    current: HTMLElement = null;
+    containerDom: HTMLElement;
+    renDataList: MoveData[] = [];
+    playEventController: PlayManagerEventController<MoveData>;
+    backBtnDom: HTMLElement;
+    playBtnDom: HTMLElement;
+    pauseBtnDom: HTMLElement;
+    nextBtnDom: HTMLElement;
+    constructor() {
+        this.playEventController = new PlayManagerEventController();
+    }
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.options = khmerChessBoard.options;
         appendCss(this.options.uniqueClassName, this.css());
     }
     add(str: string, title: string) {
-        const span = document.createElement('span');
-        span.title = title;
-        span.innerText = str;
-        span.classList.add('current');
-        this.container.appendChild(span);
-        if (this.current) {
-            this.current.classList.remove('current');
+        const moveData = new MoveData({
+            containerDom: this.containerDom,
+            renData: '',
+            title,
+            str,
+            onClick: () => {
+                this.playEventController.click(moveData);
+            },
+        });
+        this.renDataList.push(moveData);
+        this.rendCurrent();
+    }
+    rendCurrent() {
+        this.renDataList.forEach(e => e.current(false));
+        if (this.renDataList.length) {
+            const moveData = this.renDataList[this.renDataList.length - 1];
+            moveData.current(true);
         }
-        this.current = span;
     }
     draw(playerContainer: HTMLElement) {
         const containerWidth = ~~(this.options.width * 3 / 4);
@@ -65,25 +116,48 @@ export default class PlayerManager {
         const div = document.createElement('div');
         div.style.width = `${containerWidth}px`;
         div.classList.add('container');
-        this.container = div;
+        this.containerDom = div;
         tdHistory.appendChild(div);
         tdHistory.style.width = `${containerWidth}px`;
         tr.appendChild(tdHistory);
         tdHistory = document.createElement('td');
         let btn = document.createElement('button');
         btn.innerHTML = '<';
+        this.backBtnDom = btn;
         tdHistory.appendChild(btn);
         tr.appendChild(tdHistory);
         tdHistory = document.createElement('td');
         btn = document.createElement('button');
         btn.innerHTML = '^';
+        this.playBtnDom = btn;
         tdHistory.appendChild(btn);
+        btn = document.createElement('button');
+        btn.innerHTML = '#';
+        this.pauseBtnDom = btn;
+        tdHistory.appendChild(btn);
+        btn.style.display = 'none';
         tr.appendChild(tdHistory);
         tdHistory = document.createElement('td');
         btn = document.createElement('button');
         btn.innerHTML = '>';
+        this.nextBtnDom = btn;
         tdHistory.appendChild(btn);
         tr.appendChild(tdHistory);
+        this.btnListen();
+    }
+    btnListen() {
+        this.backBtnDom.onclick = () => {
+            this.playEventController.back();
+        };
+        this.playBtnDom.onclick = () => {
+            this.playEventController.play();
+        };
+        this.pauseBtnDom.onclick = () => {
+            this.playEventController.pause();
+        };
+        this.nextBtnDom.onclick = () => {
+            this.playEventController.next();
+        };
     }
     css(): string {
         const containerSelector = `table.${this.options.uniqueClassName}.${this.containerClassName}`;
@@ -96,7 +170,6 @@ export default class PlayerManager {
         ${containerSelector} td {
             padding: 0px;
             margin: 0px;
-            cursor: auto;
             text-align: center;
             box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 1px inset;
         }
@@ -113,9 +186,11 @@ export default class PlayerManager {
             padding: 0 2px;
             border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 2px;
+            cursor: pointer;
         }
         ${containerSelector} .container span.current{
             background-color: rgba(255, 255, 255, 0.3);
+            cursor: auto;
         }
         `;
     }

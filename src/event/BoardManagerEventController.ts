@@ -25,13 +25,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import CellManager from './CellManager';
 import {
     ListenerType,
     EventHandler,
 } from 'khmer-chess';
 
-export default class BoardManagerEventController extends EventHandler {
+export default class BoardManagerEventController<T> extends EventHandler {
     static CLICK = 'click';
     static SELECTED = 'selected';
     static DESELECTED = 'deselected';
@@ -47,16 +46,16 @@ export default class BoardManagerEventController extends EventHandler {
             },
         });
     }
-    click(cellManager: CellManager) {
-        this._addPropEvent(BoardManagerEventController.CLICK, cellManager);
+    click(data: T) {
+        this._addPropEvent(BoardManagerEventController.CLICK, data);
     }
-    selected(cellManager: CellManager) {
-        this._addPropEvent(BoardManagerEventController.SELECTED, cellManager);
+    selected(data: T) {
+        this._addPropEvent(BoardManagerEventController.SELECTED, data);
     }
-    deselected(cellManager: CellManager) {
-        this._addPropEvent(BoardManagerEventController.DESELECTED, cellManager);
+    deselected(data: T) {
+        this._addPropEvent(BoardManagerEventController.DESELECTED, data);
     }
-    attemptMove(fromCell: CellManager, toCell: CellManager) {
+    attemptMove(fromCell: T, toCell: T) {
         this._addPropEvent(BoardManagerEventController.ATTEMPT_MOVE, {
             fromCell,
             toCell,
@@ -65,34 +64,34 @@ export default class BoardManagerEventController extends EventHandler {
     changeTurn() {
         this._addPropEvent(BoardManagerEventController.CHANGE_TURN);
     }
-    addOnCellClickEventListener(listener: ListenerType<CellManager>) {
+    addOnCellClickEventListener(listener: ListenerType<T>) {
         this._addOnEventListener(BoardManagerEventController.CLICK, listener);
     }
-    removeOnCellClickEventListener(listener: ListenerType<CellManager>) {
+    removeOnCellClickEventListener(listener: ListenerType<T>) {
         this._removeOnEventListener(BoardManagerEventController.CLICK, listener);
     }
-    addOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+    addOnCellSelectedEventListener(listener: ListenerType<T>) {
         this._addOnEventListener(BoardManagerEventController.SELECTED, listener);
     }
-    removeOnCellSelectedEventListener(listener: ListenerType<CellManager>) {
+    removeOnCellSelectedEventListener(listener: ListenerType<T>) {
         this._removeOnEventListener(BoardManagerEventController.SELECTED, listener);
     }
-    addOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+    addOnCellDeselectedEventListener(listener: ListenerType<T>) {
         this._addOnEventListener(BoardManagerEventController.DESELECTED, listener);
     }
-    removeOnCellDeselectedEventListener(listener: ListenerType<CellManager>) {
+    removeOnCellDeselectedEventListener(listener: ListenerType<T>) {
         this._removeOnEventListener(BoardManagerEventController.DESELECTED, listener);
     }
-    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+    addOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
         this._addOnEventListener(BoardManagerEventController.ATTEMPT_MOVE, listener);
     }
-    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+    removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
         this._removeOnEventListener(BoardManagerEventController.ATTEMPT_MOVE, listener);
     }
-    addOnChangeTurnEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+    addOnChangeTurnEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
         this._addOnEventListener(BoardManagerEventController.CHANGE_TURN, listener);
     }
-    removeOnChangeTurnEventListener(listener: ListenerType<{ fromCell: CellManager, toCell: CellManager }>) {
+    removeOnChangeTurnEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
         this._removeOnEventListener(BoardManagerEventController.CHANGE_TURN, listener);
     }
 }
