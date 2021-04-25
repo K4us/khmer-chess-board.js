@@ -26,15 +26,24 @@
  *
  *---------------------------------------------------------------------------- */
 import CellManager from './CellManager';
+import KhmerChessBoard from './KhmerChessBoard';
+import OptionsManager from './OptionsManager';
 
 export default class PieceShadowManager {
     tdShadowDom: HTMLElement;
+    khmerChessBoard: KhmerChessBoard;
+    options: OptionsManager;
     setTdShadow(tdShadowDown: HTMLElement) {
         this.tdShadowDom = tdShadowDown;
     }
+    setProps(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+        this.options = khmerChessBoard.options;
+    }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
         const div = document.createElement('div');
-        if (!div.animate) {
+        if (!div.animate || this.options.isFullScreen) {
+            callback();
             return;
         }
         const fromBc = fromCell.containerDom.getBoundingClientRect();

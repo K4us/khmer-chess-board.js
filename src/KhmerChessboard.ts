@@ -115,6 +115,7 @@ export default class KhmerChessBoard {
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
         this.messageManager.setProps(this);
+        this.pieceShadowManager.setProps(this);
         this.render();
 
         this.boardManager.enableClick();
