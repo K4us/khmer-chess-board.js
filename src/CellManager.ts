@@ -25,7 +25,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { Point, Piece, ROW_NUMBER, CELL_COUNT } from 'khmer-chess';
+import {
+    Point,
+    Piece,
+    CELL_COUNT,
+} from 'khmer-chess';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -39,18 +43,17 @@ import {
 export default class CellManager {
     point: Point;
     isGraveyard = false;
-    container: HTMLDivElement = document.createElement('td');
+    containerDom: HTMLDivElement = document.createElement('td');
     piece: Piece = null;
     isUpsideDown = false;
     constructor(point: Point, container: HTMLDivElement,
         piece: Piece, isGraveyard = false) {
         this.point = point;
-        this.container = container;
+        this.containerDom = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
     }
-
-    removePiece() {
+    removePieceClasses() {
         this.removeClassName(PIECE_CLASS_NAME);
         Piece.colorChars.forEach((color) => {
             this.removeClassName(`color-${color}`);
@@ -58,6 +61,9 @@ export default class CellManager {
         Piece.pieceChars.forEach((type) => {
             this.removeClassName(`type-${type}`);
         });
+    }
+    removePiece() {
+        this.removePieceClasses();
         this.piece = null;
     }
 
@@ -72,15 +78,15 @@ export default class CellManager {
     }
 
     addClassName(className: string) {
-        this.container.classList.add(className);
+        this.containerDom.classList.add(className);
     }
 
     removeClassName(className: string) {
-        this.container.classList.remove(className);
+        this.containerDom.classList.remove(className);
     }
 
     hasClassName(className: string) {
-        return this.container.classList.contains(className);
+        return this.containerDom.classList.contains(className);
     }
 
     select(selected: boolean) {
@@ -132,15 +138,15 @@ export default class CellManager {
     }
 
     setProperties(prop: { className: string; }) {
-        this.container.className = prop.className;
+        this.containerDom.className = prop.className;
     }
 
     setOnClick(listener: (this: GlobalEventHandlers, ev: MouseEvent) => any) {
-        this.container.onclick = listener;
+        this.containerDom.onclick = listener;
     }
 
     removeOnClick() {
-        this.container.onclick = null;
+        this.containerDom.onclick = null;
     }
 
     setFlipped(isUpsideDown: boolean) {
@@ -163,7 +169,7 @@ export default class CellManager {
     }
 
     scrollIntoView() {
-        this.container.scrollIntoView({
+        this.containerDom.scrollIntoView({
             behavior: 'smooth',
             block: 'end',
             inline: 'nearest',

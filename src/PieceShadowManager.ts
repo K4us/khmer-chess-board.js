@@ -12,7 +12,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
@@ -25,25 +25,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-export const BORDER_WIDTH = 1;
-export const MIN_CELL_WIDTH = 5;
-export const TD_GRAVEYARD_NUMBER = 30;
-export const TABLE_CLASS = 'khmer-chess-board';
-export const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
-export const SELECTED_CLASS_NAME = 'selected';
-export const CAN_MOVE_CLASS_NAME = 'can-move';
-export const MOVED_CLASS_NAME = 'moved';
-export const ATTACKED_CLASS_NAME = 'attacked';
-export const TURN_CLASS_NAME = 'turn';
-export const GRAVEYARD_CLASS_NAME = 'tb-graveyard';
-export const TR_PIECE_CLASS_NAME = 'tr-piece';
-export const TR_PIECE_SHADOW_CLASS_NAME = 'tr-piece-shadow';
-export const PIECE_CLASS_NAME = 'piece';
-export const POPUP_CLASS_NAME = 'popup';
-export const GRAVEYARD_NOTE_PREFIX_CLASS = 'note-gy';
-export const BOARD_NOTE_V_PREFIX_CLASS = 'note-board-v';
-export const BOARD_NOTE_H_PREFIX_CLASS = 'note-board-h';
-export const FLIPPED_CLASS = 'flipped';
-export const CSS_PSEUDO_HIGHLIGHT = '::after';
-export const CSS_PSEUDO_PIECE = '';
-export const CSS_PSEUDO_NOTE = '::before';
+import CellManager from './CellManager';
+
+export default class PieceShadowManager {
+    tdShadowDom: HTMLElement;
+    setTdShadow(tdShadowDown: HTMLElement) {
+        this.tdShadowDom = tdShadowDown;
+    }
+    movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
+        const div = document.createElement('div');
+        if (!div.animate) {
+            return;
+        }
+        const fromBc = fromCell.containerDom.getBoundingClientRect();
+        const toBc = toCell.containerDom.getBoundingClientRect();
+        this.tdShadowDom.appendChild(div);
+        div.style.top = `${fromBc.top}`;
+        div.style.left = `${fromBc.left}`;
+        div.classList.add(`type-${fromCell.piece.type}`);
+        div.classList.add(`color-${fromCell.piece.color}`);
+
+        fromCell.removePieceClasses();
+        const anim = div.animate([
+            {
+                transform: 'translate(0px)',
+                opacity: 1,
+            },
+            {
+                transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
+                opacity: 0,
+            },
+        ], 100);
+        anim.onfinish = () => {
+            this.tdShadowDom.removeChild(div);
+            callback();
+        };
+    }
+}

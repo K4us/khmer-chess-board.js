@@ -67,6 +67,7 @@ import {
 } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayerManager from './PlayerManager';
+import PieceShadowManager from './PieceShadowManager';
 
 export default class KhmerChessBoard {
     static title = config.name;
@@ -80,6 +81,7 @@ export default class KhmerChessBoard {
     khmerChess: KhmerChess;
     soundManager: SoundManager;
     messageManager: MessageManager;
+    pieceShadowManager: PieceShadowManager;
     setOptions(options: {
         container: HTMLElement;
         width: number;
@@ -92,6 +94,7 @@ export default class KhmerChessBoard {
         this.khmerChess = new KhmerChess();
         this.soundManager = new SoundManager();
         this.messageManager = new MessageManager();
+        this.pieceShadowManager = new PieceShadowManager();
 
         if (!options.container) {
             throw new Error('Container is required!');
@@ -172,6 +175,7 @@ export default class KhmerChessBoard {
             domBoard,
             domGraveyard,
             playerContainer,
+            tdShadow,
         } = drawBoardAndGraveyard({
             uniqueClassName: this.options.uniqueClassName,
             options: this.options,
@@ -181,6 +185,7 @@ export default class KhmerChessBoard {
         });
         this.domBoard = domBoard;
         this.graveyardManager.setDom(domGraveyard);
+        this.pieceShadowManager.setTdShadow(tdShadow);
         this.setCellNote();
         this.applyPieces();
         this.messageManager.draw();
@@ -261,12 +266,16 @@ export default class KhmerChessBoard {
         if (move.captured) {
             const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
             const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
-            fromBCell.movePieceToGraveyard(toGYCell);
+            this.pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
+                fromBCell.movePieceToGraveyard(toGYCell);
+            });
             this.soundManager.playCapture();
         }
         const fromCell = this.boardManager.get(move.moveFrom.index);
         const toCell = this.boardManager.get(move.moveTo.index);
-        fromCell.movePieceTo(toCell);
+        this.pieceShadowManager.movingPiece(fromCell, toCell, () => {
+            fromCell.movePieceTo(toCell);
+        });
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);

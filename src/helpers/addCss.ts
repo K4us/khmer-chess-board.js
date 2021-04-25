@@ -25,11 +25,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  *---------------------------------------------------------------------------- */
-import { Piece, PIECE_COLOR_BLACK } from 'khmer-chess';
+import { Piece } from 'khmer-chess';
 import {
     PIECES_SVG,
     svgCSS,
-    WOOD_COLORS,
 } from '../providers/svg';
 import {
     CSS_TABLE_SELECTOR,
@@ -44,6 +43,7 @@ import {
     TURN_CLASS_NAME,
     GRAVEYARD_CLASS_NAME,
     TR_PIECE_CLASS_NAME,
+    TR_PIECE_SHADOW_CLASS_NAME,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
@@ -85,6 +85,10 @@ export default function addCss({ uniqueClassName, options }:
             width: ${width}px;
             height: ${cellWidth}px;
         }
+        ${selector} .${TR_PIECE_SHADOW_CLASS_NAME} {
+            width: ${width}px;
+            height: 0;
+        }
         ${selector} .${TR_PIECE_CLASS_NAME} td {
             user-select: none;
             border: 1px solid #9e9e9e87;
@@ -94,6 +98,11 @@ export default function addCss({ uniqueClassName, options }:
             max-height: ${cellWidth}px;
             background-repeat: no-repeat;
             cursor: pointer;
+        }
+        ${selector} .${TR_PIECE_SHADOW_CLASS_NAME} div {
+            width: ${cellWidth}px;
+            height: ${cellWidth}px;
+            position: absolute;
         }
         ${selector} .${TR_PIECE_CLASS_NAME} td,
         ${selector} .${TR_PIECE_CLASS_NAME} td::before,
@@ -133,7 +142,6 @@ export default function addCss({ uniqueClassName, options }:
     // Turn
     Piece.colorChars.forEach((color) => {
         Piece.pieceChars.forEach((type) => {
-            const woodColor = color === PIECE_COLOR_BLACK ? WOOD_COLORS.BLACK : WOOD_COLORS.WHITE;
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
                 <style>${svgCSS.turn()}</style>
                 ${PIECES_SVG[color + type]}
@@ -160,7 +168,8 @@ export default function addCss({ uniqueClassName, options }:
                 ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.${ATTACKED_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
-                ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
+                ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE}
+                , ${selector} .${TR_PIECE_SHADOW_CLASS_NAME} div.type-${type}.color-${color}{
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
                 `;

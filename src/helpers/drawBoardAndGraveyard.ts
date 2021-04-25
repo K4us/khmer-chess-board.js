@@ -39,6 +39,7 @@ import {
     TABLE_CLASS,
     GRAVEYARD_CLASS_NAME,
     TR_PIECE_CLASS_NAME,
+    TR_PIECE_SHADOW_CLASS_NAME,
 } from '../providers/constance';
 
 type Type = {
@@ -86,7 +87,7 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < ROW_NUMBER; i++) {
         const tr = createTr(tbody);
-        tr.classList.add('tr-piece');
+        tr.classList.add(TR_PIECE_CLASS_NAME);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
             const cellPiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
@@ -94,6 +95,9 @@ export default function drawBoardAndGraveyard({
             boardManager.put(index, cellPiece);
         }
     }
+    const tr = createTr(tbody);
+    tr.classList.add(TR_PIECE_SHADOW_CLASS_NAME);
+    const tdShadow = createTd(tr);
 
     const trPlayerContainer = createTr(tbody);
     trPlayerContainer.classList.add('tr-player');
@@ -145,5 +149,6 @@ export default function drawBoardAndGraveyard({
         domBoard: table,
         domGraveyard: tableGraveyard,
         playerContainer: tdPlayerContainer,
+        tdShadow,
     };
 }
