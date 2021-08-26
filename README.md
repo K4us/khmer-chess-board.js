@@ -25,10 +25,3 @@ Screen Shot 2021-02-27 at 5.49.22 PM (KhmerChessBoard 1.0.13):
 > npm i
 > npm run build
 ```
-
-## Publish
-
-```bash
-> npm adduser
-> npm publish
-```
