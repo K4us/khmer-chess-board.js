@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khmer Chess Board</title>
+    <script src="../dist/khmer-chess-board.bundle.js"></script>
+</head>
+
+<body>
+    <button onclick="document.documentElement.requestFullscreen();">Full Screen</button>
+    <button onclick="screenshot();">Screenshot</button>
+    <div id="board-container"></div>
+    <script>
+        var container = document.getElementById("board-container");
+        var kcb = new KhmerChessBoard();
+        kcb.setOptions({
+            width: 600,
+            container: container
+        });
+        kcb.soundManager.enable();
+        document.addEventListener('fullscreenchange', (event) => {
+            if (document.fullscreenElement) {
+                kcb.setFullScreen(true);
+            } else {
+                kcb.setFullScreen(false);
+            }
+        });
+        kcb.start();
+    </script>
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function screenshot() {
+            html2canvas(document.querySelector("table." + kcb.options.uniqueClassName)).then(canvas => {
+                document.body.appendChild(canvas)
+            });
+        }
+    </script>
+</body>
+
+</html>
