@@ -119,7 +119,7 @@ export default function drawBoardAndGraveyard({
     }
 
     return {
-        domBoard: table,
+        domRootBoard: table,
         domGraveyard: tableGraveyard,
         playerContainer: tdPlayerContainer,
         tdShadow,

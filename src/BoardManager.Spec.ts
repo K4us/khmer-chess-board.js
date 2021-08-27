@@ -15,6 +15,10 @@ describe("KhmerChessBoard", function () {
         kcb.start();
     });
 
+    afterEach(() => {
+        kcb.boardManager.clearSelectedCells();
+    });
+
     it('should return correct cell', () => {
         const cell = kcb.boardManager.get(0);
         expect(cell.point.indexCode).toEqual('a1');
@@ -75,8 +79,7 @@ describe("KhmerChessBoard", function () {
         kcb.boardManager.flip();
         expect(cell0.point.indexCode).toBe('h8');
         expect(cell.point.index).toBe(CELL_COUNT - index - 1);
-        // turn back
-        kcb.boardManager.selectCell(cell);
+        // flip back
         kcb.boardManager.flip();
         expect(cell0.point.indexCode).toBe('a1');
         expect(cell.point.index).toBe(index);

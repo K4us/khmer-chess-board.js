@@ -44,7 +44,7 @@ export default class KhmerChessBoard {
     static title = config.name;
     static version = config.version;
     containerDom: HTMLElement;
-    domBoard: HTMLElement;
+    domRootBoard: HTMLElement;
     options: OptionsManager;
     playerManager: PlayerManager;
     graveyardManager: GraveyardManager;
@@ -94,8 +94,8 @@ export default class KhmerChessBoard {
         boardEventController.addOnCellSelectedEventListener((cell) => {
             const points = cell.canMovePoints;
             points.forEach((point) => {
-                const cell = this.boardManager.get(point.index);
-                cell.setCanMove();
+                const targetCell = this.boardManager.get(point.index);
+                targetCell.setCanMove();
             });
         });
         boardEventController.addOnCellDeselectedEventListener((cell) => {
@@ -124,7 +124,7 @@ export default class KhmerChessBoard {
 
     setFullScreen(isFullScreen: boolean) {
         this.options.isFullScreen = isFullScreen;
-        const table = this.domBoard;
+        const table = this.domRootBoard;
 
         table.classList.remove(POPUP_CLASS_NAME);
         table.style.top = '0';
@@ -145,7 +145,7 @@ export default class KhmerChessBoard {
     render() {
         this.addAllDomCss();
         const {
-            domBoard,
+            domRootBoard,
             domGraveyard,
             playerContainer,
             tdShadow,
@@ -156,7 +156,7 @@ export default class KhmerChessBoard {
             boardManager: this.boardManager,
             graveyardManager: this.graveyardManager,
         });
-        this.domBoard = domBoard;
+        this.domRootBoard = domRootBoard;
         this.graveyardManager.setDom(domGraveyard);
         this.pieceShadowManager.setTdShadow(tdShadow);
         this.setCellNote();
@@ -168,7 +168,7 @@ export default class KhmerChessBoard {
     setLocale(locale: string) {
         const locales = [KhmerChessBoard.LOCALE_ENGLISH, KhmerChessBoard.LOCALE_KHMER];
         if (!~locales.indexOf(locale)) {
-            console.log(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`);
+            throw new Error(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`);
         } else {
             this.options.isEnglish = locale === locales[0];
             this.setCellNote();
@@ -199,7 +199,7 @@ export default class KhmerChessBoard {
         });
     }
 
-    loadRen(renStr: string) {
+    loadRen(renStr?: string) {
         this.khmerChess.loadRENStr(renStr);
         this.applyPieces();
     }
@@ -258,6 +258,11 @@ export default class KhmerChessBoard {
 
     start() {
         this.boardManager.changeTurn(PIECE_COLOR_WHITE);
+    }
+
+    reset() {
+        // TODO: reset all state
+        this.loadRen();
     }
 }
 

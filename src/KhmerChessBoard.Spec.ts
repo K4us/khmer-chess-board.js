@@ -14,12 +14,26 @@ describe("KhmerChessBoard", function () {
         kcb.start();
     });
 
+    afterEach(() => {
+        kcb.boardManager.clearSelectedCells();
+        kcb.setFullScreen(false);
+        kcb.reset();
+    });
+
     it('should be function', () => {
         expect(typeof KhmerChessBoard).toEqual('function');
     });
 
     it('should has class', () => {
         expect(typeof kcb.options.uniqueClassName).toEqual('string');
+    });
+
+    it('should can move', () => {
+        const cell = kcb.boardManager.pieceInTurnCells[0];
+        kcb.boardManager.selectCell(cell);
+        const point = cell.canMovePoints[0];
+        const targetCell = kcb.boardManager.get(point.index);
+        expect(targetCell.isCanMove).toBeTrue();
     });
 
     it('should move', () => {
@@ -36,6 +50,64 @@ describe("KhmerChessBoard", function () {
 
         kcb.boardManager.selectCell(targetCell);
         expect(kcb.move).toHaveBeenCalledWith(cell.point.index, targetCell.point.index);
+    });
+
+    it('should thrown', () => {
+        const kcb1 = new KhmerChessBoard();
+        expect(() => {
+            kcb1.setOptions({
+                width: 600,
+                container: null
+            });
+        }).toThrow(new Error('Container is required!'));
+        const minWidth = kcb1.options.minWidth;
+        expect(() => {
+            kcb1.setOptions({
+                width: minWidth - 1,
+                container: document.createElement("div")
+            });
+        }).toThrow(new Error(`Board width must more than ${minWidth} `));
+    });
+
+    it('should set locale', () => {
+        const cell = kcb.boardManager.get(0);
+        const locales = [KhmerChessBoard.LOCALE_ENGLISH, KhmerChessBoard.LOCALE_KHMER];
+        const locale = KhmerChessBoard.LOCALE_ENGLISH + 1;
+        expect(() => {
+            kcb.setLocale(KhmerChessBoard.LOCALE_ENGLISH + 1);
+        }).toThrow(new Error(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`));
+
+        kcb.setLocale(KhmerChessBoard.LOCALE_ENGLISH);
+        expect(cell.hasClassName(kcb.options.enClass)).toBeTrue();
+        expect(kcb.options.isEnglish).toBeTrue();
+
+        kcb.setLocale(KhmerChessBoard.LOCALE_KHMER);
+        expect(cell.hasClassName(kcb.options.enClass)).toBeFalse();
+        expect(kcb.options.isEnglish).toBeFalse();
+    });
+
+    it('should root board should on top', () => {
+        kcb.setFullScreen(true);
+        const table = kcb.domRootBoard;
+        expect(table.style.zIndex).toBe('9999');
+    });
+
+    it('should load REN', () => {
+        const renStr = 'BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff';
+        kcb.loadRen(renStr);
+        expect(kcb.khmerChess.renInstance.toString()).toBe(renStr);
+    });
+
+    it('should destroyed', () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        const kcb1 = new KhmerChessBoard();
+        kcb1.setOptions({
+            width: 600,
+            container
+        });
+        kcb1.destroy();
+        expect(kcb1.khmerChess).toBeNull();
     });
 
 });

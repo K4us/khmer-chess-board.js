@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "k4us-share": "^1.0.5",
-    "khmer-chess": "^1.0.34"
+    "khmer-chess": "^1.0.36"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

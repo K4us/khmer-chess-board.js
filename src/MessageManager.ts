@@ -22,8 +22,8 @@ export default class MessageManager {
         this.domContainer.style.display = 'none';
     }
     draw() {
-        const container = this.khmerChessBoard.domBoard;
-        const bc = this.khmerChessBoard.domBoard.getBoundingClientRect();
+        const container = this.khmerChessBoard.domRootBoard;
+        const bc = this.khmerChessBoard.domRootBoard.getBoundingClientRect();
         const div = document.createElement('div');
         this.domContainer = div;
         div.classList.add(this.options.uniqueClassName);
