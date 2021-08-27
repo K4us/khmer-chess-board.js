@@ -6,6 +6,7 @@ export default class PieceShadowManager {
     tdShadowDom: HTMLElement;
     khmerChessBoard: KhmerChessBoard;
     options: OptionsManager;
+    quickMove = false;
     setTdShadow(tdShadowDown: HTMLElement) {
         this.tdShadowDom = tdShadowDown;
     }
@@ -14,34 +15,38 @@ export default class PieceShadowManager {
         this.options = khmerChessBoard.options;
     }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
-        const div = document.createElement('div');
-        if (!div.animate || this.options.isFullScreen) {
+        if (this.quickMove) {
+            fromCell.removePieceClasses();
             callback();
-            return;
+        } else {
+            const div = document.createElement('div');
+            if (!div.animate || this.options.isFullScreen) {
+                callback();
+                return;
+            }
+            const fromBc = fromCell.containerDom.getBoundingClientRect();
+            const toBc = toCell.containerDom.getBoundingClientRect();
+            this.tdShadowDom.appendChild(div);
+            div.style.top = `${fromBc.top}`;
+            div.style.left = `${fromBc.left}`;
+            div.classList.add(`type-${fromCell.piece.type}`);
+            div.classList.add(`color-${fromCell.piece.color}`);
+            fromCell.removePieceClasses();
+            const anim = div.animate([
+                {
+                    transform: 'translate(0px)',
+                    opacity: 1,
+                },
+                {
+                    transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
+                    opacity: 0,
+                },
+            ], 100);
+            anim.onfinish = () => {
+                this.tdShadowDom.removeChild(div);
+                callback();
+            };
         }
-        const fromBc = fromCell.containerDom.getBoundingClientRect();
-        const toBc = toCell.containerDom.getBoundingClientRect();
-        this.tdShadowDom.appendChild(div);
-        div.style.top = `${fromBc.top}`;
-        div.style.left = `${fromBc.left}`;
-        div.classList.add(`type-${fromCell.piece.type}`);
-        div.classList.add(`color-${fromCell.piece.color}`);
-
-        fromCell.removePieceClasses();
-        const anim = div.animate([
-            {
-                transform: 'translate(0px)',
-                opacity: 1,
-            },
-            {
-                transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
-                opacity: 0,
-            },
-        ], 100);
-        anim.onfinish = () => {
-            this.tdShadowDom.removeChild(div);
-            callback();
-        };
     }
 }
 

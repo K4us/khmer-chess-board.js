@@ -86,6 +86,17 @@ describe("KhmerChessBoard", function () {
         const cells = kcb.boardManager.pieceCells;
         expect(cells.length).toBe(32);
     });
+
+    it('should move', () => {
+        kcb.pieceShadowManager.quickMove = true;
+        const cell = kcb.boardManager.pieceInTurnCells[0];
+        const piece = cell.piece;
+        const point = cell.canMovePoints[0];
+        const targetCell = kcb.boardManager.get(point.index);
+        kcb.move(cell.point.index, targetCell.point.index);
+        const movedCells = kcb.boardManager.movedCells;
+        expect(movedCells[1].piece).toBe(piece);
+    });
 });
 
 /*

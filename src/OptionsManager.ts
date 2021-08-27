@@ -5,6 +5,7 @@ import {
 } from './providers/constance';
 import { genId } from './helpers/uniqueIdHelper';
 import { ROW_NUMBER } from 'khmer-chess';
+import KhmerChessBoard from './KhmerChessBoard';
 
 export default class OptionsManager {
     _width = 500;
@@ -18,7 +19,7 @@ export default class OptionsManager {
         return this._width;
     }
     get enClass() {
-        return 'en';
+        return KhmerChessBoard.LOCALE_ENGLISH;
     }
 
     getScaleFit(btr: ClientRect) {

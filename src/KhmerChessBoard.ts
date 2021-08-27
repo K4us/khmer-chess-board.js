@@ -39,6 +39,8 @@ export default class KhmerChessBoard {
     static PIECE_TYPE_KING = PIECE_TYPE_KING;
     static PIECE_TYPE_HORSE = PIECE_TYPE_HORSE;
     static PIECE_TYPE_FISH = PIECE_TYPE_FISH;
+    static LOCALE_ENGLISH = 'en';
+    static LOCALE_KHMER = 'km';
     static title = config.name;
     static version = config.version;
     containerDom: HTMLElement;
@@ -164,7 +166,7 @@ export default class KhmerChessBoard {
     }
 
     setLocale(locale: string) {
-        const locales = ['en', 'km'];
+        const locales = [KhmerChessBoard.LOCALE_ENGLISH, KhmerChessBoard.LOCALE_KHMER];
         if (!~locales.indexOf(locale)) {
             console.log(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`);
         } else {
