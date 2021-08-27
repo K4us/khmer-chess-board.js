@@ -12,8 +12,9 @@ export default class BoardManager {
     boardEventController: BoardManagerEventController<CellManager>;
     constructor();
     setProps(khmerChessBoard: KhmerChessBoard): void;
+    selectCell(cell: CellManager): void;
     enableClick(): void;
-    put(i: number, cellPiece: CellManager): void;
+    push(i: number, cell: CellManager): void;
     get(index: number): CellManager;
     getKing(color: string): CellManager;
     getByIndexCode(indexCode: string): CellManager;
@@ -21,6 +22,7 @@ export default class BoardManager {
     flip(): void;
     get pieceCells(): CellManager[];
     get pieceInTurnCells(): CellManager[];
+    get pieceNotInTurnCells(): CellManager[];
     get selectedCells(): CellManager[];
     get canMoveCells(): CellManager[];
     get movedCells(): CellManager[];

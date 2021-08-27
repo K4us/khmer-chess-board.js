@@ -1,11 +1,17 @@
-import { Point, Piece } from 'khmer-chess';
+import { Point, Piece, KhmerChess } from 'khmer-chess';
+import KhmerChessBoard from './KhmerChessBoard';
+import OptionsManager from './OptionsManager';
 export default class CellManager {
     point: Point;
     isGraveyard: boolean;
     containerDom: HTMLDivElement;
     piece: Piece;
     isUpsideDown: boolean;
+    options: OptionsManager;
+    khmerChessBoard: KhmerChessBoard;
+    khmerChess: KhmerChess;
     constructor(point: Point, container: HTMLDivElement, piece: Piece, isGraveyard?: boolean);
+    setProps(khmerChessBoard?: KhmerChessBoard): void;
     removePieceClasses(): void;
     removePiece(): void;
     setPiece(piece: Piece): void;
@@ -13,6 +19,7 @@ export default class CellManager {
     removeClassName(className: string): void;
     hasClassName(className: string): boolean;
     select(selected: boolean): void;
+    get canMovePoints(): Point[];
     get isSelected(): boolean;
     get isCanMove(): boolean;
     get isMoved(): boolean;

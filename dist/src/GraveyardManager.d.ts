@@ -10,7 +10,7 @@ export default class GraveyardManager {
     domGraveyard: HTMLElement;
     setProps(khmerChessBoard: KhmerChessBoard): void;
     setDom(domGraveyard: HTMLElement): void;
-    push(cellPiece: CellManager): void;
+    push(cell: CellManager): void;
     get(index: number): CellManager;
     setCellNote(): void;
     clearCellNote(): void;

@@ -7,6 +7,17 @@ import MessageManager from './MessageManager';
 import PlayerManager from './PlayerManager';
 import PieceShadowManager from './PieceShadowManager';
 export default class KhmerChessBoard {
+    static PIECE_COLOR_BLACK: string;
+    static PIECE_COLOR_WHITE: string;
+    static PIECE_TYPE_BOAT: string;
+    static PIECE_TYPE_TRANSFORM_FISH: string;
+    static PIECE_TYPE_GENERAL: string;
+    static PIECE_TYPE_QUEEN: string;
+    static PIECE_TYPE_KING: string;
+    static PIECE_TYPE_HORSE: string;
+    static PIECE_TYPE_FISH: string;
+    static LOCALE_ENGLISH: string;
+    static LOCALE_KHMER: string;
     static title: string;
     static version: string;
     containerDom: HTMLElement;
