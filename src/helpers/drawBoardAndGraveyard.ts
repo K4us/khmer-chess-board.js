@@ -63,9 +63,9 @@ export default function drawBoardAndGraveyard({
         tr.classList.add(TR_PIECE_CLASS_NAME);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const cellPiece = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
+            const cell = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
             const index = Point.xyToIndex(j, ROW_NUMBER - i - 1);
-            boardManager.put(index, cellPiece);
+            boardManager.push(index, cell);
         }
     }
     const tr = createTr(tbody);
@@ -114,8 +114,8 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const cellPiece = new CellManager(new Point(i, 0), tdGraveyard, null, true);
-        graveyardManager.push(cellPiece);
+        const cell = new CellManager(new Point(i, 0), tdGraveyard, null, true);
+        graveyardManager.push(cell);
     }
 
     return {

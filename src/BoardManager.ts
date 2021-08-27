@@ -56,8 +56,9 @@ export default class BoardManager {
         });
     }
 
-    put(i: number, cellPiece: CellManager) {
-        this._cellManagers[i] = cellPiece;
+    push(i: number, cell: CellManager) {
+        this._cellManagers[i] = cell;
+        cell.setProps(this.khmerChessBoard);
     }
 
     get(index: number) {

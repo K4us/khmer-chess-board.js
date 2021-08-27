@@ -12,13 +12,33 @@ import {
     KhmerChess,
     Move,
     Piece,
-    PIECE_COLOR_WHITE,
 } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayerManager from './PlayerManager';
 import PieceShadowManager from './PieceShadowManager';
 
+import {
+    PIECE_COLOR_BLACK,
+    PIECE_COLOR_WHITE,
+    PIECE_TYPE_BOAT,
+    PIECE_TYPE_TRANSFORM_FISH,
+    PIECE_TYPE_GENERAL,
+    PIECE_TYPE_QUEEN,
+    PIECE_TYPE_KING,
+    PIECE_TYPE_HORSE,
+    PIECE_TYPE_FISH,
+} from 'khmer-chess';
+
 export default class KhmerChessBoard {
+    static PIECE_COLOR_BLACK = PIECE_COLOR_BLACK;
+    static PIECE_COLOR_WHITE = PIECE_COLOR_WHITE;
+    static PIECE_TYPE_BOAT = PIECE_TYPE_BOAT;
+    static PIECE_TYPE_TRANSFORM_FISH = PIECE_TYPE_TRANSFORM_FISH;
+    static PIECE_TYPE_GENERAL = PIECE_TYPE_GENERAL;
+    static PIECE_TYPE_QUEEN = PIECE_TYPE_QUEEN;
+    static PIECE_TYPE_KING = PIECE_TYPE_KING;
+    static PIECE_TYPE_HORSE = PIECE_TYPE_HORSE;
+    static PIECE_TYPE_FISH = PIECE_TYPE_FISH;
     static title = config.name;
     static version = config.version;
     containerDom: HTMLElement;
@@ -70,7 +90,7 @@ export default class KhmerChessBoard {
         this.boardManager.enableClick();
         const boardEventController = this.boardManager.boardEventController;
         boardEventController.addOnCellSelectedEventListener((cell) => {
-            const points = this.khmerChess.getCanMovePointsByPoint(cell.point);
+            const points = cell.canMovePoints;
             points.forEach((point) => {
                 const cell = this.boardManager.get(point.index);
                 cell.setCanMove();

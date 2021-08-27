@@ -1,4 +1,5 @@
 import KhmerChessBoard from "./KhmerChessBoard";
+import { Point, CELL_COUNT } from "khmer-chess";
 
 describe("KhmerChessBoard", function () {
     let kcb: KhmerChessBoard = null;
@@ -41,6 +42,49 @@ describe("KhmerChessBoard", function () {
         kcb.boardManager.selectCell(cell2);
         expect(cell1.isSelected).toBeFalse();
         expect(cell2.isSelected).toBeTrue();
+    });
+
+    it('should return king', () => {
+        let cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_BLACK);
+        expect(cell.piece.isColorBlack).toBeTrue();
+        expect(cell.piece.isTypeKing).toBeTrue();
+        cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_WHITE);
+        expect(cell.piece.isColorWhite).toBeTrue();
+        expect(cell.piece.isTypeKing).toBeTrue();
+    });
+
+    it('should return by index code', () => {
+        const point = new Point(0, 0);
+        const cell = kcb.boardManager.getByIndexCode(point.indexCode);
+        expect(cell.point.indexCode).toBe(point.indexCode);
+    });
+
+    it('should return by x,y', () => {
+        const point = new Point(0, 0);
+        const cell = kcb.boardManager.getByXY(point.x, point.y);
+        expect(cell.point.indexCode).toBe(point.indexCode);
+    });
+
+    it('should flip', () => {
+        // TODO: test all possible flip features
+        const cell0 = kcb.boardManager.get(0);
+        const cell = kcb.boardManager.pieceInTurnCells[0];
+        const index = cell.point.index;
+        kcb.boardManager.selectCell(cell);
+        expect(cell0.point.indexCode).toBe('a1');
+        kcb.boardManager.flip();
+        expect(cell0.point.indexCode).toBe('h8');
+        expect(cell.point.index).toBe(CELL_COUNT - index - 1);
+        // turn back
+        kcb.boardManager.selectCell(cell);
+        kcb.boardManager.flip();
+        expect(cell0.point.indexCode).toBe('a1');
+        expect(cell.point.index).toBe(index);
+    });
+
+    it('should return all cells that has piece', () => {
+        const cells = kcb.boardManager.pieceCells;
+        expect(cells.length).toBe(32);
     });
 });
 

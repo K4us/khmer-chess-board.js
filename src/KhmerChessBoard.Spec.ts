@@ -11,6 +11,7 @@ describe("KhmerChessBoard", function () {
             width: 600,
             container
         });
+        kcb.start();
     });
 
     it('should be function', () => {
@@ -20,6 +21,23 @@ describe("KhmerChessBoard", function () {
     it('should has class', () => {
         expect(typeof kcb.options.uniqueClassName).toEqual('string');
     });
+
+    it('should move', () => {
+        const cell = kcb.boardManager.pieceInTurnCells[0];
+        expect(cell.isCanSelect).toBeTrue();
+        kcb.boardManager.selectCell(cell);
+        expect(cell.isSelected).toBeTrue();
+
+        const point = cell.canMovePoints[0];
+
+        const targetCell = kcb.boardManager.get(point.index);
+
+        spyOn(kcb, 'move');
+
+        kcb.boardManager.selectCell(targetCell);
+        expect(kcb.move).toHaveBeenCalledWith(cell.point.index, targetCell.point.index);
+    });
+
 });
 
 /*

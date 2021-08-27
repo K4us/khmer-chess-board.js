@@ -21,8 +21,9 @@ export default class GraveyardManager {
     setDom(domGraveyard: HTMLElement) {
         this.domGraveyard = domGraveyard;
     }
-    push(cellPiece: CellManager) {
-        this._cells.push(cellPiece);
+    push(cell: CellManager) {
+        this._cells.push(cell);
+        cell.setProps(this.khmerChessBoard);
     }
 
     get(index: number) {

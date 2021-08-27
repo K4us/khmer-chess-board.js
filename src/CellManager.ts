@@ -2,7 +2,10 @@ import {
     Point,
     Piece,
     CELL_COUNT,
+    KhmerChess,
 } from 'khmer-chess';
+import KhmerChessBoard from './KhmerChessBoard';
+import OptionsManager from './OptionsManager';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -19,12 +22,22 @@ export default class CellManager {
     containerDom: HTMLDivElement = document.createElement('td');
     piece: Piece = null;
     isUpsideDown = false;
+    options: OptionsManager;
+    khmerChessBoard: KhmerChessBoard;
+    khmerChess: KhmerChess;
     constructor(point: Point, container: HTMLDivElement,
         piece: Piece, isGraveyard = false) {
         this.point = point;
         this.containerDom = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
+    }
+    setProps(khmerChessBoard?: KhmerChessBoard) {
+        if (khmerChessBoard) {
+            this.khmerChessBoard = khmerChessBoard;
+            this.khmerChess = khmerChessBoard.khmerChess;
+            this.options = khmerChessBoard.options;
+        }
     }
     removePieceClasses() {
         this.removeClassName(PIECE_CLASS_NAME);
@@ -67,6 +80,11 @@ export default class CellManager {
         if (selected && this.piece) {
             this.addClassName(SELECTED_CLASS_NAME);
         }
+    }
+
+    get canMovePoints() {
+        const points = this.khmerChess.getCanMovePointsByPoint(this.point);
+        return points;
     }
 
     get isSelected() {
