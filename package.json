@@ -12,7 +12,8 @@
     "build": "del-cli dist -f && npm run build:bundle && npm run build:esnext",
     "lint": "eslint . --ext .ts ./src",
     "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
-    "test": "karma start karma.conf.js"
+    "test": "karma start karma.conf.js",
+    "cov": "http-server coverage/ -o"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "del-cli": "^4.0.1",
     "eslint": "^7.20.0",
     "file-loader": "^6.2.0",
+    "http-server": "^13.0.1",
     "karma": "^6.3.4",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^4.0.1",

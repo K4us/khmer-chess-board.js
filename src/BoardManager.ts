@@ -1,30 +1,3 @@
-/*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- *---------------------------------------------------------------------------- */
 import {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
@@ -54,31 +27,32 @@ export default class BoardManager {
         this.khmerChess = khmerChessBoard.khmerChess;
         this.options = khmerChessBoard.options;
     }
+    selectCell(cell: CellManager) {
+        this.boardEventController.click(cell);
+        const selectedList = this.selectedCells;
+        const selectedCell = selectedList[0];
+        if (selectedCell) {
+            if (cell === selectedCell) {
+                cell.select(false);
+                return this.boardEventController.deselected(selectedCell);
+            } else {
+                if (cell.isCanMove) {
+                    return this.boardEventController.attemptMove(selectedCell, cell);
+                }
+            }
+        }
+        if (cell.isCanSelect) {
+            if (selectedCell) {
+                selectedCell.select(false);
+                this.boardEventController.deselected(selectedCell);
+            }
+            cell.select(true);
+            return this.boardEventController.selected(cell);
+        }
+    }
     enableClick() {
         this._cellManagers.forEach((cell) => {
-            return cell.setOnClick(() => {
-                this.boardEventController.click(cell);
-                const selectedList = this.selectedCells;
-                const selectedCell = selectedList[0];
-                if (selectedCell) {
-                    if (cell === selectedCell) {
-                        cell.select(false);
-                        return this.boardEventController.deselected(selectedCell);
-                    } else {
-                        if (cell.isCanMove) {
-                            return this.boardEventController.attemptMove(selectedCell, cell);
-                        }
-                    }
-                }
-                if (cell.isCanSelect) {
-                    if (selectedCell) {
-                        selectedCell.select(false);
-                        this.boardEventController.deselected(selectedCell);
-                    }
-                    cell.select(true);
-                    return this.boardEventController.selected(cell);
-                }
-            });
+            return cell.setOnClick(this.selectCell.bind(this, cell));
         });
     }
 
@@ -142,10 +116,13 @@ export default class BoardManager {
     get pieceInTurnCells() {
         const turn = this.khmerChess.turn;
         return this._cellManagers.filter((cell) => {
-            // if(cell.point.index == 46){
-            //     debugger
-            // }
             return cell.piece && cell.piece.color === turn;
+        });
+    }
+    get pieceNotInTurnCells() {
+        const turn = this.khmerChess.turn;
+        return this._cellManagers.filter((cell) => {
+            return cell.piece && cell.piece.color !== turn;
         });
     }
     get selectedCells() {
@@ -264,3 +241,31 @@ export default class BoardManager {
         this.boardEventController.changeTurn();
     }
 }
+
+/*
+ * Copyright (c) 2021, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ **/

@@ -11,14 +11,36 @@ describe("KhmerChessBoard", function () {
             width: 600,
             container
         });
+        kcb.start();
     });
 
-    it('should be function', () => {
-        expect(typeof KhmerChessBoard).toEqual('function');
+    it('should return correct cell', () => {
+        const cell = kcb.boardManager.get(0);
+        expect(cell.point.indexCode).toEqual('a1');
     });
 
-    it('should has class', () => {
-        expect(typeof kcb.options.uniqueClassName).toEqual('string');
+    it('should be valid selection', () => {
+        const cell = kcb.boardManager.pieceNotInTurnCells[0];
+        kcb.boardManager.selectCell(cell);
+        expect(cell.isSelected).toBeFalse();
+    });
+
+    it('should make correct selected', () => {
+        const cell = kcb.boardManager.pieceInTurnCells[0];
+        kcb.boardManager.selectCell(cell);
+        expect(cell.isSelected).toBeTrue();
+        // second selection to clear
+        kcb.boardManager.selectCell(cell);
+        expect(cell.isSelected).toBeFalse();
+    });
+
+    it('should select another one', () => {
+        const cell1 = kcb.boardManager.pieceInTurnCells[0];
+        const cell2 = kcb.boardManager.pieceInTurnCells[2];
+        kcb.boardManager.selectCell(cell1);
+        kcb.boardManager.selectCell(cell2);
+        expect(cell1.isSelected).toBeFalse();
+        expect(cell2.isSelected).toBeTrue();
     });
 });
 
