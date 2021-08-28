@@ -168,6 +168,9 @@ export default class PlayerManager {
         }
         `;
     }
+    undo() {
+        throw new Error('TODO undo');
+    }
 }
 
 /*
