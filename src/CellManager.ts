@@ -127,9 +127,8 @@ export default class CellManager {
     get isTurn() {
         return this.hasClassName(TURN_CLASS_NAME);
     }
-
-    setProperties(prop: { className: string; }) {
-        this.containerDom.className = prop.className;
+    get onClick() {
+        return this.containerDom.onclick;
     }
 
     setOnClick(listener: (this: GlobalEventHandlers, ev: MouseEvent) => any) {

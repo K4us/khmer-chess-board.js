@@ -9,6 +9,19 @@ export default class MessageManager {
     messageClassName = 'message';
     domContainer: HTMLDivElement;
     domMessage: HTMLDivElement;
+    logEnabled = true;
+    enableLog() {
+        this.logEnabled = true;
+    }
+    disableLog() {
+        this.logEnabled = false;
+    }
+    log(message?: any, ...optionalParams: any[]) {
+        if (!this.logEnabled) {
+            return;
+        }
+        console.log(message, ...optionalParams);
+    }
     setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         this.options = khmerChessBoard.options;

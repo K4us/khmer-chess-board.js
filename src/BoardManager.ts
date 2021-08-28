@@ -6,7 +6,10 @@ import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import {
+    BOARD_SEPARATOR,
+    CELL_COUNT,
     KhmerChess,
+    PieceIndex,
     Point,
     ROW_NUMBER,
 } from 'khmer-chess';
@@ -50,9 +53,14 @@ export default class BoardManager {
             return this.boardEventController.selected(cell);
         }
     }
-    enableClick() {
+    attachClickEvent() {
         this._cellManagers.forEach((cell) => {
             return cell.setOnClick(this.selectCell.bind(this, cell));
+        });
+    }
+    detachClickEvent() {
+        this._cellManagers.forEach((cell) => {
+            return cell.removeOnClick();
         });
     }
 
@@ -151,6 +159,24 @@ export default class BoardManager {
             return cell.isTurn;
         });
     }
+    get piecesInBoard() {
+        return this._cellManagers.map((cell) => {
+            return cell.piece;
+        });
+    }
+    toString() {
+        // TODO: replace with this.khmerChess.renInstance.board.toStringFull
+        let str = this.piecesInBoard.map((piece, i) => {
+            const pieceIndex = new PieceIndex(Point.fromIndex(i), piece);
+            const p = pieceIndex.toPieceCharCode();
+            if (i && i % ROW_NUMBER === 0 && i !== CELL_COUNT) {
+                return `${BOARD_SEPARATOR}${p}`;
+            }
+            return p;
+        }).join('');
+        str = this.khmerChess.renInstance.board.compress(str);
+        return str;
+    }
 
     clearSelectedCells() {
         this.selectedCells.forEach((cell) => {
@@ -231,10 +257,12 @@ export default class BoardManager {
         });
     }
 
-    changeTurn(turn: string) {
-        this.khmerChess.turn = turn;
-        this._cellManagers.forEach((cell) => {
-            cell.turn(false);
+    changeTurn(turn?: string) {
+        if (turn) {
+            this.khmerChess.turn = turn;
+        }
+        this.pieceInTurnCells.forEach((cell) => {
+            cell.turn(true);
         });
         this.pieceInTurnCells.forEach((cell) => {
             cell.turn(true);

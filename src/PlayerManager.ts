@@ -3,6 +3,7 @@ import KhmerChessBoard from './KhmerChessBoard';
 import appendCss from './helpers/appendCss';
 import PlayManagerEventController from './event/PlayManagerEventController';
 
+// TODO: implement play
 class MoveData {
     renData: string;
     dom: HTMLElement;

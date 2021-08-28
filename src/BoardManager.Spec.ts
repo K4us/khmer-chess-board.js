@@ -1,22 +1,16 @@
 import KhmerChessBoard from "./KhmerChessBoard";
 import { Point, CELL_COUNT } from "khmer-chess";
+import { init, capturing, reset, attacking } from "./test/helper";
 
 describe("KhmerChessBoard", function () {
-    let kcb: KhmerChessBoard = null;
+    const kcb: KhmerChessBoard = new KhmerChessBoard();
 
     beforeAll(() => {
-        const container = document.createElement("div");
-        document.body.appendChild(container);
-        kcb = new KhmerChessBoard();
-        kcb.setOptions({
-            width: 600,
-            container
-        });
-        kcb.start();
+        init(kcb);
     });
 
     afterEach(() => {
-        kcb.boardManager.clearSelectedCells();
+        reset(kcb);
     });
 
     it('should return correct cell', () => {
@@ -91,7 +85,6 @@ describe("KhmerChessBoard", function () {
     });
 
     it('should move', () => {
-        kcb.pieceShadowManager.quickMove = true;
         const cell = kcb.boardManager.pieceInTurnCells[0];
         const piece = cell.piece;
         const point = cell.canMovePoints[0];
@@ -99,6 +92,37 @@ describe("KhmerChessBoard", function () {
         kcb.move(cell.point.index, targetCell.point.index);
         const movedCells = kcb.boardManager.movedCells;
         expect(movedCells[1].piece).toBe(piece);
+    });
+
+    it('should capture', () => {
+        kcb.loadRen(capturing.renStr);
+        const piece = kcb.boardManager.get(capturing.toIndex).piece;
+        expect(kcb.graveyardManager.get(6).piece).toBeNull();
+        kcb.move(capturing.fromIndex, capturing.toIndex);
+        const capturedP = kcb.graveyardManager.get(6).piece;
+        expect(capturedP).not.toBeNull();
+        expect(capturedP).toBe(piece);
+    });
+
+    it('should call attack', () => {
+        kcb.loadRen(attacking.renStr);
+        spyOn(kcb, 'attack');
+        kcb.move(attacking.fromIndex, attacking.toIndex);
+        expect(kcb.attack).toHaveBeenCalled();
+    });
+
+    it('should attack', () => {
+        kcb.loadRen(attacking.renStr);
+        kcb.move(attacking.fromIndex, attacking.toIndex);
+        const cell = kcb.boardManager.get(attacking.toIndex);
+        const king = kcb.boardManager.getKing(cell.piece.colorOpponent);
+        expect(king.isAttacked).toBeTrue();
+    });
+
+    it('should detach click event', () => {
+        kcb.boardManager.detachClickEvent();
+        const cell = kcb.boardManager.get(0);
+        expect(cell.onClick).toBeNull();
     });
 });
 

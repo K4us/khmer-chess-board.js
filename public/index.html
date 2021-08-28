@@ -10,6 +10,8 @@
 
 <body>
     <button onclick="toggleFullScreen();">Toggle Full Screen</button>
+    <br>
+    <button onclick="resetBoard();">Reset</button>
     <div id="board-container1"></div>
     <div id="board-container2"></div>
     <script>
@@ -38,6 +40,10 @@
         kcb1.playerManager.playEventController.addOnNextEventListener(() => {
             console.log('next');
         });
+        function resetBoard() {
+            kcb1.reset();
+            kcb1.start();
+        }
         // kcb1.messageManager.showMessage('hello');
         // 'a'.repeat(30).split('').forEach(() => kcb1.playerManager.add('12'));
         // kcb.boardManager.get(63).attacked()

@@ -58,11 +58,11 @@ export default class KhmerChessBoard {
         width: number;
     }) {
 
+        this.khmerChess = new KhmerChess();
         this.options = new OptionsManager();
         this.playerManager = new PlayerManager();
         this.graveyardManager = new GraveyardManager();
         this.boardManager = new BoardManager();
-        this.khmerChess = new KhmerChess();
         this.soundManager = new SoundManager();
         this.messageManager = new MessageManager();
         this.pieceShadowManager = new PieceShadowManager();
@@ -85,11 +85,13 @@ export default class KhmerChessBoard {
         this.playerManager.setProps(this);
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
+        this.soundManager.setProps(this);
         this.messageManager.setProps(this);
         this.pieceShadowManager.setProps(this);
-        this.render();
 
-        this.boardManager.enableClick();
+        this.render();
+        this.boardManager.attachClickEvent();
+
         const boardEventController = this.boardManager.boardEventController;
         boardEventController.addOnCellSelectedEventListener((cell) => {
             const points = cell.canMovePoints;
@@ -106,14 +108,17 @@ export default class KhmerChessBoard {
         });
         this.khmerChess.addBoardEventListener((boardEvent: BoardEvent) => {
             if (boardEvent.isAttack) {
-                const cell = this.boardManager.get(boardEvent.actorPieceIndex.point.index);
-                cell.attack(true);
-                const king = this.boardManager.getKing(cell.piece.colorOpponent);
-                king.attack(true);
+                this.attack(boardEvent);
             }
         });
     }
-
+    attack(boardEvent: BoardEvent) {
+        const actorPieceIndex = boardEvent.actorPieceIndex;
+        const cell = this.boardManager.get(actorPieceIndex.point.index);
+        cell.attack(true);
+        const king = this.boardManager.getKing(actorPieceIndex.piece.colorOpponent);
+        king.attack(true);
+    }
     move(fromIndex: number, toIndex: number) {
         const move = this.khmerChess.move(fromIndex, toIndex);
         this.boardManager.clearSelectedCells();
@@ -202,6 +207,7 @@ export default class KhmerChessBoard {
     loadRen(renStr?: string) {
         this.khmerChess.loadRENStr(renStr);
         this.applyPieces();
+        this.boardManager.changeTurn(this.khmerChess.turn);
     }
 
     applyPieces() {
@@ -256,13 +262,21 @@ export default class KhmerChessBoard {
         this.boardManager.changeTurn(turn);
     }
 
-    start() {
-        this.boardManager.changeTurn(PIECE_COLOR_WHITE);
+    start(turningColor?: string) {
+        this.boardManager.changeTurn(turningColor);
+    }
+    stop() {
+        this.boardManager.clearTurnCells();
     }
 
     reset() {
         // TODO: reset all state
+        this.boardManager.clearSelectedCells();
+        this.boardManager.clearAttackCells();
+        this.boardManager.clearMovedCells();
+        this.stop();
         this.loadRen();
+        this.boardManager.attachClickEvent();
     }
 }
 

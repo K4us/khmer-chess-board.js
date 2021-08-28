@@ -7,6 +7,19 @@ export default class PieceShadowManager {
     khmerChessBoard: KhmerChessBoard;
     options: OptionsManager;
     quickMove = false;
+    pending: {
+        resolvers: Array<() => void>,
+        callbacks: Array<() => void>,
+    } = {
+            resolvers: [],
+            callbacks: [],
+        }
+    enableQuickMove() {
+        this.quickMove = true;
+    }
+    disableQuickMove() {
+        this.quickMove = false;
+    }
     setTdShadow(tdShadowDown: HTMLElement) {
         this.tdShadowDom = tdShadowDown;
     }
@@ -15,38 +28,61 @@ export default class PieceShadowManager {
         this.options = khmerChessBoard.options;
     }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
+        let pendingCallback = () => {
+            callback();
+            this.pending.callbacks = this.pending.callbacks.filter((cb) => cb !== pendingCallback);
+            this._resolve();
+            pendingCallback = () => { };
+        }
+        this.pending.callbacks.push(pendingCallback);
         if (this.quickMove) {
             fromCell.removePieceClasses();
-            callback();
+            pendingCallback();
         } else {
             const div = document.createElement('div');
             if (!div.animate || this.options.isFullScreen) {
-                callback();
-                return;
+                pendingCallback();
+            } else {
+                const fromBc = fromCell.containerDom.getBoundingClientRect();
+                const toBc = toCell.containerDom.getBoundingClientRect();
+                this.tdShadowDom.appendChild(div);
+                div.style.top = `${fromBc.top}`;
+                div.style.left = `${fromBc.left}`;
+                div.classList.add(`type-${fromCell.piece.type}`);
+                div.classList.add(`color-${fromCell.piece.color}`);
+                fromCell.removePieceClasses();
+                setTimeout(() => {
+                    pendingCallback();
+                }, 2e3);
+                const option = [
+                    {
+                        transform: 'translate(0px)',
+                        opacity: 1,
+                    },
+                    {
+                        transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
+                        opacity: 0,
+                    },
+                ];
+                const animation = div.animate(option, 100);
+                animation.onfinish = () => {
+                    this.tdShadowDom.removeChild(div);
+                    pendingCallback();
+                };
             }
-            const fromBc = fromCell.containerDom.getBoundingClientRect();
-            const toBc = toCell.containerDom.getBoundingClientRect();
-            this.tdShadowDom.appendChild(div);
-            div.style.top = `${fromBc.top}`;
-            div.style.left = `${fromBc.left}`;
-            div.classList.add(`type-${fromCell.piece.type}`);
-            div.classList.add(`color-${fromCell.piece.color}`);
-            fromCell.removePieceClasses();
-            const anim = div.animate([
-                {
-                    transform: 'translate(0px)',
-                    opacity: 1,
-                },
-                {
-                    transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
-                    opacity: 0,
-                },
-            ], 100);
-            anim.onfinish = () => {
-                this.tdShadowDom.removeChild(div);
-                callback();
-            };
         }
+    }
+    _resolve() {
+        while (!this.pending.callbacks.length && this.pending.resolvers.length) {
+            const resolve = this.pending.resolvers.shift();
+            resolve();
+        }
+    }
+    resolveAnimation(): Promise<void> {
+        return new Promise((resolve, _) => {
+            this.pending.resolvers.push(resolve);
+            this._resolve();
+        });
     }
 }
 

@@ -1,23 +1,15 @@
 import KhmerChessBoard from "./KhmerChessBoard";
+import { init, reset } from "./test/helper";
 
 describe("KhmerChessBoard", function () {
-    let kcb: KhmerChessBoard = null;
+    const kcb: KhmerChessBoard = new KhmerChessBoard();
 
     beforeAll(() => {
-        const container = document.createElement("div");
-        document.body.appendChild(container);
-        kcb = new KhmerChessBoard();
-        kcb.setOptions({
-            width: 600,
-            container
-        });
-        kcb.start();
+        init(kcb);
     });
 
     afterEach(() => {
-        kcb.boardManager.clearSelectedCells();
-        kcb.setFullScreen(false);
-        kcb.reset();
+        reset(kcb);
     });
 
     it('should be function', () => {
@@ -95,7 +87,7 @@ describe("KhmerChessBoard", function () {
     it('should load REN', () => {
         const renStr = 'BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff';
         kcb.loadRen(renStr);
-        expect(kcb.khmerChess.renInstance.toString()).toBe(renStr);
+        expect(kcb.boardManager.toString()).toBe(kcb.khmerChess.renInstance.board.toString());
     });
 
     it('should destroyed', () => {

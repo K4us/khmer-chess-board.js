@@ -1,3 +1,4 @@
+import KhmerChessBoard from './KhmerChessBoard';
 import AUDIO from './providers/audio';
 
 export default class SoundManager {
@@ -8,6 +9,10 @@ export default class SoundManager {
     capture: HTMLAudioElement = null;
     check: HTMLAudioElement = null;
     isEnable = false;
+    khmerChessBoard: KhmerChessBoard;
+    setProps(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+    }
     disable() {
         this.isEnable = false;
         if (this.move) {
@@ -22,7 +27,7 @@ export default class SoundManager {
             this.check.parentElement.removeChild(this.check);
             this.check = null;
         }
-        console.log('Sound is disabled');
+        this.khmerChessBoard.messageManager.log('Sound is disabled');
     }
 
     enable() {
@@ -30,7 +35,7 @@ export default class SoundManager {
         this.move = this._addSound(AUDIO.move);
         this.capture = this._addSound(AUDIO.capture);
         this.check = this._addSound(AUDIO.check);
-        console.log('Sound is enabled');
+        this.khmerChessBoard.messageManager.log('Sound is enabled');
     }
 
     _addSound(src: string) {
@@ -45,7 +50,7 @@ export default class SoundManager {
 
     play(flag: string) {
         if (!this.isEnable) {
-            console.log('Sound is disable');
+            this.khmerChessBoard.messageManager.log('Sound is disable');
             return;
         }
         switch (flag) {
@@ -59,7 +64,7 @@ export default class SoundManager {
                 this.check && this.check.play();
                 break;
             default:
-                console.log('Invalid sound flag');
+                this.khmerChessBoard.messageManager.log('Invalid sound flag');
         }
     }
 
