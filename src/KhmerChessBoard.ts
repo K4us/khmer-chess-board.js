@@ -41,6 +41,7 @@ export default class KhmerChessBoard {
     static PIECE_TYPE_FISH = PIECE_TYPE_FISH;
     static LOCALE_ENGLISH = 'en';
     static LOCALE_KHMER = 'km';
+    static info = config;
     static title = config.name;
     static version = config.version;
     containerDom: HTMLElement;
@@ -258,7 +259,7 @@ export default class KhmerChessBoard {
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);
-        this.playManager.add(move.toString(), move.getMessage(this.options.isEnglish));
+        this.playManager.addMoveData(move.toString(), move.getMessage(this.options.isEnglish));
         this.boardManager.changeTurn(turn);
     }
 

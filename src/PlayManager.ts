@@ -56,7 +56,7 @@ export default class PlayManager {
         this.options = khmerChessBoard.options;
         appendCss(this.options.uniqueClassName, this.css());
     }
-    add(str: string, title: string) {
+    addMoveData(str: string, title: string) {
         const moveData = new MoveData({
             containerDom: this.containerDom,
             renData: '',
@@ -173,6 +173,8 @@ export default class PlayManager {
     }
     stop() {
         this.khmerChessBoard.boardManager.clearTurnCells();
+    }
+    render() {
     }
 }
 

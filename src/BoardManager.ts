@@ -168,7 +168,7 @@ export default class BoardManager {
         const pieceIndices = this.piecesInBoard.map((piece, i) => {
             return new PieceIndex(Point.fromIndex(i), piece);
         });
-        const str = this.khmerChess.renInstance.board.toString(pieceIndices);
+        const str = this.khmerChess.kpgn.ren.board.toString(pieceIndices);
         return str;
     }
 
