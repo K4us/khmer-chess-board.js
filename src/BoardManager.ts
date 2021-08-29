@@ -165,16 +165,10 @@ export default class BoardManager {
         });
     }
     toString() {
-        // TODO: replace with this.khmerChess.renInstance.board.toStringFull
-        let str = this.piecesInBoard.map((piece, i) => {
-            const pieceIndex = new PieceIndex(Point.fromIndex(i), piece);
-            const p = pieceIndex.toPieceCharCode();
-            if (i && i % ROW_NUMBER === 0 && i !== CELL_COUNT) {
-                return `${BOARD_SEPARATOR}${p}`;
-            }
-            return p;
-        }).join('');
-        str = this.khmerChess.renInstance.board.compress(str);
+        const pieceIndices = this.piecesInBoard.map((piece, i) => {
+            return new PieceIndex(Point.fromIndex(i), piece);
+        });
+        const str = this.khmerChess.renInstance.board.toString(pieceIndices);
         return str;
     }
 

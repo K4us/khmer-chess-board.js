@@ -6,7 +6,15 @@ export default class PieceShadowManager {
     khmerChessBoard: KhmerChessBoard;
     options: OptionsManager;
     quickMove: boolean;
+    pending: {
+        resolvers: Array<() => void>;
+        callbacks: Array<() => void>;
+    };
+    enableQuickMove(): void;
+    disableQuickMove(): void;
     setTdShadow(tdShadowDown: HTMLElement): void;
     setProps(khmerChessBoard: KhmerChessBoard): void;
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function): void;
+    _resolve(): void;
+    resolveAnimation(): Promise<void>;
 }

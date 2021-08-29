@@ -28,9 +28,7 @@ export default class CellManager {
     turn(attacked: boolean): void;
     get isAttacked(): boolean;
     get isTurn(): boolean;
-    setProperties(prop: {
-        className: string;
-    }): void;
+    get onClick(): (this: GlobalEventHandlers, ev: MouseEvent) => any;
     setOnClick(listener: (this: GlobalEventHandlers, ev: MouseEvent) => any): void;
     removeOnClick(): void;
     setFlipped(isUpsideDown: boolean): void;

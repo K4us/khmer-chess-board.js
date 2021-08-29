@@ -13,7 +13,8 @@ export default class BoardManager {
     constructor();
     setProps(khmerChessBoard: KhmerChessBoard): void;
     selectCell(cell: CellManager): void;
-    enableClick(): void;
+    attachClickEvent(): void;
+    detachClickEvent(): void;
     push(i: number, cell: CellManager): void;
     get(index: number): CellManager;
     getKing(color: string): CellManager;
@@ -28,6 +29,8 @@ export default class BoardManager {
     get movedCells(): CellManager[];
     get attackedCells(): CellManager[];
     get turnCells(): CellManager[];
+    get piecesInBoard(): import("khmer-chess").Piece[];
+    toString(): string;
     clearSelectedCells(): void;
     clearCanMoveCells(): void;
     clearMovedCells(): void;
@@ -38,5 +41,5 @@ export default class BoardManager {
     setCellNote(): void;
     clearCellNote(): void;
     renderKhmerChessPieces(): void;
-    changeTurn(turn: string): void;
+    changeTurn(turn?: string): void;
 }

@@ -9,9 +9,9 @@ declare type Type = {
     graveyardManager: GraveyardManager;
 };
 export default function drawBoardAndGraveyard({ uniqueClassName, options, container, boardManager, graveyardManager }: Type): {
-    domBoard: HTMLTableElement;
+    domRootBoard: HTMLTableElement;
     domGraveyard: HTMLTableElement;
-    playerContainer: HTMLTableDataCellElement;
-    tdShadow: HTMLTableDataCellElement;
+    playerContainer: HTMLTableCellElement;
+    tdShadow: HTMLTableCellElement;
 };
 export {};

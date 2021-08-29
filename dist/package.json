@@ -1,0 +1,59 @@
+{
+    "name": "khmer-chess-board",
+    "version": "1.0.26",
+    "description": "Khmer Chess Javascript library to simulate chess board",
+    "main": "src/KhmerChessBoard.ts",
+    "scripts": {
+        "start": "webpack serve --config webpack.config.js",
+        "build": "del-cli dist -f && npm run build:ts && npm run build:bundle",
+        "build:bundle": "npm run build:cp && webpack --config webpack.config.production.js",
+        "build:cp": "cp-cli public dist/public && cp-cli node_modules/k4us-share/font dist/node_modules/k4us-share/font",
+        "build:ts": "tsc --project tsconfig.production.json",
+        "lint": "eslint . --ext .ts ./src",
+        "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
+        "test": "karma start karma.conf.js",
+        "cov": "http-server coverage/ -o"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/K4us/khmer-chess-board.js.git"
+    },
+    "author": "Raksa Eng <eng.raksa@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/K4us/khmer-chess-board.js/issues"
+    },
+    "homepage": "https://github.com/K4us/khmer-chess-board.js#readme",
+    "keywords": [
+        "Khmer",
+        "KhmerChess",
+        "Chess",
+        "Board"
+    ],
+    "dependencies": {
+        "k4us-share": "^1.0.5",
+        "khmer-chess": "^1.0.38"
+    },
+    "devDependencies": {
+        "@types/jasmine": "^3.8.2",
+        "@typescript-eslint/eslint-plugin": "^4.15.1",
+        "@typescript-eslint/parser": "^4.15.1",
+        "cp-cli": "^2.0.0",
+        "del-cli": "^4.0.1",
+        "eslint": "^7.20.0",
+        "file-loader": "^6.2.0",
+        "http-server": "^13.0.1",
+        "karma": "^6.3.4",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-jasmine": "^4.0.1",
+        "karma-typescript": "^5.5.2",
+        "source-map-loader": "0.2.3",
+        "svg-inline-loader": "^0.8.2",
+        "ts-loader": "^9.2.5",
+        "tslint-loader": "3.6.0",
+        "typescript": "^4.3.5",
+        "webpack": "^5.21.2",
+        "webpack-cli": "^4.5.0",
+        "webpack-dev-server": "^3.11.2"
+    }
+}

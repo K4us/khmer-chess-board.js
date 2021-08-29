@@ -51,9 +51,9 @@ export default class PieceShadowManager {
                 div.classList.add(`type-${fromCell.piece.type}`);
                 div.classList.add(`color-${fromCell.piece.color}`);
                 fromCell.removePieceClasses();
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     pendingCallback();
-                }, 2e3);
+                }, 1e3);
                 const option = [
                     {
                         transform: 'translate(0px)',
@@ -66,6 +66,7 @@ export default class PieceShadowManager {
                 ];
                 const animation = div.animate(option, 100);
                 animation.onfinish = () => {
+                    clearTimeout(timeout);
                     this.tdShadowDom.removeChild(div);
                     pendingCallback();
                 };

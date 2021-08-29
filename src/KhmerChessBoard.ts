@@ -14,7 +14,7 @@ import {
     Piece,
 } from 'khmer-chess';
 import MessageManager from './MessageManager';
-import PlayerManager from './PlayerManager';
+import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
 
 import {
@@ -46,7 +46,7 @@ export default class KhmerChessBoard {
     containerDom: HTMLElement;
     domRootBoard: HTMLElement;
     options: OptionsManager;
-    playerManager: PlayerManager;
+    playManager: PlayManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
@@ -60,7 +60,7 @@ export default class KhmerChessBoard {
 
         this.khmerChess = new KhmerChess();
         this.options = new OptionsManager();
-        this.playerManager = new PlayerManager();
+        this.playManager = new PlayManager();
         this.graveyardManager = new GraveyardManager();
         this.boardManager = new BoardManager();
         this.soundManager = new SoundManager();
@@ -82,7 +82,7 @@ export default class KhmerChessBoard {
             this.options.width = options.width;
         }
 
-        this.playerManager.setProps(this);
+        this.playManager.setProps(this);
         this.graveyardManager.setProps(this);
         this.boardManager.setProps(this);
         this.soundManager.setProps(this);
@@ -167,7 +167,7 @@ export default class KhmerChessBoard {
         this.setCellNote();
         this.applyPieces();
         this.messageManager.draw();
-        this.playerManager.draw(playerContainer);
+        this.playManager.draw(playerContainer);
     }
 
     setLocale(locale: string) {
@@ -258,15 +258,12 @@ export default class KhmerChessBoard {
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);
-        this.playerManager.add(move.toString(), move.getMessage(this.options.isEnglish));
+        this.playManager.add(move.toString(), move.getMessage(this.options.isEnglish));
         this.boardManager.changeTurn(turn);
     }
 
     start(turningColor?: string) {
         this.boardManager.changeTurn(turningColor);
-    }
-    stop() {
-        this.boardManager.clearTurnCells();
     }
 
     reset() {
@@ -274,16 +271,11 @@ export default class KhmerChessBoard {
         this.boardManager.clearSelectedCells();
         this.boardManager.clearAttackCells();
         this.boardManager.clearMovedCells();
-        this.stop();
+        this.playManager.stop();
         this.loadRen();
         this.boardManager.attachClickEvent();
     }
 }
-
-console.log(KhmerChess.title, KhmerChess.version);
-console.log(KhmerChessBoard.title, KhmerChessBoard.version);
-
-(window as any).KhmerChessBoard = KhmerChessBoard;
 
 /*
   ┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓

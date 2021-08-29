@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./dist-dev/",
     "sourceMap": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,

@@ -1,3 +1,4 @@
+import KhmerChessBoard from './KhmerChessBoard';
 export default class SoundManager {
     static MOVE_FLAG: string;
     static CAPTURE_FLAG: string;
@@ -6,6 +7,8 @@ export default class SoundManager {
     capture: HTMLAudioElement;
     check: HTMLAudioElement;
     isEnable: boolean;
+    khmerChessBoard: KhmerChessBoard;
+    setProps(khmerChessBoard: KhmerChessBoard): void;
     disable(): void;
     enable(): void;
     _addSound(src: string): HTMLAudioElement;

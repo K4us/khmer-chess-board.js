@@ -2,9 +2,9 @@ import GraveyardManager from './GraveyardManager';
 import SoundManager from './SoundManager';
 import BoardManager from './BoardManager';
 import OptionsManager from './OptionsManager';
-import { KhmerChess, Move } from 'khmer-chess';
+import { BoardEvent, KhmerChess, Move } from 'khmer-chess';
 import MessageManager from './MessageManager';
-import PlayerManager from './PlayerManager';
+import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
 export default class KhmerChessBoard {
     static PIECE_COLOR_BLACK: string;
@@ -21,9 +21,9 @@ export default class KhmerChessBoard {
     static title: string;
     static version: string;
     containerDom: HTMLElement;
-    domBoard: HTMLElement;
+    domRootBoard: HTMLElement;
     options: OptionsManager;
-    playerManager: PlayerManager;
+    playManager: PlayManager;
     graveyardManager: GraveyardManager;
     boardManager: BoardManager;
     khmerChess: KhmerChess;
@@ -34,17 +34,19 @@ export default class KhmerChessBoard {
         container: HTMLElement;
         width: number;
     }): void;
+    attack(boardEvent: BoardEvent): void;
     move(fromIndex: number, toIndex: number): void;
     setFullScreen(isFullScreen: boolean): void;
     render(): void;
     setLocale(locale: string): void;
     setCellNote(): void;
     addAllDomCss(): void;
-    loadRen(renStr: string): void;
+    loadRen(renStr?: string): void;
     applyPieces(): void;
     removeAllDomElements(): void;
     removeAllDomCss(): void;
     destroy(): void;
     applyMove(move: Move): void;
-    start(): void;
+    start(turningColor?: string): void;
+    reset(): void;
 }
