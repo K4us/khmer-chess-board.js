@@ -156,12 +156,17 @@ export default class BoardManager {
     }
     get turnCells() {
         return this._cellManagers.filter((cell) => {
-            return cell.isTurn;
+            return cell.isTurning;
         });
     }
     get piecesInBoard() {
         return this._cellManagers.map((cell) => {
             return cell.piece;
+        });
+    }
+    get isTurning() {
+        return !!this._cellManagers.find((cell) => {
+            return cell.isTurning;
         });
     }
     toString() {

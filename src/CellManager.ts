@@ -124,7 +124,7 @@ export default class CellManager {
         return this.hasClassName(ATTACKED_CLASS_NAME);
     }
 
-    get isTurn() {
+    get isTurning() {
         return this.hasClassName(TURN_CLASS_NAME);
     }
     get onClick() {

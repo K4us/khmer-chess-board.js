@@ -35,6 +35,10 @@ class MoveData {
             this.dom.classList.add('current');
         }
     }
+    destroy() {
+        this.dom.onclick = null;
+        this.dom.parentElement.removeChild(this.dom);
+    }
 }
 
 export default class PlayManager {
@@ -44,10 +48,11 @@ export default class PlayManager {
     containerDom: HTMLElement;
     renDataList: MoveData[] = [];
     playEventController: PlayManagerEventController<MoveData>;
-    backBtnDom: HTMLElement;
-    playBtnDom: HTMLElement;
-    pauseBtnDom: HTMLElement;
-    nextBtnDom: HTMLElement;
+    backBtnDom: HTMLButtonElement;
+    playBtnDom: HTMLButtonElement;
+    pauseBtnDom: HTMLButtonElement;
+    nextBtnDom: HTMLButtonElement;
+    currentIndex = 0;
     constructor() {
         this.playEventController = new PlayManagerEventController();
     }
@@ -56,25 +61,27 @@ export default class PlayManager {
         this.options = khmerChessBoard.options;
         appendCss(this.options.uniqueClassName, this.css());
     }
-    addMoveData(str: string, title: string) {
-        const moveData = new MoveData({
-            containerDom: this.containerDom,
-            renData: '',
-            title,
-            str,
-            onClick: () => {
-                this.playEventController.click(moveData);
-            },
+    renderMoveData() {
+        this.renDataList.forEach((moveData) => {
+            moveData.destroy();
+        })
+        const isEnglish = this.options.isEnglish;
+        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
+        this.renDataList = moves.map((move, i) => {
+            const moveData = new MoveData({
+                containerDom: this.containerDom,
+                renData: '',
+                title: move.getMessage(isEnglish),
+                str: move.toString(),
+                onClick: () => {
+                    this.playEventController.click(moveData);
+                },
+            });
+            if (this.currentIndex === i) {
+                moveData.current(true);
+            }
+            return moveData;
         });
-        this.renDataList.push(moveData);
-        this.rendCurrent();
-    }
-    rendCurrent() {
-        this.renDataList.forEach(e => e.current(false));
-        if (this.renDataList.length) {
-            const moveData = this.renDataList[this.renDataList.length - 1];
-            moveData.current(true);
-        }
     }
     draw(playerContainer: HTMLElement) {
         const containerWidth = ~~(this.options.width * 3 / 4);
@@ -171,10 +178,35 @@ export default class PlayManager {
     undo() {
         throw new Error('TODO undo');
     }
-    stop() {
+    play(turningColor?: string) {
+        this.khmerChessBoard.boardManager.changeTurn(turningColor);
+        this.render();
+    }
+    pause() {
         this.khmerChessBoard.boardManager.clearTurnCells();
+        this.render();
     }
     render() {
+        this.playBtnDom.style.display = 'none';
+        this.pauseBtnDom.style.display = 'none';
+        this.backBtnDom.disabled = true;
+        this.nextBtnDom.disabled = true;
+        if (this.khmerChessBoard.boardManager.isTurning) {
+            this.pauseBtnDom.style.display = '';
+        } else {
+            this.playBtnDom.style.display = '';
+        }
+        const kc = this.khmerChessBoard.khmerChess;
+        const movesLength = kc.kpgn.moves.length;
+        if (movesLength) {
+            if (this.currentIndex) {
+                this.backBtnDom.disabled = false;
+            }
+            if (this.currentIndex < movesLength - 1) {
+                this.nextBtnDom.disabled = false;
+            }
+        }
+        this.renderMoveData();
     }
 }
 

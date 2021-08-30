@@ -24,7 +24,7 @@
         kcb1.soundManager.enable();
         kcb1.loadRen('BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff');
         // kcb1.boardManager.flip();
-        kcb1.start();
+        kcb1.play();
         kcb1.playManager.playEventController.addOnDataClickEventListener((data) => {
             console.log(data);
         });
@@ -33,16 +33,18 @@
         });
         kcb1.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
+            kcb1.play();
         });
         kcb1.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
+            kcb1.pause();
         });
         kcb1.playManager.playEventController.addOnNextEventListener(() => {
             console.log('next');
         });
         function resetBoard() {
             kcb1.reset();
-            kcb1.start();
+            kcb1.play();
         }
         // kcb1.messageManager.showMessage('hello');
         // 'a'.repeat(30).split('').forEach(() => kcb1.playManager.add('12'));

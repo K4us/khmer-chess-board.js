@@ -259,12 +259,15 @@ export default class KhmerChessBoard {
         this.soundManager.playMove();
         this.khmerChess.checkBoardEvent();
         const turn = Piece.oppositeColor(this.khmerChess.turn);
-        this.playManager.addMoveData(move.toString(), move.getMessage(this.options.isEnglish));
+        this.playManager.render();
         this.boardManager.changeTurn(turn);
     }
 
-    start(turningColor?: string) {
-        this.boardManager.changeTurn(turningColor);
+    play(turningColor?: string) {
+        this.playManager.play(turningColor);
+    }
+    pause() {
+        this.playManager.pause();
     }
 
     reset() {
@@ -272,7 +275,7 @@ export default class KhmerChessBoard {
         this.boardManager.clearSelectedCells();
         this.boardManager.clearAttackCells();
         this.boardManager.clearMovedCells();
-        this.playManager.stop();
+        this.playManager.pause();
         this.loadRen();
         this.boardManager.attachClickEvent();
     }
