@@ -221,6 +221,7 @@ export default class PlayManager {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.currentIndex--;
         this.applyMoveReverse(moves[this.currentIndex], moves[this.currentIndex - 1]);
+        this.pause();
         return true;
     }
     next() {
@@ -241,28 +242,35 @@ export default class PlayManager {
             soundManager,
             khmerChess,
         } = this.khmerChessBoard;
-        pieceShadowManager
+        pieceShadowManager.finishAnimations();
         boardManager.clearMovedCells();
         boardManager.clearAttackCells();
+
+        const finish = () => {
+            const fromCell = boardManager.get(move.moveFrom.index);
+            const toCell = boardManager.get(move.moveTo.index);
+            pieceShadowManager.movingPiece(fromCell, toCell, () => {
+                fromCell.movePieceTo(toCell);
+            });
+            boardManager.highlightMovedCells([fromCell, toCell]);
+            soundManager.playMove();
+            khmerChess.checkBoardEvent();
+            const turn = Piece.oppositeColor(fromCell.piece.color);
+            boardManager.changeTurn(turn);
+            this.render();
+        }
+
         if (move.captured) {
             const fromBCell = boardManager.get(move.captured.fromBoardPoint.index);
             const toGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
             pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
                 fromBCell.movePieceToGraveyard(toGYCell);
+                finish();
             });
             soundManager.playCapture();
+        } else {
+            finish();
         }
-        const fromCell = boardManager.get(move.moveFrom.index);
-        const toCell = boardManager.get(move.moveTo.index);
-        pieceShadowManager.movingPiece(fromCell, toCell, () => {
-            fromCell.movePieceTo(toCell);
-        });
-        boardManager.highlightMovedCells([fromCell, toCell]);
-        soundManager.playMove();
-        khmerChess.checkBoardEvent();
-        const turn = Piece.oppositeColor(fromCell.piece.color);
-        boardManager.changeTurn(turn);
-        this.render();
     }
     applyMoveReverse(move: Move, lastMove?: Move) {
         // TODO: block back and next if shadow moving, handle quick move
@@ -273,36 +281,41 @@ export default class PlayManager {
             soundManager,
             khmerChess,
         } = this.khmerChessBoard;
+        pieceShadowManager.finishAnimations();
         pieceShadowManager
         boardManager.clearMovedCells();
         boardManager.clearAttackCells();
 
         const fromCell = boardManager.get(move.moveTo.index);
         const toCell = boardManager.get(move.moveFrom.index);
+
+        const finish = () => {
+            if (lastMove) {
+                const lastFromCell = boardManager.get(lastMove.moveFrom.index);
+                const lastToCell = boardManager.get(lastMove.moveTo.index);
+                boardManager.highlightMovedCells([lastFromCell, lastToCell]);
+            }
+            soundManager.playMove();
+            khmerChess.checkBoardEvent();
+            const turn = toCell.piece.color;
+            boardManager.changeTurn(turn);
+            this.render();
+        }
+
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
             fromCell.movePieceTo(toCell);
             if (move.captured) {
                 const fromGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
                 const toBCell = boardManager.get(move.captured.fromBoardPoint.index);
                 pieceShadowManager.movingPiece(fromGYCell, toBCell, () => {
-                    const raisePiece = fromGYCell.piece;
-                    fromGYCell.removePiece();
-                    toBCell.setPiece(raisePiece);
+                    fromGYCell.movePieceFromGraveyard(toBCell);
+                    finish();
                 });
                 soundManager.playCapture();
+            } else {
             }
+            finish();
         });
-
-        if (lastMove) {
-            const lastFromCell = boardManager.get(lastMove.moveFrom.index);
-            const lastToCell = boardManager.get(lastMove.moveTo.index);
-            boardManager.highlightMovedCells([lastFromCell, lastToCell]);
-        }
-        soundManager.playMove();
-        khmerChess.checkBoardEvent();
-        const turn = fromCell.piece.color;
-        boardManager.changeTurn(turn);
-        this.render();
     }
 }
 

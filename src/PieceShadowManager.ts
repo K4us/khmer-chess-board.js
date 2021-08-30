@@ -15,6 +15,7 @@ export default class PieceShadowManager {
             callbacks: [],
         }
     enableQuickMove() {
+        this.finishAnimations();
         this.quickMove = true;
     }
     disableQuickMove() {
@@ -28,21 +29,15 @@ export default class PieceShadowManager {
         this.options = khmerChessBoard.options;
     }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
-        let pendingCallback = () => {
-            callback();
-            this.pending.callbacks = this.pending.callbacks.filter((cb) => cb !== pendingCallback);
-            this._resolve();
-            pendingCallback = () => { };
-        }
-        this.pending.callbacks.push(pendingCallback);
         if (this.quickMove) {
             fromCell.removePieceClasses();
-            pendingCallback();
+            callback();
         } else {
             const div = document.createElement('div');
             if (!div.animate || this.options.isFullScreen) {
-                pendingCallback();
+                callback();
             } else {
+
                 const fromBc = fromCell.containerDom.getBoundingClientRect();
                 const toBc = toCell.containerDom.getBoundingClientRect();
                 this.tdShadowDom.appendChild(div);
@@ -51,9 +46,6 @@ export default class PieceShadowManager {
                 div.classList.add(`type-${fromCell.piece.type}`);
                 div.classList.add(`color-${fromCell.piece.color}`);
                 fromCell.removePieceClasses();
-                const timeout = setTimeout(() => {
-                    pendingCallback();
-                }, 1e3);
                 const option = [
                     {
                         transform: 'translate(0px)',
@@ -65,13 +57,35 @@ export default class PieceShadowManager {
                     },
                 ];
                 const animation = div.animate(option, 100);
-                animation.onfinish = () => {
+                animation.onfinish = animation.oncancel = () => {
                     clearTimeout(timeout);
-                    this.tdShadowDom.removeChild(div);
-                    pendingCallback();
+                    if (this.tdShadowDom.contains(div)) {
+                        this.tdShadowDom.removeChild(div);
+                    }
+                    callback();
+                    callback = () => { };
                 };
+
+                let pendingCallback = () => {
+                    clearTimeout(timeout);
+                    animation.cancel();
+                    this.pending.callbacks = this.pending.callbacks.filter((cb) => {
+                        return cb !== pendingCallback;
+                    });
+                    this._resolve();
+                }
+                this.pending.callbacks.push(pendingCallback);
+                const timeout = setTimeout(() => {
+                    pendingCallback();
+                }, 1e3);
             }
         }
+    }
+    finishAnimations() {
+        while (this.pending.callbacks.length) {
+            this.pending.callbacks[0]();
+        }
+        this._resolve();
     }
     _resolve() {
         while (!this.pending.callbacks.length && this.pending.resolvers.length) {
