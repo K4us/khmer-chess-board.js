@@ -1,11 +1,14 @@
 import KhmerChessBoard from "./KhmerChessBoard";
 import { Point, CELL_COUNT } from "khmer-chess";
 import { init, capturing, reset, attacking } from "./test/helper";
+import spies from 'chai-spies';
+chai.use(spies);
+const { expect } = chai;
 
 describe("KhmerChessBoard", function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
-    beforeAll(() => {
+    before(() => {
         init(kcb);
     });
 
@@ -15,22 +18,22 @@ describe("KhmerChessBoard", function () {
 
     it('should return correct cell', () => {
         const cell = kcb.boardManager.get(0);
-        expect(cell.point.indexCode).toEqual('a1');
+        expect(cell.point.indexCode).to.eql('a1');
     });
 
     it('should be valid selection', () => {
         const cell = kcb.boardManager.pieceNotInTurnCells[0];
         kcb.boardManager.selectCell(cell);
-        expect(cell.isSelected).toBeFalse();
+        expect(cell.isSelected).to.false;
     });
 
     it('should make correct selected', () => {
         const cell = kcb.boardManager.pieceInTurnCells[0];
         kcb.boardManager.selectCell(cell);
-        expect(cell.isSelected).toBeTrue();
+        expect(cell.isSelected).to.true;
         // second selection to clear
         kcb.boardManager.selectCell(cell);
-        expect(cell.isSelected).toBeFalse();
+        expect(cell.isSelected).to.false;
     });
 
     it('should select another one', () => {
@@ -38,29 +41,29 @@ describe("KhmerChessBoard", function () {
         const cell2 = kcb.boardManager.pieceInTurnCells[2];
         kcb.boardManager.selectCell(cell1);
         kcb.boardManager.selectCell(cell2);
-        expect(cell1.isSelected).toBeFalse();
-        expect(cell2.isSelected).toBeTrue();
+        expect(cell1.isSelected).to.false;
+        expect(cell2.isSelected).to.true;
     });
 
     it('should return king', () => {
         let cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_BLACK);
-        expect(cell.piece.isColorBlack).toBeTrue();
-        expect(cell.piece.isTypeKing).toBeTrue();
+        expect(cell.piece.isColorBlack).to.true;
+        expect(cell.piece.isTypeKing).to.true;
         cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_WHITE);
-        expect(cell.piece.isColorWhite).toBeTrue();
-        expect(cell.piece.isTypeKing).toBeTrue();
+        expect(cell.piece.isColorWhite).to.true;
+        expect(cell.piece.isTypeKing).to.true;
     });
 
     it('should return by index code', () => {
         const point = new Point(0, 0);
         const cell = kcb.boardManager.getByIndexCode(point.indexCode);
-        expect(cell.point.indexCode).toBe(point.indexCode);
+        expect(cell.point.indexCode).to.eql(point.indexCode);
     });
 
     it('should return by x,y', () => {
         const point = new Point(0, 0);
         const cell = kcb.boardManager.getByXY(point.x, point.y);
-        expect(cell.point.indexCode).toBe(point.indexCode);
+        expect(cell.point.indexCode).to.eql(point.indexCode);
     });
 
     it('should flip', () => {
@@ -69,19 +72,19 @@ describe("KhmerChessBoard", function () {
         const cell = kcb.boardManager.pieceInTurnCells[0];
         const index = cell.point.index;
         kcb.boardManager.selectCell(cell);
-        expect(cell0.point.indexCode).toBe('a1');
+        expect(cell0.point.indexCode).to.eql('a1');
         kcb.boardManager.flip();
-        expect(cell0.point.indexCode).toBe('h8');
-        expect(cell.point.index).toBe(CELL_COUNT - index - 1);
+        expect(cell0.point.indexCode).to.eql('h8');
+        expect(cell.point.index).to.eql(CELL_COUNT - index - 1);
         // flip back
         kcb.boardManager.flip();
-        expect(cell0.point.indexCode).toBe('a1');
-        expect(cell.point.index).toBe(index);
+        expect(cell0.point.indexCode).to.eql('a1');
+        expect(cell.point.index).to.eql(index);
     });
 
     it('should return all cells that has piece', () => {
         const cells = kcb.boardManager.pieceCells;
-        expect(cells.length).toBe(32);
+        expect(cells.length).to.eql(32);
     });
 
     it('should move', () => {
@@ -91,24 +94,24 @@ describe("KhmerChessBoard", function () {
         const targetCell = kcb.boardManager.get(point.index);
         kcb.move(cell.point.index, targetCell.point.index);
         const movedCells = kcb.boardManager.movedCells;
-        expect(movedCells[1].piece).toBe(piece);
+        expect(movedCells[1].piece).to.eql(piece);
     });
 
     it('should capture', () => {
         kcb.loadRen(capturing.renStr);
         const piece = kcb.boardManager.get(capturing.toIndex).piece;
-        expect(kcb.graveyardManager.get(6).piece).toBeNull();
+        expect(kcb.graveyardManager.get(6).piece).to.null;
         kcb.move(capturing.fromIndex, capturing.toIndex);
         const capturedP = kcb.graveyardManager.get(6).piece;
-        expect(capturedP).not.toBeNull();
-        expect(capturedP).toBe(piece);
+        expect(capturedP).not.to.null;
+        expect(capturedP).to.eql(piece);
     });
 
     it('should call attack', () => {
         kcb.loadRen(attacking.renStr);
-        spyOn(kcb, 'attack');
+        chai.spy.on(kcb, 'attack');
         kcb.move(attacking.fromIndex, attacking.toIndex);
-        expect(kcb.attack).toHaveBeenCalled();
+        expect(kcb.attack).to.have.been.called;
     });
 
     it('should attack', () => {
@@ -116,13 +119,13 @@ describe("KhmerChessBoard", function () {
         kcb.move(attacking.fromIndex, attacking.toIndex);
         const cell = kcb.boardManager.get(attacking.toIndex);
         const king = kcb.boardManager.getKing(cell.piece.colorOpponent);
-        expect(king.isAttacked).toBeTrue();
+        expect(king.isAttacked).to.true;
     });
 
     it('should detach click event', () => {
         kcb.boardManager.detachClickEvent();
         const cell = kcb.boardManager.get(0);
-        expect(cell.onClick).toBeNull();
+        expect(cell.onClick).to.null;
     });
 });
 

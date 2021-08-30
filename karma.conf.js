@@ -32,7 +32,7 @@ const k4usShareBase = 'node_modules/k4us-share/**';
 module.exports = function (config) {
   config.set({
     basePath: './',
-    frameworks: ['jasmine', 'karma-typescript'],
+    frameworks: ['mocha', 'chai', 'karma-typescript'],
     files: [
       { pattern: `${k4usShareBase}/*.ts` },
       { pattern: `${khmerChessBase}/*.ts` },

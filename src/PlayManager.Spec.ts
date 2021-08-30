@@ -1,10 +1,11 @@
 import KhmerChessBoard from "./KhmerChessBoard";
 import { init, reset } from "./test/helper";
+const { expect } = chai;
 
 describe("KhmerChessBoard", function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
-    beforeAll(() => {
+    before(() => {
         init(kcb);
     });
 
@@ -14,7 +15,7 @@ describe("KhmerChessBoard", function () {
 
     it('should undo', () => {
         kcb.playManager.undo();
-        expect(true).toBeTrue();
+        expect(true).to.true;
     });
 
 });

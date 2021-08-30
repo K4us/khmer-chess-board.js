@@ -1,10 +1,13 @@
 import KhmerChessBoard from "./KhmerChessBoard";
 import { init, reset } from "./test/helper";
+import spies from 'chai-spies';
+chai.use(spies);
+const { expect } = chai;
 
 describe("KhmerChessBoard", function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
-    beforeAll(() => {
+    before(() => {
         init(kcb);
     });
 
@@ -13,11 +16,11 @@ describe("KhmerChessBoard", function () {
     });
 
     it('should be function', () => {
-        expect(typeof KhmerChessBoard).toEqual('function');
+        expect(typeof KhmerChessBoard).to.eql('function');
     });
 
     it('should has class', () => {
-        expect(typeof kcb.options.uniqueClassName).toEqual('string');
+        expect(typeof kcb.options.uniqueClassName).to.eql('string');
     });
 
     it('should can move', () => {
@@ -25,23 +28,23 @@ describe("KhmerChessBoard", function () {
         kcb.boardManager.selectCell(cell);
         const point = cell.canMovePoints[0];
         const targetCell = kcb.boardManager.get(point.index);
-        expect(targetCell.isCanMove).toBeTrue();
+        expect(targetCell.isCanMove).to.true;
     });
 
     it('should move', () => {
         const cell = kcb.boardManager.pieceInTurnCells[0];
-        expect(cell.isCanSelect).toBeTrue();
+        expect(cell.isCanSelect).to.true;
         kcb.boardManager.selectCell(cell);
-        expect(cell.isSelected).toBeTrue();
+        expect(cell.isSelected).to.true;
 
         const point = cell.canMovePoints[0];
 
         const targetCell = kcb.boardManager.get(point.index);
 
-        spyOn(kcb, 'move');
+        let spy = chai.spy.on(kcb, 'move');
 
         kcb.boardManager.selectCell(targetCell);
-        expect(kcb.move).toHaveBeenCalledWith(cell.point.index, targetCell.point.index);
+        expect(kcb.move).to.have.been.called.with(cell.point.index, targetCell.point.index);
     });
 
     it('should thrown', () => {
@@ -51,14 +54,14 @@ describe("KhmerChessBoard", function () {
                 width: 600,
                 container: null
             });
-        }).toThrow(new Error('Container is required!'));
+        }).to.throw('Container is required!');
         const minWidth = kcb1.options.minWidth;
         expect(() => {
             kcb1.setOptions({
                 width: minWidth - 1,
                 container: document.createElement("div")
             });
-        }).toThrow(new Error(`Board width must more than ${minWidth} `));
+        }).to.throw(`Board width must more than ${minWidth} `);
     });
 
     it('should set locale', () => {
@@ -67,27 +70,27 @@ describe("KhmerChessBoard", function () {
         const locale = KhmerChessBoard.LOCALE_ENGLISH + 1;
         expect(() => {
             kcb.setLocale(KhmerChessBoard.LOCALE_ENGLISH + 1);
-        }).toThrow(new Error(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`));
+        }).to.throw(`Unsupported locale: ${locale}, supported locales: ${locales.join(',')}`);
 
         kcb.setLocale(KhmerChessBoard.LOCALE_ENGLISH);
-        expect(cell.hasClassName(kcb.options.enClass)).toBeTrue();
-        expect(kcb.options.isEnglish).toBeTrue();
+        expect(cell.hasClassName(kcb.options.enClass)).to.true;
+        expect(kcb.options.isEnglish).to.true;
 
         kcb.setLocale(KhmerChessBoard.LOCALE_KHMER);
-        expect(cell.hasClassName(kcb.options.enClass)).toBeFalse();
-        expect(kcb.options.isEnglish).toBeFalse();
+        expect(cell.hasClassName(kcb.options.enClass)).to.false;
+        expect(kcb.options.isEnglish).to.false;
     });
 
     it('should root board should on top', () => {
         kcb.setFullScreen(true);
         const table = kcb.domRootBoard;
-        expect(table.style.zIndex).toBe('9999');
+        expect(table.style.zIndex).to.eql('9999');
     });
 
     it('should load REN', () => {
         const renStr = 'BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff';
         kcb.loadRen(renStr);
-        expect(kcb.boardManager.toString()).toBe(kcb.khmerChess.kpgn.ren.board.toString());
+        expect(kcb.boardManager.toString()).to.eql(kcb.khmerChess.kpgn.ren.board.toString());
     });
 
     it('should destroyed', () => {
@@ -99,7 +102,7 @@ describe("KhmerChessBoard", function () {
             container
         });
         kcb1.destroy();
-        expect(kcb1.khmerChess).toBeNull();
+        expect(kcb1.khmerChess).to.null;
     });
 
 });

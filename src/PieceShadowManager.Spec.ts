@@ -1,23 +1,16 @@
 import KhmerChessBoard from "./KhmerChessBoard";
 import { capturing, init, reset } from "./test/helper";
+const { expect } = chai;
 
 describe("KhmerChessBoard", function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
-    let originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-
-    beforeEach(function () {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 1e3 * 10; // 10 seconds
-    });
-
-    beforeAll(() => {
+    before(() => {
         init(kcb);
     });
 
     afterEach(() => {
         reset(kcb);
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     it('should move with shadow', async () => {
@@ -29,7 +22,7 @@ describe("KhmerChessBoard", function () {
         kcb.boardManager.selectCell(targetCell);
         await kcb.pieceShadowManager.resolveAnimation();
         const movedCells = kcb.boardManager.movedCells;
-        expect(movedCells.length).toBe(2);
+        expect(movedCells.length).to.eql(2);
     });
 });
 
