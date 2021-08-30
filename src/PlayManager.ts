@@ -254,6 +254,9 @@ export default class PlayManager {
             const toCell = boardManager.get(move.moveTo.index);
             pieceShadowManager.movingPiece(fromCell, toCell, () => {
                 fromCell.movePieceTo(toCell);
+                if (move.isUpgrading) {
+                    toCell.upgrade();
+                }
                 callback();
                 khmerChess.checkBoardEvent();
             });
