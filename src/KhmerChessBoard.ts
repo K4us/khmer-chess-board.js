@@ -203,6 +203,16 @@ export default class KhmerChessBoard {
         });
     }
 
+    loadKpng(kpng: { ren: string, moves: string[] }) {
+        this.loadRen(kpng.ren);
+        this.khmerChess.loadMovesStrings(kpng.moves);
+        const moves = this.khmerChess.kpgn.moves;
+        this.playManager.currentIndex = moves.length;
+        const lastMove = moves[this.playManager.currentIndex - 1];
+        const fromCell = this.boardManager.get(lastMove.moveFrom.index);
+        const toCell = this.boardManager.get(lastMove.moveTo.index);
+        this.boardManager.highlightMovedCells([fromCell, toCell]);
+    }
     loadRen(renStr?: string) {
         this.khmerChess.loadRENStr(renStr);
         this.applyPieces();
