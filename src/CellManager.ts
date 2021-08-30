@@ -197,6 +197,11 @@ export default class CellManager {
     clearCanMoved() {
         this.removeClassName(CAN_MOVE_CLASS_NAME);
     }
+    downgrade() {
+        if (this.piece.downgrade()) {
+            this.setPiece(this.piece);
+        }
+    }
 }
 
 /*

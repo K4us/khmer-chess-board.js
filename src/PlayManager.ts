@@ -299,6 +299,9 @@ export default class PlayManager {
 
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
             fromCell.movePieceTo(toCell);
+            if (move.isUpgrading) {
+                toCell.downgrade();
+            }
             if (move.captured) {
                 const fromGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
                 const toBCell = boardManager.get(move.captured.fromBoardPoint.index);
@@ -307,7 +310,6 @@ export default class PlayManager {
                     finish();
                 });
                 soundManager.playCapture();
-            } else {
             }
             finish();
         });
