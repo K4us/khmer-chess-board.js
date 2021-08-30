@@ -178,6 +178,12 @@ export default class CellManager {
         toCell.setPiece(deadPiece);
         toCell.scrollIntoView();
     }
+    movePieceFromGraveyard(toCell: CellManager) {
+        const deadPiece = this.piece;
+        this.removePiece();
+        toCell.setPiece(deadPiece);
+        toCell.scrollIntoView();
+    }
 
     moved() {
         this.addClassName(MOVED_CLASS_NAME);

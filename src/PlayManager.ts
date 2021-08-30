@@ -233,6 +233,7 @@ export default class PlayManager {
         return true;
     }
     applyMove(move: Move) {
+        // TODO: block back and next if shadow moving, handle quick move
         const {
             boardManager,
             graveyardManager,
@@ -264,6 +265,7 @@ export default class PlayManager {
         this.render();
     }
     applyMoveReverse(move: Move, lastMove?: Move) {
+        // TODO: block back and next if shadow moving, handle quick move
         const {
             boardManager,
             graveyardManager,
@@ -279,16 +281,18 @@ export default class PlayManager {
         const toCell = boardManager.get(move.moveFrom.index);
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
             fromCell.movePieceTo(toCell);
+            if (move.captured) {
+                const fromGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
+                const toBCell = boardManager.get(move.captured.fromBoardPoint.index);
+                pieceShadowManager.movingPiece(fromGYCell, toBCell, () => {
+                    const raisePiece = fromGYCell.piece;
+                    fromGYCell.removePiece();
+                    toBCell.setPiece(raisePiece);
+                });
+                soundManager.playCapture();
+            }
         });
 
-        if (move.captured) {
-            const fromBCell = boardManager.get(move.captured.toGraveyardPoint.index);
-            const toGYCell = graveyardManager.get(move.captured.fromBoardPoint.index);
-            pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
-                fromBCell.movePieceToGraveyard(toGYCell);
-            });
-            soundManager.playCapture();
-        }
         if (lastMove) {
             const lastFromCell = boardManager.get(lastMove.moveFrom.index);
             const lastToCell = boardManager.get(lastMove.moveTo.index);
