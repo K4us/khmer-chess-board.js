@@ -4,20 +4,22 @@ import appendCss from './helpers/appendCss';
 import PlayManagerEventController from './event/PlayManagerEventController';
 import {
     Move,
-    Piece,
 } from 'khmer-chess';
 
 // TODO: implement play
 class MoveData {
+    index: number;
     renData: string;
     dom: HTMLElement;
-    constructor({ containerDom, renData, title, str, onClick }: {
+    constructor({ index, containerDom, renData, title, str, onClick }: {
+        index: number,
         containerDom: HTMLElement,
         renData: string,
         title: string,
         str: string,
         onClick: Function,
     }) {
+        this.index = index;
         this.renData = renData;
         const span = document.createElement('span');
         span.title = title;
@@ -81,11 +83,13 @@ export default class PlayManager {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.renDataList = moves.map((move, i) => {
             const moveData = new MoveData({
+                index: i + 1,
                 containerDom: this.containerDom,
                 renData: '',
                 title: move.getMessage(isEnglish),
                 str: move.toString(),
                 onClick: () => {
+                    this.toIndex(moveData.index);
                     this.playEventController.click(moveData);
                 },
             });
@@ -212,6 +216,7 @@ export default class PlayManager {
         }
         this.backBtnDom.disabled = !this.isCanBack;
         this.nextBtnDom.disabled = !this.isCanNext;
+        this.playBtnDom.disabled = this.isCanNext;
         this.renderMoveData();
     }
     back() {
@@ -220,21 +225,20 @@ export default class PlayManager {
         }
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.currentIndex--;
-        this.applyMoveReverse(moves[this.currentIndex], moves[this.currentIndex - 1]);
+        this.applyMoveReverse(moves[this.currentIndex]);
         this.pause();
         return true;
     }
-    next() {
+    next(callback?: () => void) {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         if (!moves[this.currentIndex]) {
             return false;
         }
         this.currentIndex++;
-        this.applyMove(moves[this.currentIndex - 1]);
+        this.applyMove(moves[this.currentIndex - 1], callback);
         return true;
     }
-    applyMove(move: Move) {
-        // TODO: block back and next if shadow moving, handle quick move
+    applyMove(move: Move, callback = () => { }) {
         const {
             boardManager,
             graveyardManager,
@@ -243,7 +247,6 @@ export default class PlayManager {
             khmerChess,
         } = this.khmerChessBoard;
         pieceShadowManager.finishAnimations();
-        boardManager.clearMovedCells();
         boardManager.clearAttackCells();
 
         const finish = () => {
@@ -251,12 +254,11 @@ export default class PlayManager {
             const toCell = boardManager.get(move.moveTo.index);
             pieceShadowManager.movingPiece(fromCell, toCell, () => {
                 fromCell.movePieceTo(toCell);
+                callback();
+                khmerChess.checkBoardEvent();
             });
-            boardManager.highlightMovedCells([fromCell, toCell]);
+            this.highlightLastMove();
             soundManager.playMove();
-            khmerChess.checkBoardEvent();
-            const turn = Piece.oppositeColor(fromCell.piece.color);
-            boardManager.changeTurn(turn);
             this.render();
         }
 
@@ -272,8 +274,7 @@ export default class PlayManager {
             finish();
         }
     }
-    applyMoveReverse(move: Move, lastMove?: Move) {
-        // TODO: block back and next if shadow moving, handle quick move
+    applyMoveReverse(move: Move, callback = () => { }) {
         const {
             boardManager,
             graveyardManager,
@@ -283,22 +284,16 @@ export default class PlayManager {
         } = this.khmerChessBoard;
         pieceShadowManager.finishAnimations();
         pieceShadowManager
-        boardManager.clearMovedCells();
         boardManager.clearAttackCells();
 
         const fromCell = boardManager.get(move.moveTo.index);
         const toCell = boardManager.get(move.moveFrom.index);
 
         const finish = () => {
-            if (lastMove) {
-                const lastFromCell = boardManager.get(lastMove.moveFrom.index);
-                const lastToCell = boardManager.get(lastMove.moveTo.index);
-                boardManager.highlightMovedCells([lastFromCell, lastToCell]);
-            }
+            this.highlightLastMove();
             soundManager.playMove();
             khmerChess.checkBoardEvent();
-            const turn = toCell.piece.color;
-            boardManager.changeTurn(turn);
+            callback();
             this.render();
         }
 
@@ -316,6 +311,26 @@ export default class PlayManager {
             }
             finish();
         });
+    }
+    highlightLastMove() {
+        const boardManager = this.khmerChessBoard.boardManager;
+        const lastMove = this.khmerChessBoard.khmerChess.kpgn.moves[this.currentIndex - 1]
+        boardManager.clearMovedCells();
+        if (lastMove) {
+            const lastFromCell = boardManager.get(lastMove.moveFrom.index);
+            const lastToCell = boardManager.get(lastMove.moveTo.index);
+            boardManager.highlightMovedCells([lastFromCell, lastToCell]);
+        }
+    }
+    toIndex(index: number) {
+        this.pause();
+        while (this.currentIndex !== index) {
+            if (this.currentIndex < index) {
+                this.next();
+            } else {
+                this.back();
+            }
+        }
     }
 }
 

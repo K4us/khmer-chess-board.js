@@ -37,47 +37,51 @@ export default class PieceShadowManager {
             if (!div.animate || this.options.isFullScreen) {
                 callback();
             } else {
+                try {
+                    const fromBc = fromCell.containerDom.getBoundingClientRect();
+                    const toBc = toCell.containerDom.getBoundingClientRect();
+                    this.tdShadowDom.appendChild(div);
+                    div.style.top = `${fromBc.top}`;
+                    div.style.left = `${fromBc.left}`;
+                    div.classList.add(`type-${fromCell.piece.type}`);
+                    div.classList.add(`color-${fromCell.piece.color}`);
+                    fromCell.removePieceClasses();
+                    const option = [
+                        {
+                            transform: 'translate(0px)',
+                            opacity: 1,
+                        },
+                        {
+                            transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
+                            opacity: 0,
+                        },
+                    ];
+                    const animation = div.animate(option, 100);
+                    animation.onfinish = animation.oncancel = () => {
+                        clearTimeout(timeout);
+                        if (this.tdShadowDom.contains(div)) {
+                            this.tdShadowDom.removeChild(div);
+                        }
+                        callback();
+                        callback = () => { };
+                    };
 
-                const fromBc = fromCell.containerDom.getBoundingClientRect();
-                const toBc = toCell.containerDom.getBoundingClientRect();
-                this.tdShadowDom.appendChild(div);
-                div.style.top = `${fromBc.top}`;
-                div.style.left = `${fromBc.left}`;
-                div.classList.add(`type-${fromCell.piece.type}`);
-                div.classList.add(`color-${fromCell.piece.color}`);
-                fromCell.removePieceClasses();
-                const option = [
-                    {
-                        transform: 'translate(0px)',
-                        opacity: 1,
-                    },
-                    {
-                        transform: `translate(${toBc.left - fromBc.left}px, ${toBc.top - fromBc.top}px)`,
-                        opacity: 0,
-                    },
-                ];
-                const animation = div.animate(option, 100);
-                animation.onfinish = animation.oncancel = () => {
-                    clearTimeout(timeout);
-                    if (this.tdShadowDom.contains(div)) {
-                        this.tdShadowDom.removeChild(div);
+                    let pendingCallback = () => {
+                        clearTimeout(timeout);
+                        animation.cancel();
+                        this.pending.callbacks = this.pending.callbacks.filter((cb) => {
+                            return cb !== pendingCallback;
+                        });
+                        this._resolve();
                     }
+                    this.pending.callbacks.push(pendingCallback);
+                    const timeout = setTimeout(() => {
+                        pendingCallback();
+                    }, 1e3);
+                } catch (error) {
                     callback();
                     callback = () => { };
-                };
-
-                let pendingCallback = () => {
-                    clearTimeout(timeout);
-                    animation.cancel();
-                    this.pending.callbacks = this.pending.callbacks.filter((cb) => {
-                        return cb !== pendingCallback;
-                    });
-                    this._resolve();
                 }
-                this.pending.callbacks.push(pendingCallback);
-                const timeout = setTimeout(() => {
-                    pendingCallback();
-                }, 1e3);
             }
         }
     }
