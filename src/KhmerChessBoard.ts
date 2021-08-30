@@ -10,8 +10,6 @@ import OptionsManager from './OptionsManager';
 import {
     BoardEvent,
     KhmerChess,
-    Move,
-    Piece,
 } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
@@ -124,7 +122,7 @@ export default class KhmerChessBoard {
         const move = this.khmerChess.move(fromIndex, toIndex);
         this.boardManager.clearSelectedCells();
         if (move !== null) {
-            this.applyMove(move);
+            this.playManager.next();
         }
     }
 
@@ -238,29 +236,6 @@ export default class KhmerChessBoard {
         this.boardManager = null;
         this.soundManager = null;
         this.khmerChess = null;
-    }
-
-    applyMove(move: Move) {
-        this.boardManager.clearMovedCells();
-        this.boardManager.clearAttackCells();
-        if (move.captured) {
-            const fromBCell = this.boardManager.get(move.captured.fromBoardPoint.index);
-            const toGYCell = this.graveyardManager.get(move.captured.toGraveyardPoint.index);
-            this.pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
-                fromBCell.movePieceToGraveyard(toGYCell);
-            });
-            this.soundManager.playCapture();
-        }
-        const fromCell = this.boardManager.get(move.moveFrom.index);
-        const toCell = this.boardManager.get(move.moveTo.index);
-        this.pieceShadowManager.movingPiece(fromCell, toCell, () => {
-            fromCell.movePieceTo(toCell);
-        });
-        this.soundManager.playMove();
-        this.khmerChess.checkBoardEvent();
-        const turn = Piece.oppositeColor(this.khmerChess.turn);
-        this.playManager.render();
-        this.boardManager.changeTurn(turn);
     }
 
     play(turningColor?: string) {

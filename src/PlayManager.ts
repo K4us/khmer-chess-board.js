@@ -2,6 +2,10 @@ import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import appendCss from './helpers/appendCss';
 import PlayManagerEventController from './event/PlayManagerEventController';
+import {
+    Move,
+    Piece,
+} from 'khmer-chess';
 
 // TODO: implement play
 class MoveData {
@@ -207,6 +211,54 @@ export default class PlayManager {
             }
         }
         this.renderMoveData();
+    }
+    back() {
+        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
+        if (!moves[this.currentIndex - 1]) {
+            return false;
+        }
+        this.applyMove(moves[this.currentIndex - 1]);
+        this.currentIndex--;
+        return true;
+    }
+    next() {
+        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
+        if (!moves[this.currentIndex]) {
+            return false;
+        }
+        this.applyMove(moves[this.currentIndex]);
+        this.currentIndex++;
+        return true;
+    }
+    applyMove(move: Move) {
+        const {
+            boardManager,
+            graveyardManager,
+            pieceShadowManager,
+            soundManager,
+            khmerChess,
+        } = this.khmerChessBoard;
+        pieceShadowManager
+        boardManager.clearMovedCells();
+        boardManager.clearAttackCells();
+        if (move.captured) {
+            const fromBCell = boardManager.get(move.captured.fromBoardPoint.index);
+            const toGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
+            pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
+                fromBCell.movePieceToGraveyard(toGYCell);
+            });
+            soundManager.playCapture();
+        }
+        const fromCell = boardManager.get(move.moveFrom.index);
+        const toCell = boardManager.get(move.moveTo.index);
+        pieceShadowManager.movingPiece(fromCell, toCell, () => {
+            fromCell.movePieceTo(toCell);
+        });
+        soundManager.playMove();
+        khmerChess.checkBoardEvent();
+        const turn = Piece.oppositeColor(khmerChess.turn);
+        this.render();
+        boardManager.changeTurn(turn);
     }
 }
 
