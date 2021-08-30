@@ -189,6 +189,12 @@ export default class BoardManager {
         });
     }
 
+    highlightMovedCells(cells: CellManager[]) {
+        cells.forEach((cell) => {
+            cell.moved();
+        });
+    }
+
     clearMovedCells() {
         this.movedCells.forEach((cell) => {
             cell.clearMoved();

@@ -254,11 +254,43 @@ export default class PlayManager {
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
             fromCell.movePieceTo(toCell);
         });
+        boardManager.highlightMovedCells([fromCell, toCell]);
         soundManager.playMove();
         khmerChess.checkBoardEvent();
-        const turn = Piece.oppositeColor(khmerChess.turn);
-        this.render();
+        const turn = Piece.oppositeColor(fromCell.piece.color);
         boardManager.changeTurn(turn);
+        this.render();
+    }
+    applyMoveReverse(move: Move) {
+        const {
+            boardManager,
+            graveyardManager,
+            pieceShadowManager,
+            soundManager,
+            khmerChess,
+        } = this.khmerChessBoard;
+        pieceShadowManager
+        boardManager.clearMovedCells();
+        boardManager.clearAttackCells();
+        if (move.captured) {
+            const fromBCell = boardManager.get(move.captured.fromBoardPoint.index);
+            const toGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
+            pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
+                fromBCell.movePieceToGraveyard(toGYCell);
+            });
+            soundManager.playCapture();
+        }
+        const fromCell = boardManager.get(move.moveFrom.index);
+        const toCell = boardManager.get(move.moveTo.index);
+        pieceShadowManager.movingPiece(fromCell, toCell, () => {
+            fromCell.movePieceTo(toCell);
+        });
+        boardManager.highlightMovedCells([fromCell, toCell]);
+        soundManager.playMove();
+        khmerChess.checkBoardEvent();
+        const turn = Piece.oppositeColor(fromCell.piece.color);
+        boardManager.changeTurn(turn);
+        this.render();
     }
 }
 

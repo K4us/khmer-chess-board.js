@@ -170,8 +170,6 @@ export default class CellManager {
         const piece = this.piece;
         this.removePiece();
         toCell.setPiece(piece);
-        this.moved();
-        toCell.moved();
     }
 
     movePieceToGraveyard(toCell: CellManager) {
