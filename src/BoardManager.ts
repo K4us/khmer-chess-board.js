@@ -207,6 +207,12 @@ export default class BoardManager {
         });
     }
 
+    enableTurnCells() {
+        this.pieceInTurnCells.forEach((cell) => {
+            cell.turn(true);
+        });
+    }
+
     clearTurnCells() {
         this.turnCells.forEach((cell) => {
             cell.turn(false);
@@ -262,16 +268,8 @@ export default class BoardManager {
         });
     }
 
-    changeTurn(turn?: string) {
-        if (turn) {
-            this.khmerChess.turn = turn;
-        }
-        this.pieceInTurnCells.forEach((cell) => {
-            cell.turn(true);
-        });
-        this.pieceInTurnCells.forEach((cell) => {
-            cell.turn(true);
-        });
+    takeTurn() {
+        this.enableTurnCells();
         this.boardEventController.changeTurn();
     }
 }

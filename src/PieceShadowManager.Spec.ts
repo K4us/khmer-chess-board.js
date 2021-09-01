@@ -23,7 +23,7 @@ describe("KhmerChessBoard", function () {
         await kcb.pieceShadowManager.resolveAnimation();
         const movedCells = kcb.boardManager.movedCells;
         expect(movedCells.length).to.eql(2);
-    });
+    }).timeout(1e3 * 5);
 });
 
 /*

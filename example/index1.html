@@ -30,13 +30,13 @@
         });
         kcb.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
-            kcb.play();
+            kcb.playManager.play();
         });
         kcb.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
             kcb.pause();
         });
-        kcb.play();
+        kcb.playManager.play();
     </script>
     <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>

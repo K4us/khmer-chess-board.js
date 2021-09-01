@@ -196,8 +196,8 @@ export default class PlayManager {
     undo() {
         throw new Error('TODO undo');
     }
-    play(turningColor?: string) {
-        this.khmerChessBoard.boardManager.changeTurn(turningColor);
+    play() {
+        this.khmerChessBoard.boardManager.takeTurn();
         this.render();
     }
     pause() {
@@ -336,6 +336,10 @@ export default class PlayManager {
                 this.back();
             }
         }
+    }
+    resetCurrentIndex() {
+        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
+        this.currentIndex = moves.length;
     }
 }
 

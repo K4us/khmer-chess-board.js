@@ -21,17 +21,21 @@
             width: 500,
             container: container1
         });
-        kcb1.soundManager.enable();
         kcb1.loadKpng({
-            ren: 'BHGKQ2B/4G3/TFFF1FFF/4H3/4Fff1/8/2qg2b1/bhgk2h1 b ---- -- -.- ffffff',
-            moves: ['Fe3e4', 'ff6f5', 'Fe4e5', 'fg6g5', 'Hf2e4']
+            "moves": [
+                "Fe3e4",
+                "fd6d5",
+                "Fe4d5x0",
+                "fc6d5x1"
+            ],
+            "ren": "BHGKQGHB/8/FFFF1FFF/8/3f4/ff2ffff/8/bhgqkghb w ---- -- -.- fF",
         });
-        // kcb1.loadRen('BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff');
+        kcb1.soundManager.enable();
         // kcb1.boardManager.flip();
-        kcb1.play();
+        kcb1.playManager.play();
         kcb1.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
-            kcb1.play();
+            kcb1.playManager.play();
         });
         kcb1.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
@@ -39,7 +43,7 @@
         });
         function resetBoard() {
             kcb1.reset();
-            kcb1.play();
+            kcb1.playManager.play();
         }
         // kcb1.messageManager.showMessage('hello');
         // 'a'.repeat(30).split('').forEach(() => kcb1.playManager.add('12'));

@@ -10,8 +10,11 @@ import OptionsManager from './OptionsManager';
 import {
     BoardEvent,
     KhmerChess,
+    KPGN,
     Piece,
+    REN,
 } from 'khmer-chess';
+import type { KPGNOption } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
@@ -123,10 +126,9 @@ export default class KhmerChessBoard {
         const move = this.khmerChess.move(fromIndex, toIndex);
         this.boardManager.clearSelectedCells();
         if (move !== null) {
+            this.boardManager.clearTurnCells();
             this.playManager.next(() => {
-                const toCell = this.boardManager.get(move.moveTo.index);
-                const turn = Piece.oppositeColor(toCell.piece.color);
-                this.boardManager.changeTurn(turn);
+                this.boardManager.takeTurn();
             });
         }
     }
@@ -208,18 +210,32 @@ export default class KhmerChessBoard {
         });
     }
 
-    loadKpng(kpng: { ren: string, moves: string[] }) {
-        this.loadRen(kpng.ren);
-        this.khmerChess.loadMovesStrings(kpng.moves);
-        // TODO: load all properties
-        const moves = this.khmerChess.kpgn.moves;
-        this.playManager.currentIndex = moves.length;
-        this.playManager.highlightLastMove();
-    }
-    loadRen(renStr?: string) {
-        this.khmerChess.loadRENStr(renStr);
+    loadKpng(kpng: KPGNOption) {
+        this.khmerChess.kpgn.fromJson(kpng);
         this.applyPieces();
-        this.boardManager.changeTurn(this.khmerChess.turn);
+        this.boardManager.clearSelectedCells();
+        this.boardManager.clearAttackCells();
+        this.boardManager.clearMovedCells();
+        this.playManager.highlightLastMove();
+        this.playManager.resetCurrentIndex();
+        this.playManager.play();
+    }
+
+    reset() {
+        // TODO: reset all state
+        this.playManager.pause();
+        this.loadKpng({});
+        this.boardManager.attachClickEvent();
+    }
+
+    /**
+     * @deprecated use loadKpng instead
+     */
+    loadRen(renStr?: string) {
+        const ren = REN.fromString(renStr);
+        this.khmerChess.kpgn = new KPGN(ren);
+        this.applyPieces();
+        this.playManager.play();
     }
 
     applyPieces() {
@@ -249,23 +265,6 @@ export default class KhmerChessBoard {
         this.boardManager = null;
         this.soundManager = null;
         this.khmerChess = null;
-    }
-
-    play(turningColor?: string) {
-        this.playManager.play(turningColor);
-    }
-    pause() {
-        this.playManager.pause();
-    }
-
-    reset() {
-        // TODO: reset all state
-        this.boardManager.clearSelectedCells();
-        this.boardManager.clearAttackCells();
-        this.boardManager.clearMovedCells();
-        this.playManager.pause();
-        this.loadRen();
-        this.boardManager.attachClickEvent();
     }
 }
 
