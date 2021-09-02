@@ -14,8 +14,9 @@ describe("KhmerChessBoard", function () {
     });
 
     it('should move with shadow', async () => {
-        kcb.pieceShadowManager.disableQuickMove();
+        kcb.pieceShadowManager.quickMove(false);
         kcb.loadRen(capturing.renStr);
+        kcb.playManager.play();
         const cell = kcb.boardManager.get(capturing.fromIndex);
         const targetCell = kcb.boardManager.get(capturing.toIndex);
         kcb.boardManager.selectCell(cell);

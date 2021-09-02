@@ -99,6 +99,7 @@ describe("KhmerChessBoard", function () {
 
     it('should capture', () => {
         kcb.loadRen(capturing.renStr);
+        kcb.playManager.play();
         const piece = kcb.boardManager.get(capturing.toIndex).piece;
         expect(kcb.graveyardManager.get(6).piece).to.null;
         kcb.move(capturing.fromIndex, capturing.toIndex);
@@ -107,15 +108,9 @@ describe("KhmerChessBoard", function () {
         expect(capturedP).to.eql(piece);
     });
 
-    it('should call attack', () => {
-        kcb.loadRen(attacking.renStr);
-        chai.spy.on(kcb, 'attack');
-        kcb.move(attacking.fromIndex, attacking.toIndex);
-        expect(kcb.attack).to.have.been.called;
-    });
-
     it('should attack', () => {
         kcb.loadRen(attacking.renStr);
+        kcb.playManager.play();
         kcb.move(attacking.fromIndex, attacking.toIndex);
         const cell = kcb.boardManager.get(attacking.toIndex);
         const king = kcb.boardManager.getKing(cell.piece.colorOpponent);

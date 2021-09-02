@@ -109,18 +109,6 @@ export default class KhmerChessBoard {
         boardEventController.addOnAttemptMoveEventListener(({ fromCell, toCell }) => {
             this.move(fromCell.point.index, toCell.point.index);
         });
-        this.khmerChess.addBoardEventListener((boardEvent: BoardEvent) => {
-            if (boardEvent.isAttack) {
-                this.attack(boardEvent);
-            }
-        });
-    }
-    attack(boardEvent: BoardEvent) {
-        const actorPieceIndex = boardEvent.actorPieceIndex;
-        const cell = this.boardManager.get(actorPieceIndex.point.index);
-        cell.attack(true);
-        const king = this.boardManager.getKing(actorPieceIndex.piece.colorOpponent);
-        king.attack(true);
     }
     move(fromIndex: number, toIndex: number) {
         const move = this.khmerChess.move(fromIndex, toIndex);
@@ -214,28 +202,20 @@ export default class KhmerChessBoard {
         this.khmerChess.kpgn.fromJson(kpng);
         this.applyPieces();
         this.boardManager.clearSelectedCells();
-        this.boardManager.clearAttackCells();
-        this.boardManager.clearMovedCells();
-        this.playManager.highlightLastMove();
         this.playManager.resetCurrentIndex();
+        this.playManager.highlightCurrentMove();
         this.playManager.play();
     }
 
     reset() {
-        // TODO: reset all state
         this.playManager.pause();
         this.loadKpng({});
         this.boardManager.attachClickEvent();
     }
 
-    /**
-     * @deprecated use loadKpng instead
-     */
     loadRen(renStr?: string) {
-        const ren = REN.fromString(renStr);
-        this.khmerChess.kpgn = new KPGN(ren);
+        this.khmerChess.kpgn.loadRENStr(renStr);
         this.applyPieces();
-        this.playManager.play();
     }
 
     applyPieces() {

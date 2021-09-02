@@ -104,13 +104,10 @@ export default class CellManager {
     }
 
     attack(attacked: boolean) {
-        if (this.piece) {
-            this.removeClassName(ATTACKED_CLASS_NAME);
-            if (attacked) {
-                this.addClassName(ATTACKED_CLASS_NAME);
-            }
+        this.removeClassName(ATTACKED_CLASS_NAME);
+        if (attacked) {
+            this.addClassName(ATTACKED_CLASS_NAME);
         }
-        return this.piece;
     }
 
     turn(attacked: boolean) {

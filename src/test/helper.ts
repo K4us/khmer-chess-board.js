@@ -19,13 +19,13 @@ export const init = (kcb: KhmerChessBoard) => {
         width: 600,
         container
     });
-    kcb.pieceShadowManager.enableQuickMove();
+    kcb.pieceShadowManager.quickMove(true);
     kcb.playManager.play();
     kcb.messageManager.disableLog();
 };
 
 export const reset = (kcb: KhmerChessBoard) => {
-    kcb.pieceShadowManager.enableQuickMove();
+    kcb.pieceShadowManager.quickMove(true);
     kcb.setFullScreen(false);
     kcb.reset();
     kcb.playManager.play();

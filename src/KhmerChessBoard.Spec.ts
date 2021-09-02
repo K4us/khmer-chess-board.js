@@ -90,6 +90,7 @@ describe("KhmerChessBoard", function () {
     it('should load REN', () => {
         const renStr = 'BHGKQ2B/4GH2/TFFFFFFF/8/8/5ff1/2qg2b1/bhgk2h1 w ---- -- -.- ffffff';
         kcb.loadRen(renStr);
+        kcb.playManager.play();
         expect(kcb.boardManager.toString()).to.eql(kcb.khmerChess.kpgn.ren.board.toString());
     });
 

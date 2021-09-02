@@ -6,7 +6,6 @@ import {
     Move,
 } from 'khmer-chess';
 
-// TODO: implement play
 class MoveData {
     index: number;
     renData: string;
@@ -44,6 +43,9 @@ class MoveData {
     destroy() {
         this.dom.onclick = null;
         this.dom.parentElement.removeChild(this.dom);
+    }
+    scrollIntoView() {
+        this.dom.scrollIntoView();
     }
 }
 
@@ -98,6 +100,9 @@ export default class PlayManager {
             }
             return moveData;
         });
+        if (this.renDataList.length) {
+            this.renDataList[this.renDataList.length - 1].scrollIntoView();
+        }
     }
     draw(playerContainer: HTMLElement) {
         const containerWidth = ~~(this.options.width * 3 / 4);
@@ -193,8 +198,16 @@ export default class PlayManager {
         }
         `;
     }
+    isCanUndo() {
+        return !!this.khmerChessBoard.khmerChess.kpgn.latestMove;
+    }
     undo() {
-        throw new Error('TODO undo');
+        if (this.isCanUndo) {
+            this.back(() => {
+                this.khmerChessBoard.khmerChess.kpgn.moves.pop();
+                this.render();
+            });
+        }
     }
     play() {
         this.khmerChessBoard.boardManager.takeTurn();
@@ -219,23 +232,37 @@ export default class PlayManager {
         this.playBtnDom.disabled = this.isCanNext;
         this.renderMoveData();
     }
-    back() {
+    loadCurrentRen() {
+        this.khmerChessBoard.loadRen(this.currentMove ? this.currentMove.renStr : '');
+        this.khmerChessBoard.boardManager.takeTurn();
+    }
+    get currentMove() {
+        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
+        return moves[this.currentIndex - 1] || null;
+    }
+    back(callback = () => { }) {
         if (!this.isCanBack) {
             return false;
         }
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.currentIndex--;
-        this.applyMoveReverse(moves[this.currentIndex]);
+        this.applyMoveReverse(moves[this.currentIndex], () => {
+            this.loadCurrentRen();
+            callback();
+        });
         this.pause();
         return true;
     }
-    next(callback?: () => void) {
+    next(callback = () => { }) {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         if (!moves[this.currentIndex]) {
             return false;
         }
         this.currentIndex++;
-        this.applyMove(moves[this.currentIndex - 1], callback);
+        this.applyMove(moves[this.currentIndex - 1], () => {
+            this.loadCurrentRen();
+            callback();
+        });
         return true;
     }
     applyMove(move: Move, callback = () => { }) {
@@ -244,10 +271,8 @@ export default class PlayManager {
             graveyardManager,
             pieceShadowManager,
             soundManager,
-            khmerChess,
         } = this.khmerChessBoard;
         pieceShadowManager.finishAnimations();
-        boardManager.clearAttackCells();
 
         const finish = () => {
             const fromCell = boardManager.get(move.moveFrom.index);
@@ -258,9 +283,8 @@ export default class PlayManager {
                     toCell.upgrade();
                 }
                 callback();
-                khmerChess.checkBoardEvent();
             });
-            this.highlightLastMove();
+            this.highlightCurrentMove();
             soundManager.playMove();
             this.render();
         }
@@ -283,19 +307,16 @@ export default class PlayManager {
             graveyardManager,
             pieceShadowManager,
             soundManager,
-            khmerChess,
         } = this.khmerChessBoard;
         pieceShadowManager.finishAnimations();
         pieceShadowManager
-        boardManager.clearAttackCells();
 
         const fromCell = boardManager.get(move.moveTo.index);
         const toCell = boardManager.get(move.moveFrom.index);
 
         const finish = () => {
-            this.highlightLastMove();
+            this.highlightCurrentMove();
             soundManager.playMove();
-            khmerChess.checkBoardEvent();
             callback();
             this.render();
         }
@@ -313,29 +334,43 @@ export default class PlayManager {
                     finish();
                 });
                 soundManager.playCapture();
+            } else {
+                finish();
             }
-            finish();
         });
     }
-    highlightLastMove() {
+    highlightCurrentMove() {
         const boardManager = this.khmerChessBoard.boardManager;
-        const lastMove = this.khmerChessBoard.khmerChess.kpgn.moves[this.currentIndex - 1]
+
         boardManager.clearMovedCells();
-        if (lastMove) {
-            const lastFromCell = boardManager.get(lastMove.moveFrom.index);
-            const lastToCell = boardManager.get(lastMove.moveTo.index);
+        boardManager.clearAttackCells();
+
+        const currentMove = this.currentMove;
+        if (currentMove) {
+            const lastFromCell = boardManager.get(currentMove.moveFrom.index);
+            const lastToCell = boardManager.get(currentMove.moveTo.index);
             boardManager.highlightMovedCells([lastFromCell, lastToCell]);
+            if (currentMove.attacker) {
+                const attacker = currentMove.attacker;
+                const cell = boardManager.get(attacker.point.index);
+                cell.attack(true);
+                const king = boardManager.getKing(attacker.piece.colorOpponent);
+                king.attack(true);
+            }
         }
     }
     toIndex(index: number) {
         this.pause();
         while (this.currentIndex !== index) {
+            this.khmerChessBoard.pieceShadowManager.quickMove(~~(this.currentIndex - index) !== 1);
             if (this.currentIndex < index) {
                 this.next();
             } else {
                 this.back();
             }
         }
+        this.khmerChessBoard.pieceShadowManager.quickMove(false);
+        this.highlightCurrentMove();
     }
     resetCurrentIndex() {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;

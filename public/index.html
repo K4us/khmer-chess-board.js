@@ -12,6 +12,8 @@
     <button onclick="toggleFullScreen();">Toggle Full Screen</button>
     <br>
     <button onclick="resetBoard();">Reset</button>
+    <br>
+    <button onclick="undoMove();">Undo</button>
     <div id="board-container1"></div>
     <div id="board-container2"></div>
     <script>
@@ -22,13 +24,8 @@
             container: container1
         });
         kcb1.loadKpng({
-            "moves": [
-                "Fe3e4",
-                "fd6d5",
-                "Fe4d5x0",
-                "fc6d5x1"
-            ],
-            "ren": "BHGKQGHB/8/FFFF1FFF/8/3f4/ff2ffff/8/bhgqkghb w ---- -- -.- fF",
+            "moves": ["Fe3e4", "fd6d5", "Qe1e3", "ke8g7", "Kd1b2", "fd5e4x0"],
+            "ren": "BHG2GHB/1K6/FFFFQFFF/4f3/8/fff1ffff/6k1/bhgq1ghb w ---- -- -.- F"
         });
         kcb1.soundManager.enable();
         // kcb1.boardManager.flip();
@@ -43,6 +40,10 @@
         });
         function resetBoard() {
             kcb1.reset();
+            kcb1.playManager.play();
+        }
+        function undoMove() {
+            kcb1.playManager.undo();
             kcb1.playManager.play();
         }
         // kcb1.messageManager.showMessage('hello');
