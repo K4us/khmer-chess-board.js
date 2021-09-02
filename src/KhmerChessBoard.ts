@@ -112,7 +112,6 @@ export default class KhmerChessBoard {
     }
     move(fromIndex: number, toIndex: number) {
         const move = this.khmerChess.move(fromIndex, toIndex);
-        this.boardManager.clearSelectedCells();
         if (move !== null) {
             this.boardManager.clearTurnCells();
             this.playManager.next(() => {
@@ -201,7 +200,6 @@ export default class KhmerChessBoard {
     loadKpng(kpng: KPGNOption) {
         this.khmerChess.kpgn.fromJson(kpng);
         this.applyPieces();
-        this.boardManager.clearSelectedCells();
         this.playManager.resetCurrentIndex();
         this.playManager.highlightCurrentMove();
         this.playManager.play();

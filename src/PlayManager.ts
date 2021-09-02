@@ -342,6 +342,7 @@ export default class PlayManager {
     highlightCurrentMove() {
         const boardManager = this.khmerChessBoard.boardManager;
 
+        boardManager.clearSelectedCells();
         boardManager.clearMovedCells();
         boardManager.clearAttackCells();
 
