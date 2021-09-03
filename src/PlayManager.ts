@@ -150,17 +150,15 @@ export default class PlayManager {
     btnListen() {
         this.backBtnDom.onclick = () => {
             this.back();
-            this.playEventController.back();
         };
         this.playBtnDom.onclick = () => {
-            this.playEventController.play();
+            this.play();
         };
         this.pauseBtnDom.onclick = () => {
-            this.playEventController.pause();
+            this.pause();
         };
         this.nextBtnDom.onclick = () => {
             this.next();
-            this.playEventController.next();
         };
     }
     css(): string {
@@ -194,7 +192,7 @@ export default class PlayManager {
         }
         ${containerSelector} .container span.current{
             background-color: rgba(255, 255, 255, 0.3);
-            cursor: auto;
+            cursor: not-allowed;
         }
         `;
     }
@@ -203,38 +201,65 @@ export default class PlayManager {
     }
     undo() {
         if (this.isCanUndo) {
+            this.offTurn();
             this.back(() => {
                 this.khmerChessBoard.khmerChess.kpgn.moves.pop();
-                this.render();
+                this.turning();
             });
         }
     }
-    play() {
+    get isCanPlay() {
+        return !this.isCanNext;
+    }
+    get isPlaying() {
+        return this.khmerChessBoard.boardManager.isTurning;
+    }
+    offTurn() {
+        this.khmerChessBoard.boardManager.clearTurnCells();
+        this.render();
+    }
+    turning() {
         this.khmerChessBoard.boardManager.takeTurn();
         this.render();
     }
+    play() {
+        if (!this.isCanPlay) {
+            return false;
+        }
+        this.playEventController.play();
+        this.turning();
+        return true;
+    }
     pause() {
-        this.khmerChessBoard.boardManager.clearTurnCells();
-        this.render();
+        this.playEventController.pause();
+        this.offTurn();
+        return true;
+    }
+    toggle() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
     }
     render() {
         this.playBtnDom.style.display = 'none';
         this.pauseBtnDom.style.display = 'none';
         this.backBtnDom.disabled = true;
         this.nextBtnDom.disabled = true;
-        if (this.khmerChessBoard.boardManager.isTurning) {
+        if (this.isPlaying) {
             this.pauseBtnDom.style.display = '';
         } else {
             this.playBtnDom.style.display = '';
         }
         this.backBtnDom.disabled = !this.isCanBack;
         this.nextBtnDom.disabled = !this.isCanNext;
-        this.playBtnDom.disabled = this.isCanNext;
+        this.playBtnDom.disabled = !this.isCanPlay;
         this.renderMoveData();
     }
     loadCurrentRen() {
         this.khmerChessBoard.loadRen(this.currentMove ? this.currentMove.renStr : '');
-        this.khmerChessBoard.boardManager.takeTurn();
+        this.khmerChessBoard.boardManager.checkBoardEvent();
     }
     get currentMove() {
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
@@ -244,13 +269,13 @@ export default class PlayManager {
         if (!this.isCanBack) {
             return false;
         }
+        this.offTurn();
+        this.playEventController.back();
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.currentIndex--;
-        this.applyMoveReverse(moves[this.currentIndex], () => {
-            this.loadCurrentRen();
+        this.applyMoveBack(moves[this.currentIndex], () => {
             callback();
         });
-        this.pause();
         return true;
     }
     next(callback = () => { }) {
@@ -258,9 +283,9 @@ export default class PlayManager {
         if (!moves[this.currentIndex]) {
             return false;
         }
+        this.playEventController.next();
         this.currentIndex++;
         this.applyMove(moves[this.currentIndex - 1], () => {
-            this.loadCurrentRen();
             callback();
         });
         return true;
@@ -282,11 +307,12 @@ export default class PlayManager {
                 if (move.isUpgrading) {
                     toCell.upgrade();
                 }
+                this.loadCurrentRen();
+                this.highlightCurrentMove();
+                soundManager.playMove();
+                this.render();
                 callback();
             });
-            this.highlightCurrentMove();
-            soundManager.playMove();
-            this.render();
         }
 
         if (move.captured) {
@@ -301,7 +327,7 @@ export default class PlayManager {
             finish();
         }
     }
-    applyMoveReverse(move: Move, callback = () => { }) {
+    applyMoveBack(move: Move, callback = () => { }) {
         const {
             boardManager,
             graveyardManager,
@@ -315,10 +341,11 @@ export default class PlayManager {
         const toCell = boardManager.get(move.moveFrom.index);
 
         const finish = () => {
+            this.loadCurrentRen();
             this.highlightCurrentMove();
             soundManager.playMove();
-            callback();
             this.render();
+            callback();
         }
 
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
@@ -356,12 +383,14 @@ export default class PlayManager {
                 const cell = boardManager.get(attacker.point.index);
                 cell.attack(true);
                 const king = boardManager.getKing(attacker.piece.colorOpponent);
-                king.attack(true);
+                if (king) {
+                    king.attack(true);
+                }
             }
         }
     }
     toIndex(index: number) {
-        this.pause();
+        this.offTurn();
         while (this.currentIndex !== index) {
             this.khmerChessBoard.pieceShadowManager.quickMove(~~(this.currentIndex - index) !== 1);
             if (this.currentIndex < index) {

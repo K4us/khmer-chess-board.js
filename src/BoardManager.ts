@@ -6,14 +6,19 @@ import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import {
-    BOARD_SEPARATOR,
-    CELL_COUNT,
+    EVENT_FLAG_ATTACK,
+    EVENT_FLAG_COUNT_DOWN_OUT,
+    EVENT_FLAG_DRAW,
+    EVENT_FLAG_START_COUNTING,
+    EVENT_FLAG_WIN,
     KhmerChess,
+    ListenerType,
     PieceIndex,
     Point,
     ROW_NUMBER,
 } from 'khmer-chess';
 import BoardManagerEventController from './event/BoardManagerEventController';
+import BoardStatusEventController, { BoardStatusEvent } from './event/BoardStatusEventController';
 
 export default class BoardManager {
     _cellManagers: CellManager[] = [];
@@ -21,8 +26,10 @@ export default class BoardManager {
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     isUpsideDown = false;
+    boardStatusEventController: BoardStatusEventController;
     boardEventController: BoardManagerEventController<CellManager>;
     constructor() {
+        this.boardStatusEventController = new BoardStatusEventController();
         this.boardEventController = new BoardManagerEventController();
     }
     setProps(khmerChessBoard: KhmerChessBoard) {
@@ -70,16 +77,16 @@ export default class BoardManager {
     }
 
     get(index: number) {
-        const filtered = this._cellManagers.filter((cell: CellManager) => {
+        return this._cellManagers.find((cell: CellManager) => {
             return cell.point.index === index;
         });
-        return filtered[0];
     }
-    getKing(color: string) {
-        const filtered = this._cellManagers.filter((cell: CellManager) => {
-            return cell.piece && cell.piece.isTypeKing && cell.piece.color === color;
-        });
-        return filtered[0];
+    getKing(color: string): CellManager | null {
+        const pieceIndex = this.khmerChess.kpgn.ren.board.getKing(color);
+        if (!pieceIndex) {
+            return null;
+        }
+        return this.get(pieceIndex.point.index);
     }
 
     getByIndexCode(indexCode: string) {
@@ -272,6 +279,16 @@ export default class BoardManager {
         this.clearTurnCells();
         this.enableTurnCells();
         this.boardEventController.changeTurn();
+    }
+
+    checkBoardEvent() {
+        this.boardStatusEventController.checkBoardEvent(this.khmerChessBoard);
+    }
+    addBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
+        this.boardStatusEventController.addBoardStatusEventListener(listener);
+    }
+    removeBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
+        this.boardStatusEventController.removeBoardStatusEventListener(listener);
     }
 }
 

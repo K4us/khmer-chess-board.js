@@ -59,26 +59,29 @@ export default class PieceShadowManager {
                 const animation = div.animate(option, 100);
 
                 let pendingCallback = () => {
-                    console.log('cancel');
-
                     animation.cancel();
-                    this.pending.callbacks = this.pending.callbacks.filter((cb) => {
-                        return cb !== pendingCallback;
-                    });
+                    this.removePendingCallback(pendingCallback);
                     this._resolve();
                 }
-                this.pending.callbacks.push(pendingCallback);
+                this.addPendingCallback(pendingCallback);
                 const timeout = setTimeout(() => pendingCallback(), 1e3);
                 animation.onfinish = animation.oncancel = () => {
                     clearTimeout(timeout);
-                    if (this.tdShadowDom.contains(div)) {
-                        this.tdShadowDom.removeChild(div);
-                    }
+                    this.removePendingCallback(pendingCallback);
+                    this.tdShadowDom.removeChild(div);
                     callback();
                     callback = () => { };
                 };
             }
         }
+    }
+    addPendingCallback(callback: () => void) {
+        this.pending.callbacks.push(callback);
+    }
+    removePendingCallback(callback: () => void) {
+        this.pending.callbacks = this.pending.callbacks.filter((cb) => {
+            return cb !== callback;
+        });
     }
     finishAnimations() {
         while (this.pending.callbacks.length) {

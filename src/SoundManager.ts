@@ -53,19 +53,21 @@ export default class SoundManager {
             this.khmerChessBoard.messageManager.log('Sound is disable');
             return;
         }
-        switch (flag) {
-            case SoundManager.MOVE_FLAG:
-                this.move && this.move.play();
-                break;
-            case SoundManager.CAPTURE_FLAG:
-                this.capture && this.capture.play();
-                break;
-            case SoundManager.CHECK_FLAG:
-                this.check && this.check.play();
-                break;
-            default:
-                this.khmerChessBoard.messageManager.log('Invalid sound flag');
-        }
+        try {
+            switch (flag) {
+                case SoundManager.MOVE_FLAG:
+                    this.move && this.move.play();
+                    break;
+                case SoundManager.CAPTURE_FLAG:
+                    this.capture && this.capture.play();
+                    break;
+                case SoundManager.CHECK_FLAG:
+                    this.check && this.check.play();
+                    break;
+                default:
+                    this.khmerChessBoard.messageManager.log('Invalid sound flag');
+            }
+        } catch (error) {}
     }
 
     playMove() {

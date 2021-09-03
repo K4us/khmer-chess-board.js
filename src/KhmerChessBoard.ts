@@ -7,13 +7,7 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import {
-    BoardEvent,
-    KhmerChess,
-    KPGN,
-    Piece,
-    REN,
-} from 'khmer-chess';
+import { KhmerChess } from 'khmer-chess';
 import type { KPGNOption } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
@@ -115,7 +109,7 @@ export default class KhmerChessBoard {
         if (move !== null) {
             this.boardManager.clearTurnCells();
             this.playManager.next(() => {
-                this.boardManager.takeTurn();
+                this.playManager.turning();
             });
         }
     }
@@ -202,7 +196,6 @@ export default class KhmerChessBoard {
         this.applyPieces();
         this.playManager.resetCurrentIndex();
         this.playManager.highlightCurrentMove();
-        this.playManager.play();
     }
 
     reset() {

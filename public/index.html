@@ -24,27 +24,24 @@
             container: container1
         });
         kcb1.loadKpng({
-            "moves": [
-                "Hg1e2",
-                "bh8h7",
-                "He2d4",
-                "bh7h8",
-                "Hd4b5",
-                "gc8c7",
-                "Hb5c7x0j[KQkq]"
-            ],
-            "ren": "BHGKQG1B/8/FFFFFFFF/8/8/ffffffff/2H5/bh1qkghb b KQkq -- -.- g"
+            "moves": ["Fh3h4", "fg6g5", "Fh4g5x0j15", "fh6h5", "Bh1h5x1", "bh8h6", "Bh5h6x2", "gf8g7", "Bh6f6x3",
+                "ke8e7", "Bf6e6x4", "ke7f8", "Be6d6x5", "kf8e7", "Bd6c6x6", "ke7f8", "Bc6b6x7", "kf8e7", "Bb6a6x8",
+                "gg7g6", "Ba6g6x9", "hg8h6", "Bg6h6x10", "ba8a6", "Bh6a6x11", "hb8c6", "Ba6a8", "ke7d7", "Ba1a2",
+                "kd7e7", "Ba2h2", "ke7d7", "Bh2h6", "kd7e7", "Ba8c8x12", "ke7f7", "Bc8d8x13", "kf7e7", "Bd8c8",
+                "ke7f7"],
+            "ren": "1HGKQGH1/8/FFFFFFF1/8/6F1/2h4B/5k2/2B5 w KQkq -- -.-@- ffbffffffghbgq"
         });
         kcb1.soundManager.enable();
         // kcb1.boardManager.flip();
         kcb1.playManager.play();
         kcb1.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
-            kcb1.playManager.play();
         });
         kcb1.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
-            kcb1.pause();
+        });
+        kcb1.boardManager.addBoardStatusEventListener((event)=>{
+            console.log(event);
         });
         function resetBoard() {
             kcb1.reset();
@@ -68,6 +65,16 @@
                         kcb1.setFullScreen(false);
                     })
                 }
+            }
+        }
+        document.onkeydown = function (e) {
+            e = e || window.event;
+            if (e.keyCode == '37') {
+                kcb1.playManager.back();
+            } else if (e.keyCode == '39') {
+                kcb1.playManager.next();
+            } else if (e.keyCode == '32') {
+                kcb1.playManager.toggle();
             }
         }
     </script>
