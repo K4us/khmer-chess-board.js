@@ -3,9 +3,8 @@ import OptionsManager from '../OptionsManager';
 import {
     HORIZONTAL_NOTE_LETTERS,
     HORIZONTAL_NOTE_LETTERS_ENGLISH,
+    KhmerChess,
     ROW_NUMBER,
-    VERTICAL_NOTE_LETTERS,
-    VERTICAL_NOTE_LETTERS_ENGLISH,
 } from 'khmer-chess';
 import appendCss from './appendCss';
 import { genBackgroundNote } from '../providers/svg';
@@ -21,7 +20,9 @@ import {
 
 export default function addCssNote({ uniqueClassName, options, isEnglish }:
     { uniqueClassName: string, options: OptionsManager, isEnglish?: boolean }) {
-    const verticalLetters = isEnglish ? VERTICAL_NOTE_LETTERS_ENGLISH : VERTICAL_NOTE_LETTERS;
+    const tranIndex = (i: number) => {
+        return isEnglish ? `${i}` : KhmerChess.toKhmerNum(i);
+    };
     const horizontalLetters = isEnglish ? HORIZONTAL_NOTE_LETTERS_ENGLISH : HORIZONTAL_NOTE_LETTERS;
     const { width, cellWidth } = options;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
@@ -31,7 +32,7 @@ export default function addCssNote({ uniqueClassName, options, isEnglish }:
         const bgImg = genBackgroundNote([{
             x: cellWidth / 2 - cellWidth / 10,
             y: cellWidth,
-            t: verticalLetters[i],
+            t: tranIndex(i),
         }], cellWidth, fSize);
         css += `
         ${selector} td${isEnglish ? '.' + options.enClass : ''}.${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}${CSS_PSEUDO_NOTE} {
@@ -60,7 +61,7 @@ export default function addCssNote({ uniqueClassName, options, isEnglish }:
     bgImg = (i) => genBackgroundNote([{
         x: 0,
         y: vy,
-        t: verticalLetters[i],
+        t: tranIndex(i),
     }], cellWidth, fSize);
     for (let j = 0; j < ROW_NUMBER; j++) {
         css += `
@@ -81,7 +82,7 @@ export default function addCssNote({ uniqueClassName, options, isEnglish }:
         }, {
             x: 0,
             y: vy,
-            t: verticalLetters[i],
+            t: tranIndex(i),
         },
     ], cellWidth, fSize);
     css += `

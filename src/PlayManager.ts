@@ -145,7 +145,7 @@ export default class PlayManager {
         ${containerSelector} .container > span {
             margin: 0 2px;
             padding: 0 2px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
+            border: 1px solid green;
             border-radius: 2px;
             cursor: pointer;
         }
@@ -167,7 +167,8 @@ export default class PlayManager {
     }
     undo() {
         if (this.isCanUndo) {
-            this.offTurn();
+            this.offTurning();
+            this.toIndex(this.khmerChessBoard.khmerChess.kpgn.moves.length);
             this.back(() => {
                 this.khmerChessBoard.khmerChess.kpgn.moves.pop();
                 this.turning();
@@ -180,7 +181,7 @@ export default class PlayManager {
     get isPlaying() {
         return this.khmerChessBoard.boardManager.isTurning;
     }
-    offTurn() {
+    offTurning() {
         this.khmerChessBoard.boardManager.clearTurnCells();
         this.render();
     }
@@ -198,7 +199,7 @@ export default class PlayManager {
     }
     pause() {
         this.playEventController.pause();
-        this.offTurn();
+        this.offTurning();
         return true;
     }
     toggle() {
@@ -234,22 +235,27 @@ export default class PlayManager {
         if (!this.isCanBack) {
             return false;
         }
-        this.offTurn();
+        this.offTurning();
         this.playEventController.back();
         this.currentIndex--;
         const kpgn = this.khmerChessBoard.khmerChess.kpgn;
-        this.applyMoveBack(kpgn.getMove(this.currentIndex), (error) => {
+        const move = kpgn.getMove(this.currentIndex);
+        if (move === null) {
+            return false;
+        }
+        this.applyMoveBack(move, (error) => {
             callback(error);
         });
         return true;
     }
     next(callback: (arg0: void | Error) => void = () => { }) {
         const kpgn = this.khmerChessBoard.khmerChess.kpgn;
-        if (!kpgn.getMove(this.currentIndex)) {
+        this.playEventController.next();
+        const move = kpgn.getMove(this.currentIndex);
+        if (move === null) {
             return false;
         }
-        this.playEventController.next();
-        this.applyMove(kpgn.getMove(this.currentIndex), (error) => {
+        this.applyMove(move, (error) => {
             callback(error);
         });
         this.currentIndex++;
@@ -359,16 +365,15 @@ export default class PlayManager {
         }
     }
     toIndex(index: number) {
-        this.offTurn();
+        const pieceShadowManager = this.khmerChessBoard.pieceShadowManager;
         while (this.currentIndex !== index) {
-            this.khmerChessBoard.pieceShadowManager.quickMove(~~(this.currentIndex - index) !== 1);
             if (this.currentIndex < index) {
                 this.next();
             } else {
                 this.back();
             }
         }
-        this.khmerChessBoard.pieceShadowManager.quickMove(false);
+        pieceShadowManager.quickMove(false);
         this.highlightCurrentMove();
     }
     resetCurrentIndex() {

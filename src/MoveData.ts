@@ -1,3 +1,5 @@
+import { KhmerChess } from 'khmer-chess';
+
 export default class MoveData {
     index: number;
     renData: string;
@@ -19,7 +21,7 @@ export default class MoveData {
         this.dom = span;
 
         const indexSpan = document.createElement('span');
-        indexSpan.innerText = `${index}`;
+        indexSpan.innerText = KhmerChess.toKhmerNum(index);
         indexSpan.classList.add('index');
         span.appendChild(indexSpan);
 

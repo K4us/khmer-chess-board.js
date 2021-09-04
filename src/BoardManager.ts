@@ -308,6 +308,9 @@ export default class BoardManager {
 
     forceCount() {
         const move = this.khmerChessBoard.playManager.currentMove;
+        if(move === null){
+            return false;
+        }
         const ren = this.khmerChess.kpgn.ren;
         if (!ren.countUp.isCounting && move.piece.colorOpponent === ren.turn) {
             this.khmerChess.kpgn.ren.checkCountStatus(move, true);

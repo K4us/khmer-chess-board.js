@@ -14,28 +14,9 @@ import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
 
-import {
-    PIECE_COLOR_BLACK,
-    PIECE_COLOR_WHITE,
-    PIECE_TYPE_BOAT,
-    PIECE_TYPE_TRANSFORM_FISH,
-    PIECE_TYPE_GENERAL,
-    PIECE_TYPE_QUEEN,
-    PIECE_TYPE_KING,
-    PIECE_TYPE_HORSE,
-    PIECE_TYPE_FISH,
-} from 'khmer-chess';
+import KhmerChessProps from './KhmerChessProps';
 
-export default class KhmerChessBoard {
-    static PIECE_COLOR_BLACK = PIECE_COLOR_BLACK;
-    static PIECE_COLOR_WHITE = PIECE_COLOR_WHITE;
-    static PIECE_TYPE_BOAT = PIECE_TYPE_BOAT;
-    static PIECE_TYPE_TRANSFORM_FISH = PIECE_TYPE_TRANSFORM_FISH;
-    static PIECE_TYPE_GENERAL = PIECE_TYPE_GENERAL;
-    static PIECE_TYPE_QUEEN = PIECE_TYPE_QUEEN;
-    static PIECE_TYPE_KING = PIECE_TYPE_KING;
-    static PIECE_TYPE_HORSE = PIECE_TYPE_HORSE;
-    static PIECE_TYPE_FISH = PIECE_TYPE_FISH;
+export default class KhmerChessBoard extends KhmerChessProps {
     static LOCALE_ENGLISH = 'en';
     static LOCALE_KHMER = 'km';
     static info = config;
