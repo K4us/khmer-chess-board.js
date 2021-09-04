@@ -1,7 +1,6 @@
 <html lang="en">
 
 <head>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,43 +9,77 @@
 </head>
 
 <body>
-    <button onclick="document.documentElement.requestFullscreen();">Full Screen</button>
-    <button onclick="screenshot();">Screenshot</button>
-    <div id="board-container"></div>
+    <button onclick="toggleFullScreen();">Toggle Full Screen</button>
+    <br>
+    <button onclick="resetBoard();">Reset</button>
+    <br>
+    <button onclick="undoMove();">Undo</button>
+    <div id="board-container1"></div>
+    <div id="board-container2"></div>
     <script>
-        var container = document.getElementById("board-container");
-        var kcb = new KhmerChessBoard();
-        kcb.setOptions({
-            width: 600,
-            container: container
+        var container1 = document.getElementById("board-container1");
+        var kcb1 = new KhmerChessBoard();
+        kcb1.setOptions({
+            width: 500,
+            container: container1
         });
-        kcb.loadKpng({
-            ren: 'BHGKQ2B/4G3/TFFF1FFF/4H3/4Fff1/8/2qg2b1/bhgk2h1 b ---- -- -.- ffffff',
-            moves: ['Fe3e4', 'ff6f5', 'Fe4e5', 'fg6g5', 'Hf2e4']
-        });
-        kcb.soundManager.enable();
-        document.addEventListener('fullscreenchange', (event) => {
-            if (document.fullscreenElement) {
-                kcb.setFullScreen(true);
-            } else {
-                kcb.setFullScreen(false);
-            }
-        });
-        kcb.playManager.playEventController.addOnPlayEventListener(() => {
+        kcb1.soundManager.enable();
+        // kcb1.boardManager.flip();
+        kcb1.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
-            kcb.playManager.play();
         });
-        kcb.playManager.playEventController.addOnPauseEventListener(() => {
+        kcb1.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
-            kcb.pause();
         });
-        kcb.playManager.play();
+        kcb1.boardManager.addBoardStatusEventListener((event) => {
+            console.log(event.message);
+        });
+
+        kcb1.loadKpng('eyJldmVudCI6IiIsImRhdGUiOiIiLCJsb2NhdGlvbiI6IiIsInBsYXllcnMiOnsid2hpdGUiOnsiaWQiOiIiLCJuYW1lIjoiIn0sImJsYWNrIjp7ImlkIjoiIiwibmFtZSI6IiJ9fSwicmVzdWx0Ijp7Imxhc3QiOnsid2hpdGVXaW4iOmZhbHNlLCJibGFja1dpbiI6ZmFsc2V9LCJ3aGl0ZSI6eyJ3aW4iOjAsImRyYXciOjAsImxvc3QiOjB9fSwidGltZXIiOnsidG90YWxTZWNvbmQiOjAsImJvbnVzVGltZSI6MCwiY3VycmVudFdoaXRlIjowLCJjdXJyZW50QmxhY2siOjB9LCJtb3ZlcyI6WyJGZDNkNCIsImZlNmU1IiwiRmQ0ZDUiLCJmZjZmNSIsIlRkNWM2PDBeMTUiLCJnYzhkNyIsIlRjNmQ3PDEiLCJrZThmNyIsIkZnM2c0IiwiZmY1ZzQ8MiIsIkZoM2c0PDMiLCJmaDZoNSIsIkJoMWg1PDQiLCJmZTVlNCIsIkZmM2U0PDUiLCJmZzZnNSIsIkJoNWc1PDYiLCJiaDhoNCIsIkJnNWc4PDciLCJiaDRnNDw4IiwiQmc4aDgiLCJiZzRlNDw5IiwiQmg4aDciLCJrZjdnOCIsIlRkN2M2IiwiYmU0ZTM8MTAiLCJRZTFkMiIsImJlM2MzPDExIiwiR2YxZTIiLCJiYzNiMzwxMiIsIkhnMWYzIiwiYmIzYTM8MTMiLCJCYTFhMzwxNCIsImdmOGc3IiwiQmg3Zzc8MTUiLCJrZzhmOCIsIkJnN2E3IiwiaGI4ZDciLCJCYTdhODwxNiIsImhkN2I4IiwiQmE4Yjg8MTciLCJmYTZhNSIsIkJhM2E1PDE4IiwiZmI2YjUiLCJUYzZkNyIsImZiNWI0IiwiQmE1ZDUiLCJ0YjRiMyoiLCJCZDVkNjwxOSIsInRiM2MyIl0sInJlbiI6IjFIR0s0LzJ0UUczLzVIMi84LzgvM0I0LzNUNC8xQjFxMWsyIHcgS1FrcSAtLSAtLi1ALSBmZ0ZmZmZmaEZGRkZGRmJnYmhmZiJ9');
+        kcb1.playManager.play();
+
+        function resetBoard() {
+            kcb1.reset();
+            kcb1.playManager.play();
+        }
+        function undoMove() {
+            kcb1.playManager.undo();
+            kcb1.playManager.play();
+        }
+        // kcb1.messageManager.showMessage('hello');
+        // 'a'.repeat(30).split('').forEach(() => kcb1.playManager.add('12'));
+        // kcb.boardManager.get(63).attacked()
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    kcb1.setFullScreen(true);
+                })
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().then(() => {
+                        kcb1.setFullScreen(false);
+                    })
+                }
+            }
+        }
+        document.onkeydown = function (e) {
+            e = e || window.event;
+            if (e.keyCode == '37') {
+                kcb1.playManager.back();
+            } else if (e.keyCode == '39') {
+                kcb1.playManager.next();
+            } else if (e.keyCode == '32') {
+                kcb1.playManager.toggle();
+            }
+        }
     </script>
-    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        function screenshot() {
-            html2canvas(document.querySelector("table." + kcb.options.uniqueClassName)).then(canvas => {
-                document.body.appendChild(canvas)
+        if (false) {
+            var container2 = document.getElementById("board-container2");
+            var kcb2 = new KhmerChessBoard();
+            kcb2.setOptions({
+                width: 300,
+                container: container2
             });
         }
     </script>
