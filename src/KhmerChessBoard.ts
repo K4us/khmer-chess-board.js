@@ -1,3 +1,4 @@
+// FIXME: chrome horizontal scroll not work
 import config from '../package.json';
 import GraveyardManager from './GraveyardManager';
 import SoundManager from './SoundManager';
