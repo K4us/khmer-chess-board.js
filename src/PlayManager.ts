@@ -5,49 +5,7 @@ import PlayManagerEventController from './event/PlayManagerEventController';
 import {
     Move,
 } from 'khmer-chess';
-
-class MoveData {
-    index: number;
-    renData: string;
-    dom: HTMLElement;
-    constructor({ index, containerDom, renData, title, str, onClick }: {
-        index: number,
-        containerDom: HTMLElement,
-        renData: string,
-        title: string,
-        str: string,
-        onClick: Function,
-    }) {
-        this.index = index;
-        this.renData = renData;
-        const span = document.createElement('span');
-        span.title = title;
-        span.innerText = str;
-        containerDom.appendChild(span);
-        this.dom = span;
-        span.onclick = () => {
-            if (!this.isCurrent) {
-                onClick();
-            }
-        };
-    }
-    get isCurrent() {
-        return this.dom.classList.contains('current');
-    }
-    current(b: boolean) {
-        this.dom.classList.remove('current');
-        if (b) {
-            this.dom.classList.add('current');
-        }
-    }
-    destroy() {
-        this.dom.onclick = null;
-        this.dom.parentElement.removeChild(this.dom);
-    }
-    scrollIntoView() {
-        this.dom.scrollIntoView();
-    }
-}
+import MoveData from './MoveData';
 
 export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
@@ -105,7 +63,6 @@ export default class PlayManager {
         }
     }
     draw(playerContainer: HTMLElement) {
-        // TODO: increase heigh and add index number
         const containerWidth = ~~(this.options.width * 3 / 4);
         const table = document.createElement('table');
         table.classList.add(this.options.uniqueClassName);
@@ -118,6 +75,7 @@ export default class PlayManager {
         let tdHistory = document.createElement('td');
         const div = document.createElement('div');
         div.style.width = `${containerWidth}px`;
+        div.style.height = `26px`;
         div.classList.add('container');
         this.containerDom = div;
         tdHistory.appendChild(div);
@@ -184,16 +142,23 @@ export default class PlayManager {
         ${containerSelector} .container::-webkit-scrollbar {
             width: 1em;
         }
-        ${containerSelector} .container span{
+        ${containerSelector} .container > span {
             margin: 0 2px;
             padding: 0 2px;
             border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 2px;
             cursor: pointer;
         }
-        ${containerSelector} .container span.current{
+        ${containerSelector} .container > span.current {
             background-color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
+        }
+        ${containerSelector} .container span.index {
+            color: grey;
+            padding-right: 2px;
+            border-right: 1px solid gray;
+            margin-right: 2px;
+            font-size: 12px;
         }
         `;
     }
@@ -263,8 +228,7 @@ export default class PlayManager {
         this.khmerChessBoard.boardManager.checkBoardEvent();
     }
     get currentMove() {
-        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
-        return moves[this.currentIndex - 1] || null;
+        return this.khmerChessBoard.khmerChess.kpgn.getMove(this.currentIndex - 1);
     }
     back(callback = () => { }) {
         if (!this.isCanBack) {
@@ -272,21 +236,20 @@ export default class PlayManager {
         }
         this.offTurn();
         this.playEventController.back();
-        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.currentIndex--;
-        this.applyMoveBack(moves[this.currentIndex], () => {
+        this.applyMoveBack(this.khmerChessBoard.khmerChess.kpgn.getMove(this.currentIndex), () => {
             callback();
         });
         return true;
     }
     next(callback = () => { }) {
-        const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
-        if (!moves[this.currentIndex]) {
+        const kpgn = this.khmerChessBoard.khmerChess.kpgn;
+        if (!kpgn.getMove(this.currentIndex)) {
             return false;
         }
         this.playEventController.next();
         this.currentIndex++;
-        this.applyMove(moves[this.currentIndex - 1], () => {
+        this.applyMove(kpgn.getMove(this.currentIndex - 1), () => {
             callback();
         });
         return true;
@@ -411,7 +374,7 @@ export default class PlayManager {
 
 /*
  * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
+ * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

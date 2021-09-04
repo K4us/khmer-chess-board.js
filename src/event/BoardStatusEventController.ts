@@ -1,10 +1,8 @@
 import {
     EVENT_FLAG_ATTACK,
     EVENT_FLAG_WIN,
-    PieceIndex,
     EventHandler,
     ListenerType,
-    PIECE_COLOR_WHITE,
     EVENT_FLAG_DRAW,
     EVENT_FLAG_COUNT_UP_OUT,
     EVENT_FLAG_COUNTING_UP,
@@ -12,67 +10,8 @@ import {
     REN
 } from 'khmer-chess';
 import KhmerChessBoard from '../KhmerChessBoard';
-export type Option = {
-    flag: string;
-    actorPieceIndex?: PieceIndex;
-    color: string;
-    countingFromNumber?: number;
-    countingNumber?: number;
-};
-export class BoardStatusEvent {
-    flag: string;
-    actorPieceIndex: PieceIndex;
-    isWhite = false;
-    isAttacking = false;
+import { BoardStatusEvent } from './BoardStatusEvent';
 
-    isWin = false;
-
-    isDraw = false;
-    isCannotMove = false;
-
-    isStartCounting = false;
-
-    isCountUpOut = false;
-
-    isCountingUp = false;
-
-    countingFrom: number | null = null
-    countingNumber: number | null = null
-
-    constructor({ countingFromNumber: countingFromNumber, countingNumber: countingNumber,
-        flag, actorPieceIndex, color }: Option) {
-
-        this.flag = flag;
-        const isWhite = color === PIECE_COLOR_WHITE;
-        this.isWhite = isWhite;
-        this.actorPieceIndex = actorPieceIndex || null;
-        this.isWin = flag === EVENT_FLAG_WIN;
-        this.isAttacking = flag === EVENT_FLAG_ATTACK;
-        this.isStartCounting = flag === EVENT_FLAG_START_COUNTING;
-        if (this.isStartCounting) {
-            this.applyCount(countingFromNumber, countingNumber)
-        }
-        this.isCountingUp = flag === EVENT_FLAG_COUNTING_UP;
-        if (this.isCountingUp) {
-            this.applyCount(countingFromNumber, countingNumber)
-        }
-        this.isCountUpOut = flag === EVENT_FLAG_COUNT_UP_OUT;
-        if (this.isCountUpOut) {
-            this.applyCount(countingFromNumber, countingNumber)
-        }
-        this.isDraw = this.isCountUpOut || flag === EVENT_FLAG_DRAW;
-        if (this.isDraw && !this.isCountUpOut) {
-            this.isCannotMove = true;
-        }
-    }
-    applyCount(countingFromNumber: number, countingNumber: number) {
-        this.countingFrom = countingFromNumber;
-        this.countingNumber = countingNumber;
-    }
-    getMessage() {
-        // TODO: implement this
-    }
-}
 export default class BoardStatusEventController extends EventHandler {
     static STATUS_EVENT = 'status-event';
     constructor() {
@@ -96,10 +35,14 @@ export default class BoardStatusEventController extends EventHandler {
         const { boardManager, playManager } = khmerChessBoard;
         const boardStatusEventController = boardManager.boardStatusEventController;
         const move = playManager.currentMove;
+        if (!move) {
+            return;
+        }
         const ren = REN.fromString(move.renStr);
         ren.syncWithMove(move);
         if (move.attacker) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_ATTACK,
                 actorPieceIndex: move.attacker,
                 color: move.attacker.piece.color,
@@ -109,6 +52,7 @@ export default class BoardStatusEventController extends EventHandler {
         const winColor = move.winColor;
         if (winColor) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_WIN,
                 actorPieceIndex: move.attacker,
                 color: winColor,
@@ -118,6 +62,7 @@ export default class BoardStatusEventController extends EventHandler {
         const stuckColor = move.stuckColor;
         if (stuckColor) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_DRAW,
                 color: stuckColor,
             });
@@ -125,28 +70,31 @@ export default class BoardStatusEventController extends EventHandler {
         }
         if (move.isStartCounting) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_START_COUNTING,
                 color: ren.countUp.color,
-                countingFromNumber: ren.countUp.countingFromNumber,
+                countingToNumber: ren.countUp.countingToNumber,
                 countingNumber: ren.countUp.countingNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
         if (ren.countUp.isCountingUp) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_COUNTING_UP,
                 color: ren.countUp.color,
-                countingFromNumber: ren.countUp.countingFromNumber,
+                countingToNumber: ren.countUp.countingToNumber,
                 countingNumber: ren.countUp.countingNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
         if (ren.countUp.isCountingOut) {
             const boardEvent = new BoardStatusEvent({
+                khmerChessBoard,
                 flag: EVENT_FLAG_COUNT_UP_OUT,
                 color: ren.countUp.color,
-                countingFromNumber: ren.countUp.countingFromNumber,
-                countingNumber: ren.countUp.countingFromNumber,
+                countingToNumber: ren.countUp.countingToNumber,
+                countingNumber: ren.countUp.countingToNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
@@ -154,7 +102,7 @@ export default class BoardStatusEventController extends EventHandler {
 }
 /*
  * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
+ * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

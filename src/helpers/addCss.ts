@@ -1,4 +1,4 @@
-import { Piece } from 'khmer-chess';
+import { Piece, PIECE_COLOR_BLACK, PIECE_COLOR_WHITE } from 'khmer-chess';
 import {
     PIECES_SVG,
     svgCSS,
@@ -17,6 +17,7 @@ import {
     GRAVEYARD_CLASS_NAME,
     TR_PIECE_CLASS_NAME,
     TR_PIECE_SHADOW_CLASS_NAME,
+    CSS_P2P,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
@@ -26,6 +27,7 @@ export default function addCss({ uniqueClassName, options }:
     const { width, cellWidth } = options;
     const pieceFontSize = width / 12;
     const selector = `${CSS_TABLE_SELECTOR}.${uniqueClassName}`;
+    const p2pSelector = `${CSS_TABLE_SELECTOR}.${CSS_P2P}.${uniqueClassName}`;
 
     let css = '';
     css += `
@@ -112,32 +114,67 @@ export default function addCss({ uniqueClassName, options }:
     ${selector} .${TR_PIECE_CLASS_NAME} td.${CAN_MOVE_CLASS_NAME}${CSS_PSEUDO_HIGHLIGHT} {
         ${svgCSS.canMove()}
     }`;
+
+    css += piecesImageBackground(selector);
+    css += piecesImageBackground(p2pSelector, {
+        color: PIECE_COLOR_BLACK,
+        css: `path {
+        transform-origin: center;
+        transform: scaleY(-1);
+     }`});
+
+    appendCss(uniqueClassName, css);
+}
+
+function piecesImageBackground(selector: string, moreBG?: { css: string, color?: string }) {
+    const moreCss: { [key: string]: string } = {
+        [PIECE_COLOR_WHITE]: '',
+        [PIECE_COLOR_BLACK]: '',
+    };
+    if (moreBG) {
+        if (moreBG.color) {
+            moreCss[moreBG.color] = moreBG.css;
+        } else {
+            moreCss[PIECE_COLOR_WHITE] = moreBG.css;
+            moreCss[PIECE_COLOR_BLACK] = moreBG.css;
+        }
+    }
+    let css = '';
     // Turn
-    Piece.colorChars.forEach((color) => {
-        Piece.pieceChars.forEach((type) => {
+    css += Piece.colorChars.map((color) => {
+        return Piece.pieceChars.map((type) => {
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.turn()}</style>
+                <style>
+                    ${svgCSS.turn()}
+                    ${moreCss[color]}
+                </style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
-            css += `
+            return `
                 ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.${TURN_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
                 `;
-        });
-    });
+        }).join('');
+    }).join('');
     // Attacked
-    Piece.colorChars.forEach((color) => {
-        Piece.pieceChars.forEach((type) => {
+    css += Piece.colorChars.map((color) => {
+        return Piece.pieceChars.map((type) => {
             const attackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.attacked()}</style>
+                <style>
+                    ${svgCSS.attacked()}
+                    ${moreCss[color]}
+                </style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
             const notAttackedSVG = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="-10 0 1024 1000">
-                <style>${svgCSS.notAttacked()}</style>
+                <style>
+                    ${svgCSS.notAttacked()}
+                    ${moreCss[color]}
+                </style>
                 ${PIECES_SVG[color + type]}
             </svg>`;
-            css += `
+            return `
                 ${selector} .${TR_PIECE_CLASS_NAME} td.${PIECE_CLASS_NAME}.${ATTACKED_CLASS_NAME}.type-${type}.color-${color}${CSS_PSEUDO_PIECE} {
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(attackedSVG)}');
                 }
@@ -146,15 +183,14 @@ export default function addCss({ uniqueClassName, options }:
                     background-image: url('data:image/svg+xml;utf8,${encodeURIComponent(notAttackedSVG)}');
                 }
                 `;
-        });
-    });
-
-    appendCss(uniqueClassName, css);
+        }).join('');
+    }).join('');
+    return css;
 }
 
 /*
  * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
+ * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

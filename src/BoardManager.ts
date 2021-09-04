@@ -1,6 +1,7 @@
 import {
     BOARD_NOTE_V_PREFIX_CLASS,
     BOARD_NOTE_H_PREFIX_CLASS,
+    CSS_P2P,
 } from './providers/constance';
 import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
@@ -13,7 +14,8 @@ import {
     ROW_NUMBER,
 } from 'khmer-chess';
 import BoardManagerEventController from './event/BoardManagerEventController';
-import BoardStatusEventController, { BoardStatusEvent } from './event/BoardStatusEventController';
+import BoardStatusEventController from './event/BoardStatusEventController';
+import { BoardStatusEvent } from './event/BoardStatusEvent';
 
 export default class BoardManager {
     _cellManagers: CellManager[] = [];
@@ -96,6 +98,9 @@ export default class BoardManager {
 
     flip() {
         this.isUpsideDown = !this.isUpsideDown;
+        this._applyFlip();
+    }
+    _applyFlip() {
         // backup
         const backupPiecesList = this._cellManagers.map((cell) => {
             return cell.clone();
@@ -270,8 +275,17 @@ export default class BoardManager {
         });
     }
 
+    get isP2P() {
+        return this.khmerChessBoard.domRootBoard.classList.contains(CSS_P2P);
+    }
+
     setP2P(b: boolean) {
-        // TODO: implement this, enable face-to-face players
+        this.khmerChessBoard.domRootBoard.classList.remove(CSS_P2P);
+        if (b) {
+            this.khmerChessBoard.domRootBoard.classList.add(CSS_P2P);
+        }
+        this.isUpsideDown = false;
+        this._applyFlip();
     }
 
     takeTurn() {
@@ -289,11 +303,25 @@ export default class BoardManager {
     removeBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
         this.boardStatusEventController.removeBoardStatusEventListener(listener);
     }
+
+    forceCount() {
+        const move = this.khmerChessBoard.playManager.currentMove;
+        const ren = this.khmerChess.kpgn.ren;
+        if (!ren.countUp.isCounting && move.piece.colorOpponent === ren.turn) {
+            this.khmerChess.kpgn.ren.checkCountStatus(move, true);
+            this.khmerChessBoard.playManager.render();
+            if (move.isStartCounting) {
+                this.checkBoardEvent();
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 /*
  * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
+ * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

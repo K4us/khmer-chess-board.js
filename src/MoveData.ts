@@ -1,10 +1,56 @@
-import { KhmerChess } from "khmer-chess";
-import KhmerChessBoard from "./KhmerChessBoard";
+export default class MoveData {
+    index: number;
+    renData: string;
+    dom: HTMLElement;
+    constructor({ index, containerDom, renData, title, str, onClick }: {
+        index: number,
+        containerDom: HTMLElement,
+        renData: string,
+        title: string,
+        str: string,
+        onClick: Function,
+    }) {
+        this.index = index;
+        this.renData = renData;
 
-console.log(KhmerChess.title, KhmerChess.version);
-console.log(KhmerChessBoard.title, KhmerChessBoard.version);
+        const span = document.createElement('span');
+        span.title = title;
+        containerDom.appendChild(span);
+        this.dom = span;
 
-(window as any).KhmerChessBoard = KhmerChessBoard;
+        const indexSpan = document.createElement('span');
+        indexSpan.innerText = `${index}`;
+        indexSpan.classList.add('index');
+        span.appendChild(indexSpan);
+
+        const infoSpan = document.createElement('span');
+        infoSpan.classList.add('info');
+        infoSpan.innerText = str;
+        span.appendChild(infoSpan);
+        infoSpan.onclick = () => {
+            if (!this.isCurrent) {
+                onClick();
+            }
+        };
+
+    }
+    get isCurrent() {
+        return this.dom.classList.contains('current');
+    }
+    current(b: boolean) {
+        this.dom.classList.remove('current');
+        if (b) {
+            this.dom.classList.add('current');
+        }
+    }
+    destroy() {
+        this.dom.onclick = null;
+        this.dom.parentElement.removeChild(this.dom);
+    }
+    scrollIntoView() {
+        this.dom.scrollIntoView();
+    }
+}
 
 /*
  * Copyright (c) 2021, K4us

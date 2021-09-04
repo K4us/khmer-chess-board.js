@@ -2,6 +2,7 @@ export const BORDER_WIDTH = 1;
 export const MIN_CELL_WIDTH = 5;
 export const TD_GRAVEYARD_NUMBER = 30;
 export const TABLE_CLASS = 'khmer-chess-board';
+export const CSS_P2P = 'p2p';
 export const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
 export const SELECTED_CLASS_NAME = 'selected';
 export const CAN_MOVE_CLASS_NAME = 'can-move';
@@ -23,7 +24,7 @@ export const CSS_PSEUDO_NOTE = '::before';
 
 /*
  * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>
+ * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
