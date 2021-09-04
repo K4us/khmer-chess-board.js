@@ -24,12 +24,94 @@
             container: container1
         });
         kcb1.loadKpng({
-            "moves": ["Fh3h4", "fg6g5", "Fh4g5x0j15", "fh6h5", "Bh1h5x1", "bh8h6", "Bh5h6x2", "gf8g7", "Bh6f6x3",
-                "ke8e7", "Bf6e6x4", "ke7f8", "Be6d6x5", "kf8e7", "Bd6c6x6", "ke7f8", "Bc6b6x7", "kf8e7", "Bb6a6x8",
-                "gg7g6", "Ba6g6x9", "hg8h6", "Bg6h6x10", "ba8a6", "Bh6a6x11", "hb8c6", "Ba6a8", "ke7d7", "Ba1a2",
-                "kd7e7", "Ba2h2", "ke7d7", "Bh2h6", "kd7e7", "Ba8c8x12", "ke7f7", "Bc8d8x13", "kf7e7", "Bd8c8",
-                "ke7f7"],
-            "ren": "1HGKQGH1/8/FFFFFFF1/8/6F1/2h4B/5k2/2B5 w KQkq -- -.-@- ffbffffffghbgq"
+            "event": "",
+            "date": "",
+            "location": "",
+            "players": {
+                "white": {
+                    "id": "",
+                    "name": ""
+                },
+                "black": {
+                    "id": "",
+                    "name": ""
+                }
+            },
+            "result": {
+                "last": {
+                    "whiteWin": false,
+                    "blackWin": false
+                },
+                "white": {
+                    "win": 0,
+                    "draw": 0,
+                    "lost": 0
+                }
+            },
+            "timer": {
+                "totalSecond": 0,
+                "bonusTime": 0,
+                "currentWhite": 0,
+                "currentBlack": 0
+            },
+            "moves": [
+                "Fh3h4",
+                "fg6g5",
+                "Fh4g5x0j15",
+                "fh6g5x1",
+                "Ff3f4",
+                "fg5f4x2",
+                "Fg3f4x3",
+                "fe6e5",
+                "Ff4e5x4",
+                "fd6e5x5",
+                "Fd3d4",
+                "fe5d4x6",
+                "Fe3d4x7",
+                "fc6c5",
+                "Fd4c5x8",
+                "fb6c5x9",
+                "Fb3b4",
+                "fc5b4x10",
+                "Fc3b4x11",
+                "fa6a5",
+                "Fb4a5x12",
+                "ba8a5x13",
+                "Bh1h8x14",
+                "ba5a3x15",
+                "Ba1a3x16",
+                "ff6f5",
+                "Hg1h3",
+                "ff5f4",
+                "Hh3f2",
+                "tf4f3u",
+                "Gf1e2",
+                "tf3e2x17u",
+                "Kd1e2x18",
+                "qd8e7",
+                "Gc1d2",
+                "qe7d6",
+                "Ba3a8",
+                "qd6e5",
+                "Hf2g4",
+                "qe5d4",
+                "Gd2e3",
+                "qd4e3x19",
+                "Qe1d2",
+                "qe3d2x20",
+                "Hb1c3",
+                "qd2c3x21",
+                "Hg4e3",
+                "qc3d4",
+                "Bh8g8x22",
+                "qd4e3x23",
+                "Ke2e3x24",
+                "ke8d7",
+                "Bg8f8x25",
+                "kd7e6",
+                "Bf8c8x26"
+            ],
+            "ren": "8/8/4K3/8/8/4k3/8/BhB5 b KQkq -- -.-@- fFFffFFffFFffFbFbGfGQHhHqgg"
         });
         kcb1.soundManager.enable();
         // kcb1.boardManager.flip();
@@ -40,7 +122,7 @@
         kcb1.playManager.playEventController.addOnPauseEventListener(() => {
             console.log('pause');
         });
-        kcb1.boardManager.addBoardStatusEventListener((event)=>{
+        kcb1.boardManager.addBoardStatusEventListener((event) => {
             console.log(event);
         });
         function resetBoard() {

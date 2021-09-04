@@ -6,11 +6,6 @@ import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import {
-    EVENT_FLAG_ATTACK,
-    EVENT_FLAG_COUNT_DOWN_OUT,
-    EVENT_FLAG_DRAW,
-    EVENT_FLAG_START_COUNTING,
-    EVENT_FLAG_WIN,
     KhmerChess,
     ListenerType,
     PieceIndex,
@@ -273,6 +268,10 @@ export default class BoardManager {
             const cell = this.get(i);
             cell.setPiece(piece);
         });
+    }
+
+    setP2P(b: boolean) {
+        // TODO: implement this, enable face-to-face players
     }
 
     takeTurn() {

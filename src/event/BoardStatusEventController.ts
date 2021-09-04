@@ -6,72 +6,71 @@ import {
     ListenerType,
     PIECE_COLOR_WHITE,
     EVENT_FLAG_DRAW,
-    EVENT_FLAG_COUNT_DOWN_OUT,
-    EVENT_FLAG_COUNTING_DOWN,
-    EVENT_FLAG_START_COUNTING
+    EVENT_FLAG_COUNT_UP_OUT,
+    EVENT_FLAG_COUNTING_UP,
+    EVENT_FLAG_START_COUNTING,
+    REN
 } from 'khmer-chess';
 import KhmerChessBoard from '../KhmerChessBoard';
 export type Option = {
     flag: string;
     actorPieceIndex?: PieceIndex;
     color: string;
-    countingDownFromNumber?: number;
-    countingDownNumber?: number;
+    countingFromNumber?: number;
+    countingNumber?: number;
 };
 export class BoardStatusEvent {
     flag: string;
     actorPieceIndex: PieceIndex;
-    isAttack = false;
-    isWhiteAttacking = false;
-    isBlackAttacking = false;
+    isWhite = false;
+    isAttacking = false;
+
     isWin = false;
-    isWhiteWin = false;
-    isBlackWin = false;
+
     isDraw = false;
-    isWhiteCannotMove = false;
-    isBlackCannotMove = false;
-    isCountDownOut = false;
-    isWhiteCountDownOut = false;
-    isBlackCountDownOut = false;
-    isCountingDown = false;
-    countingDownFrom: number | null = null
-    whiteCountingDownNumber: number | null = null
-    blackCountingDownNumber: number | null = null
-    constructor({ countingDownFromNumber, countingDownNumber,
+    isCannotMove = false;
+
+    isStartCounting = false;
+
+    isCountUpOut = false;
+
+    isCountingUp = false;
+
+    countingFrom: number | null = null
+    countingNumber: number | null = null
+
+    constructor({ countingFromNumber: countingFromNumber, countingNumber: countingNumber,
         flag, actorPieceIndex, color }: Option) {
 
         this.flag = flag;
         const isWhite = color === PIECE_COLOR_WHITE;
+        this.isWhite = isWhite;
         this.actorPieceIndex = actorPieceIndex || null;
         this.isWin = flag === EVENT_FLAG_WIN;
-        this.isAttack = this.isWin || flag === EVENT_FLAG_ATTACK;
-        if (this.isAttack) {
-            this.isWhiteAttacking = isWhite;
-            this.isBlackAttacking = !isWhite;
+        this.isAttacking = flag === EVENT_FLAG_ATTACK;
+        this.isStartCounting = flag === EVENT_FLAG_START_COUNTING;
+        if (this.isStartCounting) {
+            this.applyCount(countingFromNumber, countingNumber)
         }
-        if (this.isWin) {
-            this.isWhiteWin = isWhite;
-            this.isBlackWin = !isWhite;
+        this.isCountingUp = flag === EVENT_FLAG_COUNTING_UP;
+        if (this.isCountingUp) {
+            this.applyCount(countingFromNumber, countingNumber)
         }
-        this.isCountDownOut = flag === EVENT_FLAG_COUNT_DOWN_OUT;
-        if (this.isCountDownOut) {
-            this.isWhiteCountDownOut = isWhite;
-            this.isBlackCountDownOut = !isWhite;
+        this.isCountUpOut = flag === EVENT_FLAG_COUNT_UP_OUT;
+        if (this.isCountUpOut) {
+            this.applyCount(countingFromNumber, countingNumber)
         }
-        this.isDraw = this.isCountDownOut || flag === EVENT_FLAG_DRAW;
-        if (this.isDraw && !this.isCountDownOut) {
-            this.isWhiteCannotMove = isWhite;
-            this.isBlackCannotMove = !isWhite;
+        this.isDraw = this.isCountUpOut || flag === EVENT_FLAG_DRAW;
+        if (this.isDraw && !this.isCountUpOut) {
+            this.isCannotMove = true;
         }
-        this.isCountingDown = flag === EVENT_FLAG_COUNTING_DOWN;
-        if (this.isCountingDown) {
-            this.countingDownFrom = countingDownFromNumber;
-            if (isWhite) {
-                this.whiteCountingDownNumber = countingDownNumber;
-            } else {
-                this.blackCountingDownNumber = countingDownNumber;
-            }
-        }
+    }
+    applyCount(countingFromNumber: number, countingNumber: number) {
+        this.countingFrom = countingFromNumber;
+        this.countingNumber = countingNumber;
+    }
+    getMessage() {
+        // TODO: implement this
     }
 }
 export default class BoardStatusEventController extends EventHandler {
@@ -94,9 +93,11 @@ export default class BoardStatusEventController extends EventHandler {
     }
 
     checkBoardEvent(khmerChessBoard: KhmerChessBoard) {
-        const { khmerChess, boardManager, playManager } = khmerChessBoard;
+        const { boardManager, playManager } = khmerChessBoard;
         const boardStatusEventController = boardManager.boardStatusEventController;
         const move = playManager.currentMove;
+        const ren = REN.fromString(move.renStr);
+        ren.syncWithMove(move);
         if (move.attacker) {
             const boardEvent = new BoardStatusEvent({
                 flag: EVENT_FLAG_ATTACK,
@@ -122,39 +123,30 @@ export default class BoardStatusEventController extends EventHandler {
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
-        const startCountingColor = move.boardStatus.startCountingColor;
-        if (startCountingColor) {
-            const isWite = startCountingColor === PIECE_COLOR_WHITE;
-            const countdown = khmerChess.kpgn.ren.countdown;
+        if (move.isStartCounting) {
             const boardEvent = new BoardStatusEvent({
                 flag: EVENT_FLAG_START_COUNTING,
-                color: startCountingColor,
-                countingDownFromNumber: countdown.countingDownFromNumber,
-                countingDownNumber: countdown.countingDownFromNumber,
+                color: ren.countUp.color,
+                countingFromNumber: ren.countUp.countingFromNumber,
+                countingNumber: ren.countUp.countingNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
-        const countingDownColor = move.boardStatus.countingDownColor;
-        if (countingDownColor) {
-            const isWite = countingDownColor === PIECE_COLOR_WHITE;
-            const countdown = khmerChess.kpgn.ren.countdown;
-            const countingDownNumber = isWite ? countdown.whiteCountingDownNumber : countdown.blackCountingDownNumber;
+        if (ren.countUp.isCountingUp) {
             const boardEvent = new BoardStatusEvent({
-                flag: EVENT_FLAG_COUNTING_DOWN,
-                color: countingDownColor,
-                countingDownFromNumber: countdown.countingDownFromNumber,
-                countingDownNumber,
+                flag: EVENT_FLAG_COUNTING_UP,
+                color: ren.countUp.color,
+                countingFromNumber: ren.countUp.countingFromNumber,
+                countingNumber: ren.countUp.countingNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
-        const drawCountColor = move.boardStatus.drawCountColor;
-        if (drawCountColor) {
-            const countdown = khmerChess.kpgn.ren.countdown;
+        if (ren.countUp.isCountingOut) {
             const boardEvent = new BoardStatusEvent({
-                flag: EVENT_FLAG_COUNT_DOWN_OUT,
-                color: drawCountColor,
-                countingDownFromNumber: countdown.countingDownFromNumber,
-                countingDownNumber: 0,
+                flag: EVENT_FLAG_COUNT_UP_OUT,
+                color: ren.countUp.color,
+                countingFromNumber: ren.countUp.countingFromNumber,
+                countingNumber: ren.countUp.countingFromNumber,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }

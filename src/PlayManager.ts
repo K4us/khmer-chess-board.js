@@ -105,6 +105,7 @@ export default class PlayManager {
         }
     }
     draw(playerContainer: HTMLElement) {
+        // TODO: increase heigh and add index number
         const containerWidth = ~~(this.options.width * 3 / 4);
         const table = document.createElement('table');
         table.classList.add(this.options.uniqueClassName);
