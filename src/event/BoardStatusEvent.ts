@@ -8,7 +8,8 @@ import {
     EVENT_FLAG_COUNTING_UP,
     EVENT_FLAG_START_COUNTING,
     PIECE_COLOR_BLACK,
-    Piece,
+    Move,
+    EVENT_FLAG_MOVING,
 } from 'khmer-chess';
 import CellManager from '../CellManager';
 import KhmerChessBoard from '../KhmerChessBoard';
@@ -17,13 +18,16 @@ export type Option = {
     khmerChessBoard: KhmerChessBoard;
     flag: string;
     actorPieceIndex?: PieceIndex;
-    color: string;
+    color?: string;
     countingToNumber?: number;
     countingNumber?: number;
+    move?: Move
 };
 export class BoardStatusEvent {
     khmerChessBoard: KhmerChessBoard;
     flag: string;
+    isMoving = false;
+    move: Move | null = null;
     message = '';
     actorPieceIndex: PieceIndex | null = null;
     isWhite = false;
@@ -42,30 +46,41 @@ export class BoardStatusEvent {
     countingNumber: number | null = null
 
     constructor({ khmerChessBoard, countingToNumber, countingNumber,
-        flag, actorPieceIndex, color }: Option) {
+        flag, actorPieceIndex, color, move }: Option) {
         this.khmerChessBoard = khmerChessBoard;
         this.flag = flag;
-        const isWhite = color === PIECE_COLOR_WHITE;
+        const isWhite = !!(color ? color === PIECE_COLOR_WHITE : move?.piece.color);
         this.isWhite = isWhite;
+
+        this.isMoving = flag === EVENT_FLAG_MOVING;
+        this.move = move || null;
+
         this.actorPieceIndex = actorPieceIndex || null;
+
         this.isWin = flag === EVENT_FLAG_WIN;
+
         this.isAttacking = flag === EVENT_FLAG_ATTACK;
+
         this.isStartCounting = flag === EVENT_FLAG_START_COUNTING;
         if (this.isStartCounting) {
             this.applyCount(countingToNumber || null, countingNumber || null);
         }
+
         this.isCountingUp = flag === EVENT_FLAG_COUNTING_UP;
         if (this.isCountingUp) {
             this.applyCount(countingToNumber || null, countingNumber || null);
         }
+
         this.isCountUpOut = flag === EVENT_FLAG_COUNT_UP_OUT;
         if (this.isCountUpOut) {
             this.applyCount(countingToNumber || null, countingNumber || null);
         }
+
         this.isDraw = this.isCountUpOut || flag === EVENT_FLAG_DRAW;
         if (this.isDraw && !this.isCountUpOut) {
             this.isCannotMove = true;
         }
+
         this.message = this.getMessage();
     }
     applyCount(countingToNumber: number | null, countingNumber: number | null) {
@@ -79,12 +94,18 @@ export class BoardStatusEvent {
         const tran = (arr: [string, string]) => {
             return arr[isEnglish ? 0 : 1];
         };
-        const pTitle = (root: PieceIndex | CellManager | null | undefined) => {
+        const pTitle = (root: Move | PieceIndex | CellManager | null | undefined) => {
             if (!root || !root.piece) {
                 return tran(['unknown', 'មិន​ស្គាល់']);
             }
             return isEnglish ? root.piece.titleEnglish : root.piece.title;
         };
+
+        if (this.isMoving && this.move) {
+            const from = this.move.moveFrom.indexCode;
+            const to = this.move.moveTo.indexCode;
+            return `${pTitle(this.move)} ${tran(['moving from', 'ដើរ​ពី'])} ${from} ${tran(['to', 'ទៅ'])} ${to}`;
+        }
 
         if (this.isAttacking) {
             const piece = this.actorPieceIndex?.piece;

@@ -34,7 +34,6 @@ export default class BoardStatusEventController extends EventHandler {
 
     checkBoardEvent(khmerChessBoard: KhmerChessBoard) {
         const { boardManager, playManager } = khmerChessBoard;
-        const boardStatusEventController = boardManager.boardStatusEventController;
         const move = playManager.currentMove;
         if (!move) {
             return;
@@ -48,7 +47,7 @@ export default class BoardStatusEventController extends EventHandler {
                 actorPieceIndex: move.attacker,
                 color: move.attacker.piece.color,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
         const winColor = move.winColor;
         if (winColor) {
@@ -58,7 +57,7 @@ export default class BoardStatusEventController extends EventHandler {
                 actorPieceIndex: move.attacker as PieceIndex,
                 color: winColor,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
         const stuckColor = move.stuckColor;
         if (stuckColor) {
@@ -67,7 +66,7 @@ export default class BoardStatusEventController extends EventHandler {
                 flag: EVENT_FLAG_DRAW,
                 color: stuckColor,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
         if (move.isStartCounting) {
             const boardEvent = new BoardStatusEvent({
@@ -77,7 +76,7 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingNumber as number,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
         if (ren.countUp.isCountingUp) {
             const boardEvent = new BoardStatusEvent({
@@ -87,7 +86,7 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingNumber as number,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
         if (ren.countUp.isCountingOut) {
             const boardEvent = new BoardStatusEvent({
@@ -97,7 +96,7 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingToNumber as number,
             });
-            boardStatusEventController.fireEvent(boardEvent);
+            this.fireEvent(boardEvent);
         }
     }
 }

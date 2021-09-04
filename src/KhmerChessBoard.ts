@@ -8,13 +8,14 @@ import addCss from './helpers/addCss';
 import addCssNote from './helpers/addCssNote';
 import drawBoardAndGraveyard from './helpers/drawBoardAndGraveyard';
 import OptionsManager from './OptionsManager';
-import { KhmerChess } from 'khmer-chess';
+import { EVENT_FLAG_MOVING, KhmerChess } from 'khmer-chess';
 import type { KPGNOption } from 'khmer-chess';
 import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
 
 import KhmerChessProps from './KhmerChessProps';
+import { BoardStatusEvent } from './event/BoardStatusEvent';
 
 export default class KhmerChessBoard extends KhmerChessProps {
     static LOCALE_ENGLISH = 'en';
@@ -93,6 +94,12 @@ export default class KhmerChessBoard extends KhmerChessProps {
             this.playManager.next(() => {
                 this.playManager.turning();
             });
+            const boardEvent = new BoardStatusEvent({
+                khmerChessBoard:this,
+                flag: EVENT_FLAG_MOVING,
+                move,
+            });
+            this.boardManager.boardStatusEventController.fireEvent(boardEvent);
         }
     }
 
