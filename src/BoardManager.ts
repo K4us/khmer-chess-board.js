@@ -299,6 +299,7 @@ export default class BoardManager {
     }
     addBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
         this.boardStatusEventController.addBoardStatusEventListener(listener);
+        this.checkBoardEvent();
     }
     removeBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
         this.boardStatusEventController.removeBoardStatusEventListener(listener);

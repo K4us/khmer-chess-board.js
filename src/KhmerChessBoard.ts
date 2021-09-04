@@ -200,6 +200,7 @@ export default class KhmerChessBoard {
         this.applyPieces();
         this.playManager.resetCurrentIndex();
         this.playManager.highlightCurrentMove();
+        this.boardManager.checkBoardEvent();
     }
 
     reset() {

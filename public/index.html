@@ -23,10 +23,8 @@
             width: 500,
             container: container1
         });
-        kcb1.loadKpng('eyJldmVudCI6IiIsImRhdGUiOiIiLCJsb2NhdGlvbiI6IiIsInBsYXllcnMiOnsid2hpdGUiOnsiaWQiOiIiLCJuYW1lIjoiIn0sImJsYWNrIjp7ImlkIjoiIiwibmFtZSI6IiJ9fSwicmVzdWx0Ijp7Imxhc3QiOnsid2hpdGVXaW4iOmZhbHNlLCJibGFja1dpbiI6ZmFsc2V9LCJ3aGl0ZSI6eyJ3aW4iOjAsImRyYXciOjAsImxvc3QiOjB9fSwidGltZXIiOnsidG90YWxTZWNvbmQiOjAsImJvbnVzVGltZSI6MCwiY3VycmVudFdoaXRlIjowLCJjdXJyZW50QmxhY2siOjB9LCJtb3ZlcyI6WyJGZzNnNCIsImZoNmg1IiwiRmc0aDU8MF4xNSIsImJoOGg1PDEiLCJGaDNoNCIsImJoNWg0PDIiLCJGYjNiNCIsImZhNmE1IiwiRmI0YTU8MyIsImJhOGE1PDQiLCJGYTNhNCIsImJhNWE0PDUiLCJGYzNjNCIsImJhNGExPDYiLCJGZjNmNCIsImJoNGY0PDciLCJIZzFmMyIsImJmNGYzPDgiLCJHZjFmMiIsImJmM2YyPDkiLCJGZTNlNCIsImJhMWIxPDEwIiwiQmgxZjEiLCJiZjJmMTwxMSIsIkZjNGM1IiwiZmY2ZjUiLCJUYzVkNjwxMioiLCJxZDhlNyIsIlRkNmU3PDEzIiwiZ2Y4ZTc8MTQiLCJGZTRmNTwxNSIsImZlNmY1PDE2IiwiRmQzZDQiLCJmYzZjNSIsIkZkNGM1PDE3IiwiZmI2YzU8MTgiLCJLZDFkMiIsImJmMWUxPDE5IiwiR2MxYzIiXSwicmVuIjoiMWIyYjMvMkdLNC84LzgvMmYyZjIvNmYxLzRnMy8xaGcxazFoMSBiIEtRa3EgLS0gLS4tQC0gZkZGZkZGQkZIR0hCZnFUZkZmRlEifQ==');
         kcb1.soundManager.enable();
         // kcb1.boardManager.flip();
-        kcb1.playManager.play();
         kcb1.playManager.playEventController.addOnPlayEventListener(() => {
             console.log('play');
         });
@@ -36,6 +34,10 @@
         kcb1.boardManager.addBoardStatusEventListener((event) => {
             console.log(event.message);
         });
+
+        kcb1.loadKpng('eyJldmVudCI6IiIsImRhdGUiOiIiLCJsb2NhdGlvbiI6IiIsInBsYXllcnMiOnsid2hpdGUiOnsiaWQiOiIiLCJuYW1lIjoiIn0sImJsYWNrIjp7ImlkIjoiIiwibmFtZSI6IiJ9fSwicmVzdWx0Ijp7Imxhc3QiOnsid2hpdGVXaW4iOmZhbHNlLCJibGFja1dpbiI6ZmFsc2V9LCJ3aGl0ZSI6eyJ3aW4iOjAsImRyYXciOjAsImxvc3QiOjB9fSwidGltZXIiOnsidG90YWxTZWNvbmQiOjAsImJvbnVzVGltZSI6MCwiY3VycmVudFdoaXRlIjowLCJjdXJyZW50QmxhY2siOjB9LCJtb3ZlcyI6WyJGZDNkNCIsImZlNmU1IiwiRmQ0ZDUiLCJmZjZmNSIsIlRkNWM2PDBeMTUiLCJnYzhkNyIsIlRjNmQ3PDEiLCJrZThmNyIsIkZnM2c0IiwiZmY1ZzQ8MiIsIkZoM2c0PDMiLCJmaDZoNSIsIkJoMWg1PDQiLCJmZTVlNCIsIkZmM2U0PDUiLCJmZzZnNSIsIkJoNWc1PDYiLCJiaDhoNCIsIkJnNWc4PDciLCJiaDRnNDw4IiwiQmc4aDgiLCJiZzRlNDw5IiwiQmg4aDciLCJrZjdnOCIsIlRkN2M2IiwiYmU0ZTM8MTAiLCJRZTFkMiIsImJlM2MzPDExIiwiR2YxZTIiLCJiYzNiMzwxMiIsIkhnMWYzIiwiYmIzYTM8MTMiLCJCYTFhMzwxNCIsImdmOGc3IiwiQmg3Zzc8MTUiLCJrZzhmOCIsIkJnN2E3IiwiaGI4ZDciLCJCYTdhODwxNiIsImhkN2I4IiwiQmE4Yjg8MTciLCJmYTZhNSIsIkJhM2E1PDE4IiwiZmI2YjUiLCJUYzZkNyIsImZiNWI0IiwiQmE1ZDUiLCJ0YjRiMyoiLCJCZDVkNjwxOSIsInRiM2MyIl0sInJlbiI6IjFIR0s0LzJ0UUczLzVIMi84LzgvM0I0LzNUNC8xQjFxMWsyIHcgS1FrcSAtLSAtLi1ALSBmZ0ZmZmZmaEZGRkZGRmJnYmhmZiJ9');
+        kcb1.playManager.play();
+
         function resetBoard() {
             kcb1.reset();
             kcb1.playManager.play();
