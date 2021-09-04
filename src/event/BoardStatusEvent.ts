@@ -25,7 +25,7 @@ export class BoardStatusEvent {
     khmerChessBoard: KhmerChessBoard;
     flag: string;
     message = '';
-    actorPieceIndex: PieceIndex;
+    actorPieceIndex: PieceIndex | null = null;
     isWhite = false;
     isAttacking = false;
 
@@ -41,7 +41,7 @@ export class BoardStatusEvent {
     countingToNumber: number | null = null
     countingNumber: number | null = null
 
-    constructor({ khmerChessBoard, countingToNumber: countingToNumber, countingNumber: countingNumber,
+    constructor({ khmerChessBoard, countingToNumber, countingNumber,
         flag, actorPieceIndex, color }: Option) {
         this.khmerChessBoard = khmerChessBoard;
         this.flag = flag;
@@ -52,15 +52,15 @@ export class BoardStatusEvent {
         this.isAttacking = flag === EVENT_FLAG_ATTACK;
         this.isStartCounting = flag === EVENT_FLAG_START_COUNTING;
         if (this.isStartCounting) {
-            this.applyCount(countingToNumber, countingNumber);
+            this.applyCount(countingToNumber || null, countingNumber || null);
         }
         this.isCountingUp = flag === EVENT_FLAG_COUNTING_UP;
         if (this.isCountingUp) {
-            this.applyCount(countingToNumber, countingNumber);
+            this.applyCount(countingToNumber || null, countingNumber || null);
         }
         this.isCountUpOut = flag === EVENT_FLAG_COUNT_UP_OUT;
         if (this.isCountUpOut) {
-            this.applyCount(countingToNumber, countingNumber);
+            this.applyCount(countingToNumber || null, countingNumber || null);
         }
         this.isDraw = this.isCountUpOut || flag === EVENT_FLAG_DRAW;
         if (this.isDraw && !this.isCountUpOut) {
@@ -68,7 +68,7 @@ export class BoardStatusEvent {
         }
         this.message = this.getMessage();
     }
-    applyCount(countingToNumber: number, countingNumber: number) {
+    applyCount(countingToNumber: number | null, countingNumber: number | null) {
         this.countingToNumber = countingToNumber;
         this.countingNumber = countingNumber;
     }
@@ -79,7 +79,7 @@ export class BoardStatusEvent {
         const tran = (arr: [string, string]) => {
             return arr[isEnglish ? 0 : 1];
         };
-        const pTitle = (root: PieceIndex | CellManager) => {
+        const pTitle = (root: PieceIndex | CellManager | null | undefined) => {
             if (!root || !root.piece) {
                 return tran(['unknown', 'មិន​ស្គាល់']);
             }
@@ -87,27 +87,27 @@ export class BoardStatusEvent {
         };
 
         if (this.isAttacking) {
-            const piece = this.actorPieceIndex.piece;
-            const king = boardManager.getKing(piece.colorOpponent);
+            const piece = this.actorPieceIndex?.piece;
+            const king = piece && boardManager.getKing(piece.colorOpponent);
             return `${pTitle(this.actorPieceIndex)} ${tran(['is attacking', 'អុក'])} ${pTitle(king)}`;
         }
         if (this.isWin) {
             const king = boardManager.getKing(color);
-            return `${king.piece.title} ${tran(['wins', 'ឈ្នះ'])}`;
+            return `${pTitle(king)} ${tran(['wins', 'ឈ្នះ'])}`;
         }
         if (this.isDraw) {
             const king = boardManager.getKing(color);
             if (this.isCannotMove) {
-                return `${king.piece.title} ${tran(['stuck', 'អាប់'])}`;
+                return `${pTitle(king)} ${tran(['stuck', 'អាប់'])}`;
             } else if (this.isCountUpOut) {
-                return `${king.piece.title} ${isEnglish ? 'count all' : 'រាប់​អស់'}`;
+                return `${pTitle(king)} ${isEnglish ? 'count all' : 'រាប់​អស់'}`;
             } else {
                 return `${tran(['draw', 'ស្មើ'])}`;
             }
         }
         if (this.isCannotMove) {
             const king = boardManager.getKing(color);
-            return `${king.piece.title} ${tran(['stuck', 'អាប់'])}`;
+            return `${pTitle(king)} ${tran(['stuck', 'អាប់'])}`;
         }
         if (this.isStartCounting) {
             const king = boardManager.getKing(color);
@@ -119,8 +119,9 @@ export class BoardStatusEvent {
         }
         if (this.isCountUpOut) {
             const king = boardManager.getKing(color);
-            return `${king.piece.title} ${isEnglish ? 'count all' : 'រាប់​អស់'}`;
+            return `${pTitle(king)} ${isEnglish ? 'count all' : 'រាប់​អស់'}`;
         }
+        return this.flag;
     }
 }
 

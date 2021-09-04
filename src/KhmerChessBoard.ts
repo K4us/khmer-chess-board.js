@@ -52,7 +52,7 @@ export default class KhmerChessBoard {
     messageManager: MessageManager;
     pieceShadowManager: PieceShadowManager;
     setOptions(options: {
-        container: HTMLElement;
+        container?: HTMLElement | null;
         width: number;
     }) {
 
@@ -123,7 +123,7 @@ export default class KhmerChessBoard {
         table.style.top = '0';
         table.style.left = '0';
         table.style.transform = '';
-        table.style.zIndex = null;
+        table.style.zIndex = '';
 
         if (isFullScreen) {
             table.classList.add(POPUP_CLASS_NAME);
@@ -223,7 +223,7 @@ export default class KhmerChessBoard {
     removeAllDomElements() {
         const elements = document.querySelectorAll(`table.${this.options.uniqueClassName} `);
         elements.forEach((element) => {
-            element.parentElement.removeChild(element);
+            element.parentElement?.removeChild(element);
         });
         this.removeAllDomCss();
     }
@@ -231,17 +231,12 @@ export default class KhmerChessBoard {
     removeAllDomCss() {
         const elements = document.querySelectorAll(`style.${this.options.uniqueClassName} `);
         elements.forEach((element) => {
-            element.parentElement.removeChild(element);
+            element.parentElement?.removeChild(element);
         });
     }
 
     destroy() {
         this.removeAllDomElements();
-        this.containerDom = null;
-        this.graveyardManager = null;
-        this.boardManager = null;
-        this.soundManager = null;
-        this.khmerChess = null;
     }
 }
 

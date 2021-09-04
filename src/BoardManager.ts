@@ -7,6 +7,7 @@ import CellManager from './CellManager';
 import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import {
+    CELL_COUNT,
     KhmerChess,
     ListenerType,
     PieceIndex,
@@ -18,7 +19,10 @@ import BoardStatusEventController from './event/BoardStatusEventController';
 import { BoardStatusEvent } from './event/BoardStatusEvent';
 
 export default class BoardManager {
-    _cellManagers: CellManager[] = [];
+    _cellManagers: CellManager[] = Array.from({ length: CELL_COUNT }, (_, i) => {
+        const dom = document.createElement('div');
+        return new CellManager(Point.fromIndex(i), dom, null);
+    });
     options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
@@ -68,17 +72,15 @@ export default class BoardManager {
         });
     }
 
-    push(i: number, cell: CellManager) {
+    set(i: number, cell: CellManager) {
         this._cellManagers[i] = cell;
         cell.setProps(this.khmerChessBoard);
     }
 
     get(index: number) {
-        return this._cellManagers.find((cell: CellManager) => {
-            return cell.point.index === index;
-        });
+        return this._cellManagers[index];
     }
-    getKing(color: string): CellManager | null {
+    getKing(color: string) {
         const pieceIndex = this.khmerChess.kpgn.ren.board.getKing(color);
         if (!pieceIndex) {
             return null;
@@ -196,10 +198,9 @@ export default class BoardManager {
         });
     }
 
-    highlightMovedCells(cells: CellManager[]) {
-        cells.forEach((cell) => {
-            cell.moved();
-        });
+    highlightMovedCells(fromCell: CellManager, toCell: CellManager) {
+        fromCell.moved();
+        toCell.moved();
     }
 
     clearMovedCells() {

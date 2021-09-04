@@ -65,7 +65,7 @@ export default function drawBoardAndGraveyard({
             const td = createTd(tr);
             const cell = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
             const index = Point.xyToIndex(j, ROW_NUMBER - i - 1);
-            boardManager.push(index, cell);
+            boardManager.set(index, cell);
         }
     }
     const tr = createTr(tbody);

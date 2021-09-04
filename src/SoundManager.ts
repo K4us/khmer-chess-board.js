@@ -5,9 +5,9 @@ export default class SoundManager {
     static MOVE_FLAG = 'm';
     static CAPTURE_FLAG = 'ct';
     static CHECK_FLAG = 'c';
-    move: HTMLAudioElement = null;
-    capture: HTMLAudioElement = null;
-    check: HTMLAudioElement = null;
+    move: HTMLAudioElement | null = null;
+    capture: HTMLAudioElement | null = null;
+    check: HTMLAudioElement | null = null;
     isEnable = false;
     khmerChessBoard: KhmerChessBoard;
     setProps(khmerChessBoard: KhmerChessBoard) {
@@ -16,15 +16,15 @@ export default class SoundManager {
     disable() {
         this.isEnable = false;
         if (this.move) {
-            this.move.parentElement.removeChild(this.move);
+            this.move?.parentElement?.removeChild(this.move);
             this.move = null;
         }
         if (this.capture) {
-            this.capture.parentElement.removeChild(this.capture);
+            this.capture?.parentElement?.removeChild(this.capture);
             this.capture = null;
         }
-        if (this.check) {
-            this.check.parentElement.removeChild(this.check);
+        if (this.check !== null) {
+            this.check.parentElement?.removeChild(this.check);
             this.check = null;
         }
         this.khmerChessBoard.messageManager.log('Sound is disabled');
@@ -67,7 +67,7 @@ export default class SoundManager {
                 default:
                     this.khmerChessBoard.messageManager.log('Invalid sound flag');
             }
-        } catch (error) {}
+        } catch (error) { }
     }
 
     playMove() {

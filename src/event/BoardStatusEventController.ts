@@ -8,6 +8,7 @@ import {
     EVENT_FLAG_COUNTING_UP,
     EVENT_FLAG_START_COUNTING,
     REN,
+    PieceIndex,
 } from 'khmer-chess';
 import KhmerChessBoard from '../KhmerChessBoard';
 import { BoardStatusEvent } from './BoardStatusEvent';
@@ -40,7 +41,7 @@ export default class BoardStatusEventController extends EventHandler {
         }
         const ren = REN.fromString(move.renStr);
         ren.syncWithMove(move);
-        if (move.attacker) {
+        if (move.attacker && move.attacker.piece) {
             const boardEvent = new BoardStatusEvent({
                 khmerChessBoard,
                 flag: EVENT_FLAG_ATTACK,
@@ -54,7 +55,7 @@ export default class BoardStatusEventController extends EventHandler {
             const boardEvent = new BoardStatusEvent({
                 khmerChessBoard,
                 flag: EVENT_FLAG_WIN,
-                actorPieceIndex: move.attacker,
+                actorPieceIndex: move.attacker as PieceIndex,
                 color: winColor,
             });
             boardStatusEventController.fireEvent(boardEvent);
@@ -72,9 +73,9 @@ export default class BoardStatusEventController extends EventHandler {
             const boardEvent = new BoardStatusEvent({
                 khmerChessBoard,
                 flag: EVENT_FLAG_START_COUNTING,
-                color: ren.countUp.color,
-                countingToNumber: ren.countUp.countingToNumber,
-                countingNumber: ren.countUp.countingNumber,
+                color: ren.countUp.color as string,
+                countingToNumber: ren.countUp.countingToNumber as number,
+                countingNumber: ren.countUp.countingNumber as number,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
@@ -82,9 +83,9 @@ export default class BoardStatusEventController extends EventHandler {
             const boardEvent = new BoardStatusEvent({
                 khmerChessBoard,
                 flag: EVENT_FLAG_COUNTING_UP,
-                color: ren.countUp.color,
-                countingToNumber: ren.countUp.countingToNumber,
-                countingNumber: ren.countUp.countingNumber,
+                color: ren.countUp.color as string,
+                countingToNumber: ren.countUp.countingToNumber as number,
+                countingNumber: ren.countUp.countingNumber as number,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }
@@ -92,9 +93,9 @@ export default class BoardStatusEventController extends EventHandler {
             const boardEvent = new BoardStatusEvent({
                 khmerChessBoard,
                 flag: EVENT_FLAG_COUNT_UP_OUT,
-                color: ren.countUp.color,
-                countingToNumber: ren.countUp.countingToNumber,
-                countingNumber: ren.countUp.countingToNumber,
+                color: ren.countUp.color as string,
+                countingToNumber: ren.countUp.countingToNumber as number,
+                countingNumber: ren.countUp.countingToNumber as number,
             });
             boardStatusEventController.fireEvent(boardEvent);
         }

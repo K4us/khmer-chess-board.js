@@ -1,7 +1,8 @@
 import KhmerChessBoard from './KhmerChessBoard';
-import { Point, CELL_COUNT } from 'khmer-chess';
+import { Point, CELL_COUNT, Piece } from 'khmer-chess';
 import { init, capturing, reset, attacking } from './test/helper';
 import spies from 'chai-spies';
+import CellManager from './CellManager';
 chai.use(spies);
 const { expect } = chai;
 
@@ -46,12 +47,12 @@ describe('KhmerChessBoard', function () {
     });
 
     it('should return king', () => {
-        let cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_BLACK);
-        expect(cell.piece.isColorBlack).to.true;
-        expect(cell.piece.isTypeKing).to.true;
-        cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_WHITE);
-        expect(cell.piece.isColorWhite).to.true;
-        expect(cell.piece.isTypeKing).to.true;
+        let cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_BLACK) as CellManager;
+        expect(cell.piece?.isColorBlack).to.true;
+        expect(cell.piece?.isTypeKing).to.true;
+        cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_WHITE) as CellManager;
+        expect(cell.piece?.isColorWhite).to.true;
+        expect(cell.piece?.isTypeKing).to.true;
     });
 
     it('should return by index code', () => {
@@ -113,7 +114,7 @@ describe('KhmerChessBoard', function () {
         kcb.playManager.play();
         kcb.move(attacking.fromIndex, attacking.toIndex);
         const cell = kcb.boardManager.get(attacking.toIndex);
-        const king = kcb.boardManager.getKing(cell.piece.colorOpponent);
+        const king = kcb.boardManager.getKing((cell.piece as Piece).colorOpponent) as CellManager;
         expect(king.isAttacked).to.true;
     });
 

@@ -44,8 +44,10 @@ export default class MoveData {
         }
     }
     destroy() {
-        this.dom.onclick = null;
-        this.dom.parentElement.removeChild(this.dom);
+        if (this.dom !== null) {
+            this.dom.onclick = null;
+            this.dom.parentElement?.removeChild(this.dom);
+        }
     }
     scrollIntoView() {
         this.dom.scrollIntoView();

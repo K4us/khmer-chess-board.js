@@ -162,7 +162,7 @@ export default class PlayManager {
         }
         `;
     }
-    isCanUndo() {
+    get isCanUndo() {
         return !!this.khmerChessBoard.khmerChess.kpgn.latestMove;
     }
     undo() {
@@ -230,31 +230,32 @@ export default class PlayManager {
     get currentMove() {
         return this.khmerChessBoard.khmerChess.kpgn.getMove(this.currentIndex - 1);
     }
-    back(callback = () => { }) {
+    back(callback: (arg0: void | Error) => void = () => { }) {
         if (!this.isCanBack) {
             return false;
         }
         this.offTurn();
         this.playEventController.back();
         this.currentIndex--;
-        this.applyMoveBack(this.khmerChessBoard.khmerChess.kpgn.getMove(this.currentIndex), () => {
-            callback();
+        const kpgn = this.khmerChessBoard.khmerChess.kpgn;
+        this.applyMoveBack(kpgn.getMove(this.currentIndex), (error) => {
+            callback(error);
         });
         return true;
     }
-    next(callback = () => { }) {
+    next(callback: (arg0: void | Error) => void = () => { }) {
         const kpgn = this.khmerChessBoard.khmerChess.kpgn;
         if (!kpgn.getMove(this.currentIndex)) {
             return false;
         }
         this.playEventController.next();
-        this.currentIndex++;
-        this.applyMove(kpgn.getMove(this.currentIndex - 1), () => {
-            callback();
+        this.applyMove(kpgn.getMove(this.currentIndex), (error) => {
+            callback(error);
         });
+        this.currentIndex++;
         return true;
     }
-    applyMove(move: Move, callback = () => { }) {
+    applyMove(move: Move, callback: (arg0: void | Error) => void = () => { }) {
         const {
             boardManager,
             graveyardManager,
@@ -291,7 +292,7 @@ export default class PlayManager {
             finish();
         }
     }
-    applyMoveBack(move: Move, callback = () => { }) {
+    applyMoveBack(move: Move, callback: (arg0: void | Error) => void = () => { }) {
         const {
             boardManager,
             graveyardManager,
@@ -341,14 +342,18 @@ export default class PlayManager {
         if (currentMove) {
             const lastFromCell = boardManager.get(currentMove.moveFrom.index);
             const lastToCell = boardManager.get(currentMove.moveTo.index);
-            boardManager.highlightMovedCells([lastFromCell, lastToCell]);
+            if (lastFromCell !== null && lastToCell !== null) {
+                boardManager.highlightMovedCells(lastFromCell, lastToCell);
+            }
             if (currentMove.attacker) {
                 const attacker = currentMove.attacker;
                 const cell = boardManager.get(attacker.point.index);
                 cell.attack(true);
-                const king = boardManager.getKing(attacker.piece.colorOpponent);
-                if (king) {
-                    king.attack(true);
+                if (attacker.piece !== null) {
+                    const king = boardManager.getKing(attacker.piece.colorOpponent);
+                    if (king != null) {
+                        king.attack(true);
+                    }
                 }
             }
         }

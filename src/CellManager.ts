@@ -20,13 +20,13 @@ export default class CellManager {
     point: Point;
     isGraveyard = false;
     containerDom: HTMLDivElement = document.createElement('td');
-    piece: Piece = null;
+    piece: Piece | null = null;
     isUpsideDown = false;
     options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
     khmerChess: KhmerChess;
     constructor(point: Point, container: HTMLDivElement,
-        piece: Piece, isGraveyard = false) {
+        piece: Piece | null, isGraveyard = false) {
         this.point = point;
         this.containerDom = container;
         this.setPiece(piece);
@@ -53,7 +53,7 @@ export default class CellManager {
         this.piece = null;
     }
 
-    setPiece(piece: Piece) {
+    setPiece(piece: Piece | null) {
         this.removePiece();
         this.piece = piece;
         if (this.piece) {

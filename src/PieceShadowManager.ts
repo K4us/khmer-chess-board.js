@@ -90,9 +90,12 @@ export default class PieceShadowManager {
         this._resolve();
     }
     _resolve() {
-        while (!this.pending.callbacks.length && this.pending.resolvers.length) {
+        while (!this.pending.callbacks.length &&
+            this.pending.resolvers.length) {
             const resolve = this.pending.resolvers.shift();
-            resolve();
+            if (resolve) {
+                resolve();
+            }
         }
     }
     resolveAnimation(): Promise<void> {

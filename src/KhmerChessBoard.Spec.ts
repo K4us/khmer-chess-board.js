@@ -84,7 +84,7 @@ describe('KhmerChessBoard', function () {
     it('should root board should on top', () => {
         kcb.setFullScreen(true);
         const table = kcb.domRootBoard;
-        expect(table.style.zIndex).to.eql('9999');
+        expect(table?.style.zIndex).to.eql('9999');
     });
 
     it('should load REN', () => {
