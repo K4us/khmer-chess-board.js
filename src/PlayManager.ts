@@ -37,7 +37,7 @@ export default class PlayManager {
     renderMoveData() {
         this.renDataList.forEach((moveData) => {
             moveData.destroy();
-        })
+        });
         const isEnglish = this.options.isEnglish;
         const current = this.currentIndex - 1;
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
@@ -75,7 +75,7 @@ export default class PlayManager {
         let tdHistory = document.createElement('td');
         const div = document.createElement('div');
         div.style.width = `${containerWidth}px`;
-        div.style.height = `26px`;
+        div.style.height = '26px';
         div.classList.add('container');
         this.containerDom = div;
         tdHistory.appendChild(div);
@@ -277,7 +277,7 @@ export default class PlayManager {
                 this.render();
                 callback();
             });
-        }
+        };
 
         if (move.captured) {
             const fromBCell = boardManager.get(move.captured.fromBoardPoint.index);
@@ -299,7 +299,7 @@ export default class PlayManager {
             soundManager,
         } = this.khmerChessBoard;
         pieceShadowManager.finishAnimations();
-        pieceShadowManager
+        pieceShadowManager;
 
         const fromCell = boardManager.get(move.moveTo.index);
         const toCell = boardManager.get(move.moveFrom.index);
@@ -310,7 +310,7 @@ export default class PlayManager {
             soundManager.playMove();
             this.render();
             callback();
-        }
+        };
 
         pieceShadowManager.movingPiece(fromCell, toCell, () => {
             fromCell.movePieceTo(toCell);

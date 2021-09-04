@@ -1,5 +1,5 @@
-import { KhmerChess } from "khmer-chess";
-import KhmerChessBoard from "./KhmerChessBoard";
+import { KhmerChess } from 'khmer-chess';
+import KhmerChessBoard from './KhmerChessBoard';
 
 console.log(KhmerChess.title, KhmerChess.version);
 console.log(KhmerChessBoard.title, KhmerChessBoard.version);

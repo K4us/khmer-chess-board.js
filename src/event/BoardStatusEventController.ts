@@ -7,7 +7,7 @@ import {
     EVENT_FLAG_COUNT_UP_OUT,
     EVENT_FLAG_COUNTING_UP,
     EVENT_FLAG_START_COUNTING,
-    REN
+    REN,
 } from 'khmer-chess';
 import KhmerChessBoard from '../KhmerChessBoard';
 import { BoardStatusEvent } from './BoardStatusEvent';

@@ -1,11 +1,11 @@
-import KhmerChessBoard from "./KhmerChessBoard";
-import { Point, CELL_COUNT } from "khmer-chess";
-import { init, capturing, reset, attacking } from "./test/helper";
+import KhmerChessBoard from './KhmerChessBoard';
+import { Point, CELL_COUNT } from 'khmer-chess';
+import { init, capturing, reset, attacking } from './test/helper';
 import spies from 'chai-spies';
 chai.use(spies);
 const { expect } = chai;
 
-describe("KhmerChessBoard", function () {
+describe('KhmerChessBoard', function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
     before(() => {

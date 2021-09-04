@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'jasmine'],
+  plugins: ['@typescript-eslint'],
   rules: {
     "semi": [
       "error",

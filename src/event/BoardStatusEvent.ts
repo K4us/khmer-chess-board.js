@@ -52,15 +52,15 @@ export class BoardStatusEvent {
         this.isAttacking = flag === EVENT_FLAG_ATTACK;
         this.isStartCounting = flag === EVENT_FLAG_START_COUNTING;
         if (this.isStartCounting) {
-            this.applyCount(countingToNumber, countingNumber)
+            this.applyCount(countingToNumber, countingNumber);
         }
         this.isCountingUp = flag === EVENT_FLAG_COUNTING_UP;
         if (this.isCountingUp) {
-            this.applyCount(countingToNumber, countingNumber)
+            this.applyCount(countingToNumber, countingNumber);
         }
         this.isCountUpOut = flag === EVENT_FLAG_COUNT_UP_OUT;
         if (this.isCountUpOut) {
-            this.applyCount(countingToNumber, countingNumber)
+            this.applyCount(countingToNumber, countingNumber);
         }
         this.isDraw = this.isCountUpOut || flag === EVENT_FLAG_DRAW;
         if (this.isDraw && !this.isCountUpOut) {
@@ -78,13 +78,13 @@ export class BoardStatusEvent {
         const boardManager = this.khmerChessBoard.boardManager;
         const tran = (arr: [string, string]) => {
             return arr[isEnglish ? 0 : 1];
-        }
+        };
         const pTitle = (root: PieceIndex | CellManager) => {
             if (!root || !root.piece) {
                 return tran(['unknown', 'មិន​ស្គាល់']);
             }
             return isEnglish ? root.piece.titleEnglish : root.piece.title;
-        }
+        };
 
         if (this.isAttacking) {
             const piece = this.actorPieceIndex.piece;

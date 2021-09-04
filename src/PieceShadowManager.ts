@@ -58,11 +58,11 @@ export default class PieceShadowManager {
                 ];
                 const animation = div.animate(option, 100);
 
-                let pendingCallback = () => {
+                const pendingCallback = () => {
                     animation.cancel();
                     this.removePendingCallback(pendingCallback);
                     this._resolve();
-                }
+                };
                 this.addPendingCallback(pendingCallback);
                 const timeout = setTimeout(() => pendingCallback(), 1e3);
                 animation.onfinish = animation.oncancel = () => {

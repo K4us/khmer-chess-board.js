@@ -1,8 +1,8 @@
-import KhmerChessBoard from "./KhmerChessBoard";
-import { capturing, init, reset } from "./test/helper";
+import KhmerChessBoard from './KhmerChessBoard';
+import { capturing, init, reset } from './test/helper';
 const { expect } = chai;
 
-describe("KhmerChessBoard", function () {
+describe('KhmerChessBoard', function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
     before(() => {

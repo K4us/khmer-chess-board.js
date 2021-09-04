@@ -1,10 +1,10 @@
-import KhmerChessBoard from "./KhmerChessBoard";
-import { init, reset } from "./test/helper";
+import KhmerChessBoard from './KhmerChessBoard';
+import { init, reset } from './test/helper';
 import spies from 'chai-spies';
 chai.use(spies);
 const { expect } = chai;
 
-describe("KhmerChessBoard", function () {
+describe('KhmerChessBoard', function () {
     const kcb: KhmerChessBoard = new KhmerChessBoard();
 
     before(() => {
@@ -41,7 +41,7 @@ describe("KhmerChessBoard", function () {
 
         const targetCell = kcb.boardManager.get(point.index);
 
-        let spy = chai.spy.on(kcb, 'move');
+        const spy = chai.spy.on(kcb, 'move');
 
         kcb.boardManager.selectCell(targetCell);
         expect(kcb.move).to.have.been.called.with(cell.point.index, targetCell.point.index);
@@ -52,14 +52,14 @@ describe("KhmerChessBoard", function () {
         expect(() => {
             kcb1.setOptions({
                 width: 600,
-                container: null
+                container: null,
             });
         }).to.throw('Container is required!');
         const minWidth = kcb1.options.minWidth;
         expect(() => {
             kcb1.setOptions({
                 width: minWidth - 1,
-                container: document.createElement("div")
+                container: document.createElement('div'),
             });
         }).to.throw(`Board width must more than ${minWidth} `);
     });
@@ -95,12 +95,12 @@ describe("KhmerChessBoard", function () {
     });
 
     it('should destroyed', () => {
-        const container = document.createElement("div");
+        const container = document.createElement('div');
         document.body.appendChild(container);
         const kcb1 = new KhmerChessBoard();
         kcb1.setOptions({
             width: 600,
-            container
+            container,
         });
         kcb1.destroy();
         expect(kcb1.khmerChess).to.null;
