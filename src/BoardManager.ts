@@ -4,11 +4,9 @@ import {
     CSS_P2P,
 } from './providers/constance';
 import CellManager from './CellManager';
-import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import {
     CELL_COUNT,
-    KhmerChess,
     ListenerType,
     PieceIndex,
     Point,
@@ -19,24 +17,27 @@ import BoardStatusEventController from './event/BoardStatusEventController';
 import { BoardStatusEvent } from './event/BoardStatusEvent';
 
 export default class BoardManager {
-    _cellManagers: CellManager[] = Array.from({ length: CELL_COUNT }, (_, i) => {
+    _cells: CellManager[] = Array.from({ length: CELL_COUNT }, (_, i) => {
         const dom = document.createElement('div');
-        return new CellManager(Point.fromIndex(i), dom, null);
+        return new CellManager(this.khmerChessBoard, Point.fromIndex(i), dom, null);
     });
-    options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
-    khmerChess: KhmerChess;
     isUpsideDown = false;
     boardStatusEventController: BoardStatusEventController;
     boardEventController: BoardManagerEventController<CellManager>;
-    constructor() {
+    constructor(khmerChessBoard: KhmerChessBoard) {
         this.boardStatusEventController = new BoardStatusEventController();
         this.boardEventController = new BoardManagerEventController();
-    }
-    setProps(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
-        this.khmerChess = khmerChessBoard.khmerChess;
-        this.options = khmerChessBoard.options;
+    }
+    destroy() {
+        this._cells.forEach((cell) => {
+            cell.destroy();
+        });
+        this._cells = [];
+        (this.boardStatusEventController as any) = null;
+        (this.boardEventController as any) = null;
+        (this.khmerChessBoard as any) = null;
     }
     selectCell(cell: CellManager) {
         this.boardEventController.click(cell);
@@ -62,26 +63,25 @@ export default class BoardManager {
         }
     }
     attachClickEvent() {
-        this._cellManagers.forEach((cell) => {
+        this._cells.forEach((cell) => {
             return cell.setOnClick(this.selectCell.bind(this, cell));
         });
     }
     detachClickEvent() {
-        this._cellManagers.forEach((cell) => {
+        this._cells.forEach((cell) => {
             return cell.removeOnClick();
         });
     }
 
     set(i: number, cell: CellManager) {
-        this._cellManagers[i] = cell;
-        cell.setProps(this.khmerChessBoard);
+        this._cells[i] = cell;
     }
 
     get(index: number) {
-        return this._cellManagers[index];
+        return this._cells[index];
     }
     getKing(color: string) {
-        const pieceIndex = this.khmerChess.kpgn.ren.board.getKing(color);
+        const pieceIndex = this.khmerChessBoard.khmerChess.kpgn.ren.board.getKing(color);
         if (!pieceIndex) {
             return null;
         }
@@ -104,7 +104,7 @@ export default class BoardManager {
     }
     _applyFlip() {
         // backup
-        const backupPiecesList = this._cellManagers.map((cell) => {
+        const backupPiecesList = this._cells.map((cell) => {
             return cell.clone();
         });
         const backupSelectedList = this.selectedCells.map((cell) => {
@@ -127,54 +127,54 @@ export default class BoardManager {
     }
 
     get pieceCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.piece;
         });
     }
     get pieceInTurnCells() {
-        const turn = this.khmerChess.turn;
-        return this._cellManagers.filter((cell) => {
+        const turn = this.khmerChessBoard.khmerChess.turn;
+        return this._cells.filter((cell) => {
             return cell.piece && cell.piece.color === turn;
         });
     }
     get pieceNotInTurnCells() {
-        const turn = this.khmerChess.turn;
-        return this._cellManagers.filter((cell) => {
+        const turn = this.khmerChessBoard.khmerChess.turn;
+        return this._cells.filter((cell) => {
             return cell.piece && cell.piece.color !== turn;
         });
     }
     get selectedCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.isSelected;
         });
     }
     get canMoveCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.isCanMove;
         });
     }
     get movedCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.isMoved;
         });
     }
     get attackedCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.isAttacked;
         });
     }
     get turnCells() {
-        return this._cellManagers.filter((cell) => {
+        return this._cells.filter((cell) => {
             return cell.isTurning;
         });
     }
     get piecesInBoard() {
-        return this._cellManagers.map((cell) => {
+        return this._cells.map((cell) => {
             return cell.piece;
         });
     }
     get isTurning() {
-        return !!this._cellManagers.find((cell) => {
+        return !!this._cells.find((cell) => {
             return cell.isTurning;
         });
     }
@@ -182,7 +182,7 @@ export default class BoardManager {
         const pieceIndices = this.piecesInBoard.map((piece, i) => {
             return new PieceIndex(Point.fromIndex(i), piece);
         });
-        const str = this.khmerChess.kpgn.ren.board.toString(pieceIndices);
+        const str = this.khmerChessBoard.khmerChess.kpgn.ren.board.toString(pieceIndices);
         return str;
     }
 
@@ -228,13 +228,13 @@ export default class BoardManager {
     }
 
     removePiecesFromCells() {
-        this._cellManagers.forEach((cell) => {
+        this._cells.forEach((cell) => {
             cell.removePiece();
         });
     }
 
     applyFlippingFlag() {
-        this._cellManagers.forEach((cell) => {
+        this._cells.forEach((cell) => {
             cell.setFlipped(this.isUpsideDown);
         });
     }
@@ -243,15 +243,15 @@ export default class BoardManager {
         for (let i = 0; i < ROW_NUMBER; i++) {
             const cell = this.getByXY(i, 0);
             cell.addClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
-            if (this.options.isEnglish) {
-                cell.addClassName(this.options.enClass);
+            if (this.khmerChessBoard.options.isEnglish) {
+                cell.addClassName(this.khmerChessBoard.options.enClass);
             }
         }
         for (let j = 0; j < ROW_NUMBER; j++) {
             const cell = this.getByXY(0, j);
             cell.addClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
-            if (this.options.isEnglish) {
-                cell.addClassName(this.options.enClass);
+            if (this.khmerChessBoard.options.isEnglish) {
+                cell.addClassName(this.khmerChessBoard.options.enClass);
             }
         }
     }
@@ -259,18 +259,18 @@ export default class BoardManager {
         for (let i = 0; i < ROW_NUMBER; i++) {
             const cell = this.getByXY(i, 0);
             cell.removeClassName(`${BOARD_NOTE_H_PREFIX_CLASS}-${i + 1}`);
-            cell.removeClassName(this.options.enClass);
+            cell.removeClassName(this.khmerChessBoard.options.enClass);
         }
         for (let j = 0; j < ROW_NUMBER; j++) {
             const cell = this.getByXY(0, j);
             cell.removeClassName(`${BOARD_NOTE_V_PREFIX_CLASS}-${j + 1}`);
-            cell.removeClassName(this.options.enClass);
+            cell.removeClassName(this.khmerChessBoard.options.enClass);
         }
     }
 
     renderKhmerChessPieces() {
         this.removePiecesFromCells();
-        this.khmerChess.piecesInBoard.forEach((piece, i) => {
+        this.khmerChessBoard.khmerChess.piecesInBoard.forEach((piece, i) => {
             const cell = this.get(i);
             cell.setPiece(piece);
         });
@@ -298,6 +298,9 @@ export default class BoardManager {
     checkBoardEvent() {
         this.boardStatusEventController.checkBoardEvent(this.khmerChessBoard);
     }
+    getBoardStatusEvents() {
+        return this.boardStatusEventController.getBoardEvents(this.khmerChessBoard);
+    }
     addBoardStatusEventListener(listener: ListenerType<BoardStatusEvent>) {
         this.boardStatusEventController.addBoardStatusEventListener(listener);
         this.checkBoardEvent();
@@ -308,12 +311,12 @@ export default class BoardManager {
 
     forceCount() {
         const move = this.khmerChessBoard.playManager.currentMove;
-        if(move === null){
+        if (move === null) {
             return false;
         }
-        const ren = this.khmerChess.kpgn.ren;
+        const ren = this.khmerChessBoard.khmerChess.kpgn.ren;
         if (!ren.countUp.isCounting && move.piece.colorOpponent === ren.turn) {
-            this.khmerChess.kpgn.ren.checkCountStatus(move, true);
+            this.khmerChessBoard.khmerChess.kpgn.ren.checkCountStatus(move, true);
             this.khmerChessBoard.playManager.render();
             if (move.isStartCounting) {
                 this.checkBoardEvent();

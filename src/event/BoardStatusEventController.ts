@@ -32,11 +32,12 @@ export default class BoardStatusEventController extends EventHandler {
         this._removeOnEventListener(BoardStatusEventController.STATUS_EVENT, listener);
     }
 
-    checkBoardEvent(khmerChessBoard: KhmerChessBoard) {
-        const { boardManager, playManager } = khmerChessBoard;
+    getBoardEvents(khmerChessBoard: KhmerChessBoard) {
+        const { playManager } = khmerChessBoard;
         const move = playManager.currentMove;
+        const events: BoardStatusEvent[] = [];
         if (!move) {
-            return;
+            return events;
         }
         const ren = REN.fromString(move.renStr);
         ren.syncWithMove(move);
@@ -47,7 +48,7 @@ export default class BoardStatusEventController extends EventHandler {
                 actorPieceIndex: move.attacker,
                 color: move.attacker.piece.color,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
         const winColor = move.winColor;
         if (winColor) {
@@ -57,7 +58,7 @@ export default class BoardStatusEventController extends EventHandler {
                 actorPieceIndex: move.attacker as PieceIndex,
                 color: winColor,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
         const stuckColor = move.stuckColor;
         if (stuckColor) {
@@ -66,7 +67,7 @@ export default class BoardStatusEventController extends EventHandler {
                 flag: EVENT_FLAG_DRAW,
                 color: stuckColor,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
         if (move.isStartCounting) {
             const boardEvent = new BoardStatusEvent({
@@ -76,7 +77,7 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingNumber as number,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
         if (ren.countUp.isCountingUp) {
             const boardEvent = new BoardStatusEvent({
@@ -86,7 +87,7 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingNumber as number,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
         if (ren.countUp.isCountingOut) {
             const boardEvent = new BoardStatusEvent({
@@ -96,8 +97,15 @@ export default class BoardStatusEventController extends EventHandler {
                 countingToNumber: ren.countUp.countingToNumber as number,
                 countingNumber: ren.countUp.countingToNumber as number,
             });
-            this.fireEvent(boardEvent);
+            events.push(boardEvent);
         }
+        return events;
+    }
+    checkBoardEvent(khmerChessBoard: KhmerChessBoard) {
+        const events = this.getBoardEvents(khmerChessBoard);
+        events.forEach((event) => {
+            this.fireEvent(event);
+        });
     }
 }
 /*

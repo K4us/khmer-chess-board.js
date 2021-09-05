@@ -1,15 +1,20 @@
-import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import appendCss from './helpers/appendCss';
 
 export default class MessageManager {
     khmerChessBoard: KhmerChessBoard;
-    options: OptionsManager;
     containerClassName = 'message-container';
     messageClassName = 'message';
     domContainer: HTMLDivElement;
     domMessage: HTMLDivElement;
     logEnabled = true;
+    constructor(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+        appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
+    }
+    destroy() {
+        (this.khmerChessBoard as any) = null;
+    }
     enableLog() {
         this.logEnabled = true;
     }
@@ -21,11 +26,6 @@ export default class MessageManager {
             return;
         }
         console.log(message, ...optionalParams);
-    }
-    setProps(khmerChessBoard: KhmerChessBoard) {
-        this.khmerChessBoard = khmerChessBoard;
-        this.options = khmerChessBoard.options;
-        appendCss(this.options.uniqueClassName, this.css());
     }
     showMessage(message: string) {
         this.domContainer.style.display = 'block';
@@ -39,7 +39,7 @@ export default class MessageManager {
         const bc = this.khmerChessBoard.domRootBoard.getBoundingClientRect();
         const div = document.createElement('div');
         this.domContainer = div;
-        div.classList.add(this.options.uniqueClassName);
+        div.classList.add(this.khmerChessBoard.options.uniqueClassName);
         div.classList.add(this.containerClassName);
         container.appendChild(div);
         div.style.height = `${bc.height}px`;
@@ -53,10 +53,10 @@ export default class MessageManager {
         this.hide();
     }
     css(): string {
-        const containerSelector = `.${this.options.uniqueClassName}.${this.containerClassName}`;
+        const containerSelector = `.${this.khmerChessBoard.options.uniqueClassName}.${this.containerClassName}`;
         return `
         ${containerSelector} {
-            width: ${this.options.width}px;
+            width: ${this.khmerChessBoard.options.width}px;
             text-align: center;
             border: 0px;
             padding: 10px;

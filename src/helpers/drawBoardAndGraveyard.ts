@@ -29,7 +29,6 @@ export default function drawBoardAndGraveyard({
         cellWidth,
         graveyardContainerHeight,
         graveyardWidth,
-        graveyardContainerPadding,
     } = options;
 
     const createTable = (parent = container) => {
@@ -63,7 +62,8 @@ export default function drawBoardAndGraveyard({
         tr.classList.add(TR_PIECE_CLASS_NAME);
         for (let j = 0; j < ROW_NUMBER; j++) {
             const td = createTd(tr);
-            const cell = new CellManager(new Point(j, ROW_NUMBER - i - 1), td, null);
+            const cell = new CellManager(boardManager.khmerChessBoard,
+                new Point(j, ROW_NUMBER - i - 1), td, null);
             const index = Point.xyToIndex(j, ROW_NUMBER - i - 1);
             boardManager.set(index, cell);
         }
@@ -114,7 +114,8 @@ export default function drawBoardAndGraveyard({
 
     for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
         const tdGraveyard = createTd(trGraveyard);
-        const cell = new CellManager(new Point(i, 0), tdGraveyard, null, true);
+        const cell = new CellManager(graveyardManager.khmerChessBoard,
+            new Point(i, 0), tdGraveyard, null, true);
         graveyardManager.push(cell);
     }
 

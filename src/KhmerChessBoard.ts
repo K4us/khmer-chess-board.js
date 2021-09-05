@@ -38,14 +38,7 @@ export default class KhmerChessBoard extends KhmerChessProps {
         width: number;
     }) {
 
-        this.khmerChess = new KhmerChess();
-        this.options = new OptionsManager();
-        this.playManager = new PlayManager();
-        this.graveyardManager = new GraveyardManager();
-        this.boardManager = new BoardManager();
-        this.soundManager = new SoundManager();
-        this.messageManager = new MessageManager();
-        this.pieceShadowManager = new PieceShadowManager();
+        this.instantiate();
 
         if (!options.container) {
             throw new Error('Container is required!');
@@ -61,13 +54,6 @@ export default class KhmerChessBoard extends KhmerChessProps {
         if (options.width) {
             this.options.width = options.width;
         }
-
-        this.playManager.setProps(this);
-        this.graveyardManager.setProps(this);
-        this.boardManager.setProps(this);
-        this.soundManager.setProps(this);
-        this.messageManager.setProps(this);
-        this.pieceShadowManager.setProps(this);
 
         this.render();
         this.boardManager.attachClickEvent();
@@ -95,7 +81,7 @@ export default class KhmerChessBoard extends KhmerChessProps {
                 this.playManager.turning();
             });
             const boardEvent = new BoardStatusEvent({
-                khmerChessBoard:this,
+                khmerChessBoard: this,
                 flag: EVENT_FLAG_MOVING,
                 move,
             });
@@ -223,8 +209,33 @@ export default class KhmerChessBoard extends KhmerChessProps {
         });
     }
 
+    instantiate() {
+        this.khmerChess = new KhmerChess();
+        this.options = new OptionsManager();
+        this.playManager = new PlayManager(this);
+        this.graveyardManager = new GraveyardManager(this);
+        this.boardManager = new BoardManager(this);
+        this.soundManager = new SoundManager(this);
+        this.messageManager = new MessageManager(this);
+        this.pieceShadowManager = new PieceShadowManager(this);
+    }
+
     destroy() {
         this.removeAllDomElements();
+        this.playManager.destroy();
+        this.graveyardManager.destroy();
+        this.boardManager.destroy();
+        this.soundManager.destroy();
+        this.messageManager.destroy();
+        this.pieceShadowManager.destroy();
+        (this.khmerChess as any) = null;
+        (this.options as any) = null;
+        (this.playManager as any) = null;
+        (this.graveyardManager as any) = null;
+        (this.boardManager as any) = null;
+        (this.soundManager as any) = null;
+        (this.messageManager as any) = null;
+        (this.pieceShadowManager as any) = null;
     }
 }
 

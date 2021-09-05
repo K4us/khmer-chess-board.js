@@ -1,4 +1,3 @@
-import OptionsManager from './OptionsManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import appendCss from './helpers/appendCss';
 import PlayManagerEventController from './event/PlayManagerEventController';
@@ -9,7 +8,6 @@ import MoveData from './MoveData';
 
 export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
-    options: OptionsManager;
     containerClassName = 'player-table';
     containerDom: HTMLElement;
     renDataList: MoveData[] = [];
@@ -19,8 +17,13 @@ export default class PlayManager {
     pauseBtnDom: HTMLButtonElement;
     nextBtnDom: HTMLButtonElement;
     currentIndex = 0;
-    constructor() {
+    constructor(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
         this.playEventController = new PlayManagerEventController();
+        appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
+    }
+    destroy() {
+        (this.khmerChessBoard as any) = null;
     }
     get isCanBack() {
         return !!(this.khmerChessBoard.khmerChess.kpgn.moves.length && this.currentIndex);
@@ -29,16 +32,11 @@ export default class PlayManager {
         const movesLength = this.khmerChessBoard.khmerChess.kpgn.moves.length;
         return this.khmerChessBoard.khmerChess.kpgn.moves.length && this.currentIndex < movesLength;
     }
-    setProps(khmerChessBoard: KhmerChessBoard) {
-        this.khmerChessBoard = khmerChessBoard;
-        this.options = khmerChessBoard.options;
-        appendCss(this.options.uniqueClassName, this.css());
-    }
     renderMoveData() {
         this.renDataList.forEach((moveData) => {
             moveData.destroy();
         });
-        const isEnglish = this.options.isEnglish;
+        const isEnglish = this.khmerChessBoard.options.isEnglish;
         const current = this.currentIndex - 1;
         const moves = this.khmerChessBoard.khmerChess.kpgn.moves;
         this.renDataList = moves.map((move, i) => {
@@ -63,9 +61,9 @@ export default class PlayManager {
         }
     }
     draw(playerContainer: HTMLElement) {
-        const containerWidth = ~~(this.options.width * 3 / 4);
+        const containerWidth = ~~(this.khmerChessBoard.options.width * 3 / 4);
         const table = document.createElement('table');
-        table.classList.add(this.options.uniqueClassName);
+        table.classList.add(this.khmerChessBoard.options.uniqueClassName);
         table.classList.add(this.containerClassName);
         playerContainer.appendChild(table);
         const tbody = document.createElement('tbody');
@@ -121,7 +119,7 @@ export default class PlayManager {
         };
     }
     css(): string {
-        const containerSelector = `table.${this.options.uniqueClassName}.${this.containerClassName}`;
+        const containerSelector = `table.${this.khmerChessBoard.options.uniqueClassName}.${this.containerClassName}`;
         return `
         ${containerSelector} {
             width: 100%;

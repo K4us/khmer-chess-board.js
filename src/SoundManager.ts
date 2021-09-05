@@ -10,8 +10,11 @@ export default class SoundManager {
     check: HTMLAudioElement | null = null;
     isEnable = false;
     khmerChessBoard: KhmerChessBoard;
-    setProps(khmerChessBoard: KhmerChessBoard) {
+    constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
+    }
+    destroy() {
+        (this.khmerChessBoard as any) = null;
     }
     disable() {
         this.isEnable = false;

@@ -102,9 +102,7 @@ export class BoardStatusEvent {
         };
 
         if (this.isMoving && this.move) {
-            const from = this.move.moveFrom.indexCode;
-            const to = this.move.moveTo.indexCode;
-            return `${pTitle(this.move)} ${tran(['moving from', 'ដើរ​ពី'])} ${from} ${tran(['to', 'ទៅ'])} ${to}`;
+            return this.move.getMessage();
         }
 
         if (this.isAttacking) {

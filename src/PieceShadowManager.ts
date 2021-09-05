@@ -1,12 +1,16 @@
 import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
-import OptionsManager from './OptionsManager';
 
 export default class PieceShadowManager {
     tdShadowDom: HTMLElement;
     khmerChessBoard: KhmerChessBoard;
-    options: OptionsManager;
     _quickMove = false;
+    constructor(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+    }
+    destroy() {
+        (this.khmerChessBoard as any) = null;
+    }
     pending: {
         resolvers: Array<() => void>,
         callbacks: Array<() => void>,
@@ -23,10 +27,6 @@ export default class PieceShadowManager {
     setTdShadow(tdShadowDown: HTMLElement) {
         this.tdShadowDom = tdShadowDown;
     }
-    setProps(khmerChessBoard: KhmerChessBoard) {
-        this.khmerChessBoard = khmerChessBoard;
-        this.options = khmerChessBoard.options;
-    }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
         if (this._quickMove) {
             fromCell.removePieceClasses();
@@ -34,7 +34,7 @@ export default class PieceShadowManager {
         } else {
             const div = document.createElement('div');
             const pice = fromCell.piece;
-            if (!pice || !div.animate || this.options.isFullScreen) {
+            if (!pice || !div.animate || this.khmerChessBoard.options.isFullScreen) {
                 callback();
             } else {
 

@@ -1,29 +1,29 @@
-import { KhmerChess, Piece } from 'khmer-chess';
 import {
     TD_GRAVEYARD_NUMBER,
     GRAVEYARD_NOTE_PREFIX_CLASS,
 } from './providers/constance';
 import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
-import OptionsManager from './OptionsManager';
 
 export default class GraveyardManager {
     _cells: CellManager[] = [];
     khmerChessBoard: KhmerChessBoard;
-    khmerChess: KhmerChess;
-    options: OptionsManager;
     domGraveyard: HTMLElement;
-    setProps(khmerChessBoard: KhmerChessBoard) {
+    constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
-        this.khmerChess = khmerChessBoard.khmerChess;
-        this.options = khmerChessBoard.options;
+    }
+    destroy() {
+        this._cells.forEach((cell) => {
+            cell.destroy();
+        });
+        this._cells = [];
+        (this.khmerChessBoard as any) = null;
     }
     setDom(domGraveyard: HTMLElement) {
         this.domGraveyard = domGraveyard;
     }
     push(cell: CellManager) {
         this._cells.push(cell);
-        cell.setProps(this.khmerChessBoard);
     }
 
     get(index: number) {
@@ -34,8 +34,8 @@ export default class GraveyardManager {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const cell = this.get(i);
             cell.addClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
-            if (this.options.isEnglish) {
-                cell.addClassName(this.options.enClass);
+            if (this.khmerChessBoard.options.isEnglish) {
+                cell.addClassName(this.khmerChessBoard.options.enClass);
             }
         }
     }
@@ -43,7 +43,7 @@ export default class GraveyardManager {
         for (let i = 0; i < TD_GRAVEYARD_NUMBER; i++) {
             const cell = this.get(i);
             cell.removeClassName(`${GRAVEYARD_NOTE_PREFIX_CLASS}-${i + 1}`);
-            cell.removeClassName(this.options.enClass);
+            cell.removeClassName(this.khmerChessBoard.options.enClass);
         }
     }
 
@@ -55,7 +55,7 @@ export default class GraveyardManager {
     }
 
     applyPiecesFromKhmerChess() {
-        this.khmerChess.piecesInGraveyard.forEach((piece, i) => {
+        this.khmerChessBoard.khmerChess.piecesInGraveyard.forEach((piece, i) => {
             const cell = this.get(i);
             cell.setPiece(piece);
         });

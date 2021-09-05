@@ -2,10 +2,8 @@ import {
     Point,
     Piece,
     CELL_COUNT,
-    KhmerChess,
 } from 'khmer-chess';
 import KhmerChessBoard from './KhmerChessBoard';
-import OptionsManager from './OptionsManager';
 import {
     SELECTED_CLASS_NAME,
     PIECE_CLASS_NAME,
@@ -22,22 +20,19 @@ export default class CellManager {
     containerDom: HTMLDivElement = document.createElement('td');
     piece: Piece | null = null;
     isUpsideDown = false;
-    options: OptionsManager;
     khmerChessBoard: KhmerChessBoard;
-    khmerChess: KhmerChess;
-    constructor(point: Point, container: HTMLDivElement,
+    constructor(khmerChessBoard: KhmerChessBoard, point: Point, container: HTMLDivElement,
         piece: Piece | null, isGraveyard = false) {
         this.point = point;
         this.containerDom = container;
         this.setPiece(piece);
         this.isGraveyard = isGraveyard;
+        this.khmerChessBoard = khmerChessBoard;
     }
-    setProps(khmerChessBoard?: KhmerChessBoard) {
-        if (khmerChessBoard) {
-            this.khmerChessBoard = khmerChessBoard;
-            this.khmerChess = khmerChessBoard.khmerChess;
-            this.options = khmerChessBoard.options;
-        }
+    destroy() {
+        (this.containerDom as any) = null;
+        this.piece = null;
+        (this.khmerChessBoard as any) = null;
     }
     removePieceClasses() {
         this.removeClassName(PIECE_CLASS_NAME);
@@ -83,7 +78,7 @@ export default class CellManager {
     }
 
     get canMovePoints() {
-        const points = this.khmerChess.getCanMovePointsByPoint(this.point);
+        const points = this.khmerChessBoard.khmerChess.getCanMovePointsByPoint(this.point);
         return points;
     }
 
@@ -151,8 +146,11 @@ export default class CellManager {
 
     clone() {
         const div = document.createElement('div');
-        return new CellManager(new Point(this.point.x, this.point.y)
-            , div, this.piece);
+        return new CellManager(
+            this.khmerChessBoard,
+            new Point(this.point.x, this.point.y),
+            div,
+            this.piece);
     }
 
     scrollIntoView() {
