@@ -78,10 +78,6 @@ export default function drawBoardAndGraveyard({
 
     const tdPlayerContainer = createTd(trPlayerContainer);
     tdPlayerContainer.classList.add('player');
-    tdPlayerContainer.addEventListener('mousewheel', function (e: any) {
-        this.scrollLeft -= (e.wheelDelta);
-        e.preventDefault();
-    }, false);
     tdPlayerContainer.colSpan = 8;
 
     const trGraveyardContainer = createTr(tbody);
@@ -90,10 +86,6 @@ export default function drawBoardAndGraveyard({
 
     const tdGraveyardContainer = createTd(trGraveyardContainer);
     tdGraveyardContainer.classList.add('graveyard');
-    tdGraveyardContainer.addEventListener('mousewheel', function (e: any) {
-        this.scrollLeft -= (e.wheelDelta);
-        e.preventDefault();
-    }, false);
     tdGraveyardContainer.colSpan = 8;
 
     const div = document.createElement('div');
