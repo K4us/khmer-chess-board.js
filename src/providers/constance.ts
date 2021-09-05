@@ -11,6 +11,7 @@ export const ATTACKED_CLASS_NAME = 'attacked';
 export const TURN_CLASS_NAME = 'turn';
 export const GRAVEYARD_CLASS_NAME = 'tb-graveyard';
 export const TR_PIECE_CLASS_NAME = 'tr-piece';
+export const TR_GRAVEYARD_CLASS_NAME = 'tr-graveyard';
 export const TR_PIECE_SHADOW_CLASS_NAME = 'tr-piece-shadow';
 export const PIECE_CLASS_NAME = 'piece';
 export const POPUP_CLASS_NAME = 'popup';

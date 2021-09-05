@@ -13,6 +13,7 @@ import {
     GRAVEYARD_CLASS_NAME,
     TR_PIECE_CLASS_NAME,
     TR_PIECE_SHADOW_CLASS_NAME,
+    TR_GRAVEYARD_CLASS_NAME,
 } from '../providers/constance';
 
 type Type = {
@@ -81,7 +82,7 @@ export default function drawBoardAndGraveyard({
     tdPlayerContainer.colSpan = 8;
 
     const trGraveyardContainer = createTr(tbody);
-    trGraveyardContainer.classList.add('tr-graveyard');
+    trGraveyardContainer.classList.add(TR_GRAVEYARD_CLASS_NAME);
     trGraveyardContainer.style.height = `${graveyardContainerHeight}`;
 
     const tdGraveyardContainer = createTd(trGraveyardContainer);
