@@ -2,18 +2,23 @@ import KhmerChessBoard from './KhmerChessBoard';
 import AUDIO from './providers/audio';
 
 export default class SoundManager {
-    static MOVE_FLAG = 'm';
-    static CAPTURE_FLAG = 'ct';
-    static CHECK_FLAG = 'c';
+    khmerChessBoard: KhmerChessBoard;
+
     move: HTMLAudioElement | null = null;
     capture: HTMLAudioElement | null = null;
     check: HTMLAudioElement | null = null;
+
+    static MOVE_FLAG = 'm';
+    static CAPTURE_FLAG = 'ct';
+    static CHECK_FLAG = 'c';
     isEnable = false;
-    khmerChessBoard: KhmerChessBoard;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
     }
     destroy() {
+        this.move = null;
+        this.capture = null;
+        this.check = null;
         (this.khmerChessBoard as any) = null;
     }
     disable() {

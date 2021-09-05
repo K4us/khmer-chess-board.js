@@ -15,23 +15,29 @@ import {
 } from './providers/constance';
 
 export default class CellManager {
-    point: Point;
-    isGraveyard = false;
-    containerDom: HTMLDivElement = document.createElement('td');
-    piece: Piece | null = null;
-    isUpsideDown = false;
     khmerChessBoard: KhmerChessBoard;
+
+    point: Point;
+    piece: Piece | null = null;
+    containerDom: HTMLDivElement = document.createElement('td');
+
+    isGraveyard = false;
+    isUpsideDown = false;
     constructor(khmerChessBoard: KhmerChessBoard, point: Point, container: HTMLDivElement,
         piece: Piece | null, isGraveyard = false) {
-        this.point = point;
-        this.containerDom = container;
-        this.setPiece(piece);
-        this.isGraveyard = isGraveyard;
         this.khmerChessBoard = khmerChessBoard;
+
+        this.point = point;
+        this.setPiece(piece);
+        this.containerDom = container;
+        this.isGraveyard = isGraveyard;
     }
     destroy() {
+        this.setPiece(null);
+
         (this.containerDom as any) = null;
-        this.piece = null;
+        (this.point as any) = null;
+
         (this.khmerChessBoard as any) = null;
     }
     removePieceClasses() {
@@ -153,7 +159,11 @@ export default class CellManager {
             this.piece);
     }
 
-    scrollIntoView() {
+    scrollIntoView(quick?: boolean) {
+        if (quick) {
+            this.containerDom.scrollIntoView();
+            return;
+        }
         this.containerDom.scrollIntoView({
             behavior: 'smooth',
             block: 'end',
@@ -167,11 +177,11 @@ export default class CellManager {
         toCell.setPiece(piece);
     }
 
-    movePieceToGraveyard(toCell: CellManager) {
+    movePieceToGraveyard(toGYCell: CellManager) {
         const deadPiece = this.piece;
         this.removePiece();
-        toCell.setPiece(deadPiece);
-        toCell.scrollIntoView();
+        toGYCell.setPiece(deadPiece);
+        toGYCell.scrollIntoView();
     }
     movePieceFromGraveyard(toCell: CellManager) {
         this.scrollIntoView();

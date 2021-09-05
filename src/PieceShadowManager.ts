@@ -2,14 +2,17 @@ import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 
 export default class PieceShadowManager {
-    tdShadowDom: HTMLElement;
     khmerChessBoard: KhmerChessBoard;
+
+    tdShadowDom: HTMLElement;
+
     _quickMove = false;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
     }
     destroy() {
         (this.khmerChessBoard as any) = null;
+        (this.tdShadowDom as any) = null;
     }
     pending: {
         resolvers: Array<() => void>,

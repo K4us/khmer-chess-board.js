@@ -3,16 +3,20 @@ import appendCss from './helpers/appendCss';
 
 export default class MessageManager {
     khmerChessBoard: KhmerChessBoard;
-    containerClassName = 'message-container';
-    messageClassName = 'message';
+
     domContainer: HTMLDivElement;
     domMessage: HTMLDivElement;
+
+    containerClassName = 'message-container';
+    messageClassName = 'message';
     logEnabled = true;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
         appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
     }
     destroy() {
+        (this.domContainer as any) = null;
+        (this.domMessage as any) = null;
         (this.khmerChessBoard as any) = null;
     }
     enableLog() {

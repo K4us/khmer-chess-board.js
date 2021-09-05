@@ -6,8 +6,9 @@ import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 
 export default class GraveyardManager {
-    _cells: CellManager[] = [];
     khmerChessBoard: KhmerChessBoard;
+
+    _cells: CellManager[] = [];
     domGraveyard: HTMLElement;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
@@ -18,6 +19,7 @@ export default class GraveyardManager {
         });
         this._cells = [];
         (this.khmerChessBoard as any) = null;
+        (this.domGraveyard as any) = null;
     }
     setDom(domGraveyard: HTMLElement) {
         this.domGraveyard = domGraveyard;
@@ -28,6 +30,22 @@ export default class GraveyardManager {
 
     get(index: number) {
         return this._cells[index];
+    }
+
+    get latestPieceCell(): CellManager | null {
+        for (let i = this._cells.length - 1; i >= 0; i--) {
+            if (this._cells[i].piece !== null) {
+                return this._cells[i];
+            }
+        }
+        return null;
+    }
+    get firstEmptyCell(): CellManager | null {
+        const latestPieceCell = this.latestPieceCell;
+        if (latestPieceCell === null) {
+            return this._cells[0];
+        }
+        return this._cells[latestPieceCell.point.index + 1] || null;
     }
 
     setCellNote() {
@@ -59,6 +77,7 @@ export default class GraveyardManager {
             const cell = this.get(i);
             cell.setPiece(piece);
         });
+        this.latestPieceCell?.scrollIntoView(true);
     }
 
     renderKhmerChessPieces() {

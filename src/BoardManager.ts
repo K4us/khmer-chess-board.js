@@ -17,26 +17,30 @@ import BoardStatusEventController from './event/BoardStatusEventController';
 import { BoardStatusEvent } from './event/BoardStatusEvent';
 
 export default class BoardManager {
+    khmerChessBoard: KhmerChessBoard;
+
     _cells: CellManager[] = Array.from({ length: CELL_COUNT }, (_, i) => {
         const dom = document.createElement('div');
         return new CellManager(this.khmerChessBoard, Point.fromIndex(i), dom, null);
     });
-    khmerChessBoard: KhmerChessBoard;
-    isUpsideDown = false;
     boardStatusEventController: BoardStatusEventController;
     boardEventController: BoardManagerEventController<CellManager>;
+
+    isUpsideDown = false;
     constructor(khmerChessBoard: KhmerChessBoard) {
+        this.khmerChessBoard = khmerChessBoard;
+
         this.boardStatusEventController = new BoardStatusEventController();
         this.boardEventController = new BoardManagerEventController();
-        this.khmerChessBoard = khmerChessBoard;
     }
     destroy() {
         this._cells.forEach((cell) => {
             cell.destroy();
         });
         this._cells = [];
-        (this.boardStatusEventController as any) = null;
         (this.boardEventController as any) = null;
+        (this.boardStatusEventController as any) = null;
+
         (this.khmerChessBoard as any) = null;
     }
     selectCell(cell: CellManager) {

@@ -8,7 +8,7 @@ import MoveData from './MoveData';
 
 export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
-    containerClassName = 'player-table';
+
     containerDom: HTMLElement;
     renDataList: MoveData[] = [];
     playEventController: PlayManagerEventController<MoveData>;
@@ -16,6 +16,8 @@ export default class PlayManager {
     playBtnDom: HTMLButtonElement;
     pauseBtnDom: HTMLButtonElement;
     nextBtnDom: HTMLButtonElement;
+
+    containerClassName = 'player-table';
     currentIndex = 0;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
@@ -23,6 +25,18 @@ export default class PlayManager {
         appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
     }
     destroy() {
+        this.renDataList.forEach((moveData) => {
+            moveData.destroy();
+        });
+        this.renDataList = [];
+        (this.containerDom as any) = null;
+        (this.renDataList as any) = null;
+        (this.playEventController as any) = null;
+        (this.backBtnDom as any) = null;
+        (this.playBtnDom as any) = null;
+        (this.pauseBtnDom as any) = null;
+        (this.nextBtnDom as any) = null;
+
         (this.khmerChessBoard as any) = null;
     }
     get isCanBack() {
@@ -73,7 +87,7 @@ export default class PlayManager {
         let tdHistory = document.createElement('td');
         const div = document.createElement('div');
         div.style.width = `${containerWidth}px`;
-        div.style.height = '26px';
+        div.style.height = '28px';
         div.classList.add('container');
         this.containerDom = div;
         tdHistory.appendChild(div);

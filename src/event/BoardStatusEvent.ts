@@ -24,7 +24,6 @@ export type Option = {
     move?: Move
 };
 export class BoardStatusEvent {
-    khmerChessBoard: KhmerChessBoard;
     flag: string;
     isMoving = false;
     move: Move | null = null;
@@ -47,7 +46,6 @@ export class BoardStatusEvent {
 
     constructor({ khmerChessBoard, countingToNumber, countingNumber,
         flag, actorPieceIndex, color, move }: Option) {
-        this.khmerChessBoard = khmerChessBoard;
         this.flag = flag;
         const isWhite = !!(color ? color === PIECE_COLOR_WHITE : move?.piece.color);
         this.isWhite = isWhite;
@@ -81,16 +79,16 @@ export class BoardStatusEvent {
             this.isCannotMove = true;
         }
 
-        this.message = this.getMessage();
+        this.message = this._getMessage(khmerChessBoard);
     }
     applyCount(countingToNumber: number | null, countingNumber: number | null) {
         this.countingToNumber = countingToNumber;
         this.countingNumber = countingNumber;
     }
-    getMessage() {
-        const isEnglish = this.khmerChessBoard.options.isEnglish;
+    _getMessage(khmerChessBoard: KhmerChessBoard) {
+        const isEnglish = khmerChessBoard.options.isEnglish;
         const color = this.isWhite ? PIECE_COLOR_WHITE : PIECE_COLOR_BLACK;
-        const boardManager = this.khmerChessBoard.boardManager;
+        const boardManager = khmerChessBoard.boardManager;
         const tran = (arr: [string, string]) => {
             return arr[isEnglish ? 0 : 1];
         };
