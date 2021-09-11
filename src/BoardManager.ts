@@ -296,7 +296,6 @@ export default class BoardManager {
     takeTurn() {
         this.clearTurnCells();
         this.enableTurnCells();
-        this.boardEventController.changeTurn();
     }
 
     checkBoardEvent() {

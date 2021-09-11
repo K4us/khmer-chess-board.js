@@ -8,14 +8,12 @@ export default class BoardManagerEventController<T> extends EventHandler {
     static SELECTED = 'selected';
     static DESELECTED = 'deselected';
     static ATTEMPT_MOVE = 'attempt-move';
-    static CHANGE_TURN = 'change-turn';
     constructor() {
         super({
             events: {
                 CLICK: BoardManagerEventController.CLICK,
                 SELECTED: BoardManagerEventController.SELECTED,
                 ATTEMPT_MOVE: BoardManagerEventController.ATTEMPT_MOVE,
-                CHANGE_TURN: BoardManagerEventController.CHANGE_TURN,
             },
         });
     }
@@ -33,9 +31,6 @@ export default class BoardManagerEventController<T> extends EventHandler {
             fromCell,
             toCell,
         });
-    }
-    changeTurn() {
-        this._addPropEvent(BoardManagerEventController.CHANGE_TURN);
     }
     addOnCellClickEventListener(listener: ListenerType<T>) {
         this._addOnEventListener(BoardManagerEventController.CLICK, listener);
@@ -60,12 +55,6 @@ export default class BoardManagerEventController<T> extends EventHandler {
     }
     removeOnAttemptMoveEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
         this._removeOnEventListener(BoardManagerEventController.ATTEMPT_MOVE, listener);
-    }
-    addOnChangeTurnEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
-        this._addOnEventListener(BoardManagerEventController.CHANGE_TURN, listener);
-    }
-    removeOnChangeTurnEventListener(listener: ListenerType<{ fromCell: T, toCell: T }>) {
-        this._removeOnEventListener(BoardManagerEventController.CHANGE_TURN, listener);
     }
 }
 
