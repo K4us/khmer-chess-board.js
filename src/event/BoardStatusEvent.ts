@@ -32,6 +32,8 @@ export class BoardStatusEvent {
     isWhite = false;
     isAttacking = false;
 
+    color = PIECE_COLOR_WHITE;
+
     isWin = false;
 
     isDraw = false;
@@ -46,6 +48,7 @@ export class BoardStatusEvent {
 
     constructor({ khmerChessBoard, countingToNumber, countingNumber,
         flag, actorPieceIndex, color, move }: Option) {
+        this.color = color as string;
         this.flag = flag;
         const isWhite = !!(color ? color === PIECE_COLOR_WHITE : move?.piece.color);
         this.isWhite = isWhite;
