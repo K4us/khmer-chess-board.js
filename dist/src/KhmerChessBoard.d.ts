@@ -62,7 +62,6 @@ export default class KhmerChessBoard {
             "karma-typescript": string;
             mocha: string;
             "source-map-loader": string;
-            "svg-inline-loader": string;
             "ts-loader": string;
             typescript: string;
             webpack: string;

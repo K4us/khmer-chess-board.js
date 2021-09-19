@@ -34,10 +34,6 @@ module.exports = {
                         loader: 'file-loader'
                     }
                 ]
-            },
-            {
-                test: /\.svg$/,
-                loader: 'svg-inline-loader'
             }
         ]
     }

@@ -4,35 +4,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.genBackgroundNote = exports.svgCSS = exports.PIECES_SVG = exports.WOOD_COLORS = void 0;
 var khmer_chess_1 = require("khmer-chess");
 var k4us_share_1 = require("k4us-share");
-var boatSVG = k4us_share_1.khmerChessPieces.boatSVG, fishSVG = k4us_share_1.khmerChessPieces.fishSVG, generalSVG = k4us_share_1.khmerChessPieces.generalSVG, horseSVG = k4us_share_1.khmerChessPieces.horseSVG, kingSVG = k4us_share_1.khmerChessPieces.kingSVG, queenSVG = k4us_share_1.khmerChessPieces.queenSVG, transformFishSVG = k4us_share_1.khmerChessPieces.transformFishSVG;
 exports.WOOD_COLORS = {
     WHITE: '#ffffff',
     BLACK: '#422007',
 };
 var filterId = 'drop-shadow';
 var SVG_FILTER = "<defs>\n<filter id=\"" + filterId + "\" height=\"130%\">\n  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"5\"/>\n  <feOffset dx=\"5\" dy=\"5\" result=\"offsetblur\"/>\n  <feMerge>\n    <feMergeNode/>\n    <feMergeNode in=\"SourceGraphic\"/>\n  </feMerge>\n</filter>\n</defs>";
-boatSVG.init();
-horseSVG.init();
-generalSVG.init();
-kingSVG.init();
-queenSVG.init();
-fishSVG.init();
-transformFishSVG.init();
+k4us_share_1.boatSVG.init();
+k4us_share_1.horseSVG.init();
+k4us_share_1.generalSVG.init();
+k4us_share_1.kingSVG.init();
+k4us_share_1.queenSVG.init();
+k4us_share_1.fishSVG.init();
+k4us_share_1.transformFishSVG.init();
 exports.PIECES_SVG = (_a = {},
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_BOAT] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + boatSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_HORSE] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + horseSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_GENERAL] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + generalSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_KING] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + kingSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_QUEEN] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + queenSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + fishSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_TRANSFORM_FISH] = "\n    " + SVG_FILTER + "\n     <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n     d=\"" + transformFishSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_BOAT] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + boatSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_HORSE] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + horseSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_GENERAL] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + generalSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_KING] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + kingSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_QUEEN] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + queenSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + fishSVG.pathData[0] + "\" />\n ",
-    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_TRANSFORM_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + transformFishSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_BOAT] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.boatSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_HORSE] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.horseSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_GENERAL] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.generalSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_KING] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.kingSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_QUEEN] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.queenSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.fishSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_WHITE + khmer_chess_1.PIECE_TYPE_TRANSFORM_FISH] = "\n    " + SVG_FILTER + "\n     <path fill=\"" + exports.WOOD_COLORS.WHITE + "\" filter=\"url(#" + filterId + ")\"\n     d=\"" + k4us_share_1.transformFishSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_BOAT] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.boatSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_HORSE] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.horseSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_GENERAL] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.generalSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_KING] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.kingSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_QUEEN] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.queenSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.fishSVG.pathData[0] + "\" />\n ",
+    _a["" + khmer_chess_1.PIECE_COLOR_BLACK + khmer_chess_1.PIECE_TYPE_TRANSFORM_FISH] = "\n    " + SVG_FILTER + "\n    <path fill=\"" + exports.WOOD_COLORS.BLACK + "\" filter=\"url(#" + filterId + ")\"\n    d=\"" + k4us_share_1.transformFishSVG.pathData[0] + "\" />\n ",
     _a);
 exports.svgCSS = {
     attacked: function (color) { return "path {\n      stroke: red;\n      stroke-width: 1px;\n      stroke-linejoin: round;\n      animation-name: attacking;\n      animation-duration: 1s;\n      animation-iteration-count: infinite;\n   }\n   @keyframes attacking {\n      0% {\n         stroke-width: 20px;\n      }\n      50% {\n         stroke-width: 1px;\n      }\n      100% {\n         stroke-width: 20px;\n      }\n   }"; },
