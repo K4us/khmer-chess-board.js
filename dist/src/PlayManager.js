@@ -27,6 +27,7 @@ var PlayManager = /** @class */ (function () {
         this.renDataList = [];
         this.containerDom = null;
         this.renDataList = null;
+        this.playEventController.destroy();
         this.playEventController = null;
         this.backBtnDom = null;
         this.playBtnDom = null;

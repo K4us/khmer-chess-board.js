@@ -36,6 +36,7 @@ export default class PlayManager {
         this.renDataList = [];
         (this.containerDom as any) = null;
         (this.renDataList as any) = null;
+        this.playEventController.destroy();
         (this.playEventController as any) = null;
         (this.backBtnDom as any) = null;
         (this.playBtnDom as any) = null;

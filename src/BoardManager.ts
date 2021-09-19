@@ -38,7 +38,9 @@ export default class BoardManager {
             cell.destroy();
         });
         this._cells = [];
+        this.boardEventController.destroy();
         (this.boardEventController as any) = null;
+        this.boardStatusEventController.destroy();
         (this.boardStatusEventController as any) = null;
 
         (this.khmerChessBoard as any) = null;

@@ -25,7 +25,9 @@ var BoardManager = /** @class */ (function () {
             cell.destroy();
         });
         this._cells = [];
+        this.boardEventController.destroy();
         this.boardEventController = null;
+        this.boardStatusEventController.destroy();
         this.boardStatusEventController = null;
         this.khmerChessBoard = null;
     };
