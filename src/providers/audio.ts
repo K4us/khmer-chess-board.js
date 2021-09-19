@@ -1,11 +1,11 @@
-const move = require('../../public/assets/Move.mp3').default;
-const capture = require('../../public/assets/Capture.mp3').default;
-const check = require('../../public/assets/Check.mp3').default;
+const move = require('../../public/assets/Move.mp3');
+const capture = require('../../public/assets/Capture.mp3');
+const check = require('../../public/assets/Check.mp3');
 
 export default {
-    move,
-    capture,
-    check,
+    move: move.default || move,
+    capture: capture.default || capture,
+    check: check.default || check,
 };
 
 /*

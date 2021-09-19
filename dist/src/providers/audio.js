@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var move = require('../../public/assets/Move.mp3').default;
-var capture = require('../../public/assets/Capture.mp3').default;
-var check = require('../../public/assets/Check.mp3').default;
+var move = require('../../public/assets/Move.mp3');
+var capture = require('../../public/assets/Capture.mp3');
+var check = require('../../public/assets/Check.mp3');
 exports.default = {
-    move: move,
-    capture: capture,
-    check: check,
+    move: move.default || move,
+    capture: capture.default || capture,
+    check: check.default || check,
 };
 /*
  * Copyright (c) 2021, K4us
