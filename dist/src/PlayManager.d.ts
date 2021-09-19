@@ -6,7 +6,8 @@ export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
     renDataList: MoveData[];
     playEventController: PlayManagerEventController<MoveData>;
-    containerDom: HTMLElement;
+    playerContainer: HTMLElement;
+    dataContainerDom: HTMLElement;
     backBtnDom: HTMLButtonElement;
     playBtnDom: HTMLButtonElement;
     pauseBtnDom: HTMLButtonElement;
@@ -15,6 +16,9 @@ export default class PlayManager {
     currentIndex: number;
     constructor(khmerChessBoard: KhmerChessBoard);
     destroy(): void;
+    hideController(): void;
+    showController(): void;
+    get isControllerHidden(): boolean;
     get isCanBack(): boolean;
     get isCanNext(): boolean | 0;
     renderMoveData(): void;

@@ -14,7 +14,8 @@ var PlayManager = /** @class */ (function () {
         this.khmerChessBoard = khmerChessBoard;
         this.playEventController = new PlayManagerEventController_1.default();
         (0, appendCss_1.default)(this.khmerChessBoard.options.uniqueClassName, this.css());
-        this.containerDom = document.createElement('div');
+        this.playerContainer = document.createElement('div');
+        this.dataContainerDom = document.createElement('div');
         this.backBtnDom = document.createElement('button');
         this.playBtnDom = document.createElement('button');
         this.pauseBtnDom = document.createElement('button');
@@ -25,7 +26,8 @@ var PlayManager = /** @class */ (function () {
             moveData.destroy();
         });
         this.renDataList = [];
-        this.containerDom = null;
+        this.playerContainer = null;
+        this.dataContainerDom = null;
         this.renDataList = null;
         this.playEventController.destroy();
         this.playEventController = null;
@@ -35,6 +37,24 @@ var PlayManager = /** @class */ (function () {
         this.nextBtnDom = null;
         this.khmerChessBoard = null;
     };
+    PlayManager.prototype.hideController = function () {
+        if (this.playerContainer.parentElement) {
+            this.playerContainer.parentElement.style.display = 'none';
+        }
+    };
+    PlayManager.prototype.showController = function () {
+        if (this.playerContainer.parentElement) {
+            this.playerContainer.parentElement.style.display = '';
+        }
+    };
+    Object.defineProperty(PlayManager.prototype, "isControllerHidden", {
+        get: function () {
+            var _a;
+            return !!(((_a = this.playerContainer.parentElement) === null || _a === void 0 ? void 0 : _a.style.display.toLocaleLowerCase()) === 'none');
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(PlayManager.prototype, "isCanBack", {
         get: function () {
             return !!(this.khmerChessBoard.khmerChess.kpgn.moves.length && this.currentIndex);
@@ -61,7 +81,7 @@ var PlayManager = /** @class */ (function () {
         this.renDataList = moves.map(function (move, i) {
             var moveData = new MoveData_1.default({
                 index: i + 1,
-                containerDom: _this.containerDom,
+                containerDom: _this.dataContainerDom,
                 renData: '',
                 title: move.getMessage(isEnglish),
                 str: move.toString(),
@@ -80,6 +100,7 @@ var PlayManager = /** @class */ (function () {
         }
     };
     PlayManager.prototype.draw = function (playerContainer) {
+        this.playerContainer = playerContainer;
         var containerWidth = ~~(this.khmerChessBoard.options.width * 3 / 4);
         var table = document.createElement('table');
         table.classList.add(this.khmerChessBoard.options.uniqueClassName);
@@ -94,7 +115,7 @@ var PlayManager = /** @class */ (function () {
         div.style.width = containerWidth + "px";
         div.style.height = '28px';
         div.classList.add('container');
-        this.containerDom = div;
+        this.dataContainerDom = div;
         tdHistory.appendChild(div);
         tdHistory.style.width = containerWidth + "px";
         tr.appendChild(tdHistory);
@@ -357,7 +378,9 @@ var PlayManager = /** @class */ (function () {
     };
     PlayManager.prototype.toIndex = function (index) {
         var pieceShadowManager = this.khmerChessBoard.pieceShadowManager;
+        var isQuickMove = pieceShadowManager.isQuickMove;
         while (this.currentIndex !== index) {
+            pieceShadowManager.quickMove(Math.abs(this.currentIndex - index) !== 1);
             if (this.currentIndex < index) {
                 this.next();
             }
@@ -365,7 +388,7 @@ var PlayManager = /** @class */ (function () {
                 this.back();
             }
         }
-        pieceShadowManager.quickMove(false);
+        pieceShadowManager.quickMove(isQuickMove);
         this.highlightCurrentMove();
     };
     PlayManager.prototype.resetCurrentIndex = function () {

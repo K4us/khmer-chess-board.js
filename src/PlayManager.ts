@@ -11,7 +11,8 @@ export default class PlayManager {
 
     renDataList: MoveData[] = [];
     playEventController: PlayManagerEventController<MoveData>;
-    containerDom: HTMLElement;
+    playerContainer: HTMLElement;
+    dataContainerDom: HTMLElement;
     backBtnDom: HTMLButtonElement;
     playBtnDom: HTMLButtonElement;
     pauseBtnDom: HTMLButtonElement;
@@ -23,7 +24,8 @@ export default class PlayManager {
         this.khmerChessBoard = khmerChessBoard;
         this.playEventController = new PlayManagerEventController();
         appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
-        this.containerDom = document.createElement('div');
+        this.playerContainer = document.createElement('div');
+        this.dataContainerDom = document.createElement('div');
         this.backBtnDom = document.createElement('button');
         this.playBtnDom = document.createElement('button');
         this.pauseBtnDom = document.createElement('button');
@@ -34,7 +36,8 @@ export default class PlayManager {
             moveData.destroy();
         });
         this.renDataList = [];
-        (this.containerDom as any) = null;
+        (this.playerContainer as any) = null;
+        (this.dataContainerDom as any) = null;
         (this.renDataList as any) = null;
         this.playEventController.destroy();
         (this.playEventController as any) = null;
@@ -44,6 +47,19 @@ export default class PlayManager {
         (this.nextBtnDom as any) = null;
 
         (this.khmerChessBoard as any) = null;
+    }
+    hideController() {
+        if (this.playerContainer.parentElement) {
+            this.playerContainer.parentElement.style.display = 'none';
+        }
+    }
+    showController() {
+        if (this.playerContainer.parentElement) {
+            this.playerContainer.parentElement.style.display = '';
+        }
+    }
+    get isControllerHidden() {
+        return !!(this.playerContainer.parentElement?.style.display.toLocaleLowerCase() === 'none');
     }
     get isCanBack() {
         return !!(this.khmerChessBoard.khmerChess.kpgn.moves.length && this.currentIndex);
@@ -62,7 +78,7 @@ export default class PlayManager {
         this.renDataList = moves.map((move, i) => {
             const moveData = new MoveData({
                 index: i + 1,
-                containerDom: this.containerDom,
+                containerDom: this.dataContainerDom,
                 renData: '',
                 title: move.getMessage(isEnglish),
                 str: move.toString(),
@@ -81,6 +97,7 @@ export default class PlayManager {
         }
     }
     draw(playerContainer: HTMLElement) {
+        this.playerContainer = playerContainer;
         const containerWidth = ~~(this.khmerChessBoard.options.width * 3 / 4);
         const table = document.createElement('table');
         table.classList.add(this.khmerChessBoard.options.uniqueClassName);
@@ -95,7 +112,7 @@ export default class PlayManager {
         div.style.width = `${containerWidth}px`;
         div.style.height = '28px';
         div.classList.add('container');
-        this.containerDom = div;
+        this.dataContainerDom = div;
         tdHistory.appendChild(div);
         tdHistory.style.width = `${containerWidth}px`;
         tr.appendChild(tdHistory);
@@ -384,14 +401,16 @@ export default class PlayManager {
     }
     toIndex(index: number) {
         const pieceShadowManager = this.khmerChessBoard.pieceShadowManager;
+        const isQuickMove = pieceShadowManager.isQuickMove;
         while (this.currentIndex !== index) {
+            pieceShadowManager.quickMove(Math.abs(this.currentIndex - index) !== 1);
             if (this.currentIndex < index) {
                 this.next();
             } else {
                 this.back();
             }
         }
-        pieceShadowManager.quickMove(false);
+        pieceShadowManager.quickMove(isQuickMove);
         this.highlightCurrentMove();
     }
     resetCurrentIndex() {

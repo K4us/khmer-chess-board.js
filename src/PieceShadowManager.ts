@@ -15,6 +15,9 @@ export default class PieceShadowManager {
         (this.khmerChessBoard as any) = null;
         (this.tdShadowDom as any) = null;
     }
+    get isQuickMove() {
+        return this._quickMove;
+    }
     pending: {
         resolvers: Array<() => void>,
         callbacks: Array<() => void>,

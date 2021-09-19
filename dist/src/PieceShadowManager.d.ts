@@ -6,6 +6,7 @@ export default class PieceShadowManager {
     _quickMove: boolean;
     constructor(khmerChessBoard: KhmerChessBoard);
     destroy(): void;
+    get isQuickMove(): boolean;
     pending: {
         resolvers: Array<() => void>;
         callbacks: Array<() => void>;

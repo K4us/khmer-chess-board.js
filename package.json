@@ -1,6 +1,6 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/src/index.js",
   "types": "src/index.ts",
@@ -13,7 +13,8 @@
     "lint": "eslint . --ext .ts ./src",
     "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
     "test": "karma start karma.conf.js",
-    "cov": "http-server coverage/ -o"
+    "cov": "http-server coverage/ -o",
+    "pub": "npm i && npm run build && npm publish"
   },
   "repository": {
     "type": "git",

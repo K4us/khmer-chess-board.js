@@ -14,6 +14,13 @@ var PieceShadowManager = /** @class */ (function () {
         this.khmerChessBoard = null;
         this.tdShadowDom = null;
     };
+    Object.defineProperty(PieceShadowManager.prototype, "isQuickMove", {
+        get: function () {
+            return this._quickMove;
+        },
+        enumerable: false,
+        configurable: true
+    });
     PieceShadowManager.prototype.quickMove = function (enable) {
         this._quickMove = enable;
         if (enable) {
