@@ -14,10 +14,9 @@ import MessageManager from './MessageManager';
 import PlayManager from './PlayManager';
 import PieceShadowManager from './PieceShadowManager';
 
-import KhmerChessProps from './KhmerChessProps';
 import { BoardStatusEvent } from './event/BoardStatusEvent';
 
-export default class KhmerChessBoard extends KhmerChessProps {
+export default class KhmerChessBoard {
     static LOCALE_ENGLISH = 'en';
     static LOCALE_KHMER = 'km';
     static info = config;

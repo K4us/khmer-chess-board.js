@@ -1,37 +1,25 @@
 const path = require('path');
-const os = require('os');
 
-const ROOT = path.resolve(__dirname, 'src');
+const ROOT = path.resolve(__dirname, 'dist');
 
 module.exports = {
     context: ROOT,
 
     entry: {
-        'khmer-chess-board': './Index.ts'
+        'khmer-chess-board': './src/index.umd.js'
     },
 
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: ROOT,
         filename: '[name].bundle.js',
         libraryTarget: 'umd'
     },
 
-    mode: 'development',
-    devtool: 'inline-source-map',
-
-    devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        compress: true,
-        open: os.platform() === "win32" ? "C:\\Program Files\\Firefox Developer Edition\\firefox.exe" : "Firefox Developer Edition",
-        port: 8081
-    },
+    mode: 'production',
+    devtool: 'source-map',
 
     resolve: {
-        extensions: ['.ts', '.js'],
-        modules: [
-            ROOT,
-            'node_modules'
-        ]
+        extensions: ['.js'],
     },
 
     module: {
@@ -39,10 +27,6 @@ module.exports = {
             /****************
             * LOADERS
             *****************/
-            {
-                test: /\.ts?$/,
-                use: 'ts-loader'
-            },
             {
                 test: /\.(jpe?g|png|ttf|eot|woff(2)?|mp3)(\?[a-z0-9=&.]+)?$/,
                 use: [

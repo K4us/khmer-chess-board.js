@@ -6,5 +6,4 @@ ts-out
 npm-debug.log
 debug.log
 dist-test
-dist-dev
 .DS_Store

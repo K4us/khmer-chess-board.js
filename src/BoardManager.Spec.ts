@@ -1,5 +1,5 @@
 import KhmerChessBoard from './KhmerChessBoard';
-import { Point, CELL_COUNT, Piece } from 'khmer-chess';
+import { Point, CELL_COUNT, Piece, PIECE_COLOR_BLACK, PIECE_COLOR_WHITE } from 'khmer-chess';
 import { init, capturing, reset, attacking } from './test/helper';
 import spies from 'chai-spies';
 import CellManager from './CellManager';
@@ -47,10 +47,10 @@ describe('KhmerChessBoard', function () {
     });
 
     it('should return king', () => {
-        let cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_BLACK) as CellManager;
+        let cell = kcb.boardManager.getKing(PIECE_COLOR_BLACK) as CellManager;
         expect(cell.piece?.isColorBlack).to.true;
         expect(cell.piece?.isTypeKing).to.true;
-        cell = kcb.boardManager.getKing(KhmerChessBoard.PIECE_COLOR_WHITE) as CellManager;
+        cell = kcb.boardManager.getKing(PIECE_COLOR_WHITE) as CellManager;
         expect(cell.piece?.isColorWhite).to.true;
         expect(cell.piece?.isTypeKing).to.true;
     });

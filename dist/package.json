@@ -1,0 +1,65 @@
+{
+    "name": "khmer-chess-board",
+    "version": "1.0.45",
+    "description": "Khmer Chess Javascript library to simulate chess board",
+    "main": "dist/src/KhmerChessBoard.js",
+    "types": "src/KhmerChessBoard.ts",
+    "scripts": {
+        "start": "webpack serve --config webpack.config.dev.js",
+        "build:bundle": "webpack --config webpack.config.js",
+        "build:cp:pubic": "cp-cli public/ dist/public",
+        "build:js": "del-cli dist -f && npm run lint && tsc && npm run build:cp:pubic",
+        "build": "npm run build:js && npm run build:bundle",
+        "lint": "eslint . --ext .ts ./src",
+        "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
+        "test": "karma start karma.conf.js",
+        "cov": "http-server coverage/ -o"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/K4us/khmer-chess-board.js.git"
+    },
+    "author": "Raksa Eng <eng.raksa@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/K4us/khmer-chess-board.js/issues"
+    },
+    "homepage": "https://github.com/K4us/khmer-chess-board.js#readme",
+    "keywords": [
+        "Khmer",
+        "KhmerChess",
+        "Chess",
+        "Board"
+    ],
+    "dependencies": {
+        "k4us-share": "^1.0.6",
+        "khmer-chess": "^1.0.56"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.2.21",
+        "@types/chai-spies": "^1.0.3",
+        "@types/mocha": "^9.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.15.1",
+        "@typescript-eslint/parser": "^4.15.1",
+        "chai": "^4.3.4",
+        "chai-spies": "^1.0.0",
+        "cp-cli": "^2.0.0",
+        "del-cli": "^4.0.1",
+        "eslint": "^7.20.0",
+        "file-loader": "^6.2.0",
+        "http-server": "^13.0.1",
+        "karma": "^6.3.4",
+        "karma-chai": "^0.1.0",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-mocha": "^2.0.1",
+        "karma-typescript": "^5.5.2",
+        "mocha": "^9.1.1",
+        "source-map-loader": "0.2.3",
+        "svg-inline-loader": "^0.8.2",
+        "ts-loader": "^9.2.5",
+        "typescript": "^4.4.3",
+        "webpack": "^5.21.2",
+        "webpack-cli": "^4.5.0",
+        "webpack-dev-server": "^3.11.2"
+    }
+}

@@ -59,6 +59,6 @@ module.exports = function (config) {
     concurrency: Infinity,
     karmaTypescriptConfig: {
       tsconfig: './tsconfig.test.json',
-    }
-  })
-}
+    },
+  });
+};

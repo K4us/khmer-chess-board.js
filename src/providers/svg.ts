@@ -9,7 +9,8 @@ import {
    PIECE_TYPE_HORSE,
    PIECE_TYPE_FISH,
 } from 'khmer-chess';
-import {
+import { khmerChessPieces } from 'k4us-share';
+const {
    boatSVG,
    fishSVG,
    generalSVG,
@@ -17,7 +18,7 @@ import {
    kingSVG,
    queenSVG,
    transformFishSVG,
-} from 'k4us-share/types';
+} = khmerChessPieces;
 
 export const WOOD_COLORS = {
    WHITE: '#ffffff',

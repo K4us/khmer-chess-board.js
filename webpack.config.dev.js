@@ -7,7 +7,7 @@ module.exports = {
     context: ROOT,
 
     entry: {
-        'khmer-chess-board': './Index.ts'
+        'khmer-chess-board': './dev.ts'
     },
 
     output: {
@@ -16,8 +16,15 @@ module.exports = {
         libraryTarget: 'umd'
     },
 
-    mode: 'production',
-    devtool: 'source-map',
+    mode: 'development',
+    devtool: 'inline-source-map',
+
+    devServer: {
+        contentBase: path.join(__dirname, 'public'),
+        compress: true,
+        open: os.platform() === "win32" ? "C:\\Program Files\\Firefox Developer Edition\\firefox.exe" : "Firefox Developer Edition",
+        port: 8081
+    },
 
     resolve: {
         extensions: ['.ts', '.js'],
