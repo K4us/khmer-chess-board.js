@@ -1,5 +1,8 @@
 export { default as KhmerChessBoard } from './KhmerChessBoard';
 export { BoardStatusEvent } from './event/BoardStatusEvent';
+export { default as BoardManagerEventController } from './event/BoardManagerEventController';
+export { default as BoardStatusEventController } from './event/BoardStatusEventController';
+export { default as PlayManagerEventController } from './event/PlayManagerEventController';
 export { default as MoveData } from './MoveData';
 export { default as BoardManager } from './BoardManager';
 export { default as OptionsManager } from './OptionsManager';

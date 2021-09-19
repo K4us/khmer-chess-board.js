@@ -13,11 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.BoardStatusEvent = exports.KhmerChessBoard = void 0;
+exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.PlayManagerEventController = exports.BoardStatusEventController = exports.BoardManagerEventController = exports.BoardStatusEvent = exports.KhmerChessBoard = void 0;
 var KhmerChessBoard_1 = require("./KhmerChessBoard");
 Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
 var BoardStatusEvent_1 = require("./event/BoardStatusEvent");
 Object.defineProperty(exports, "BoardStatusEvent", { enumerable: true, get: function () { return BoardStatusEvent_1.BoardStatusEvent; } });
+var BoardManagerEventController_1 = require("./event/BoardManagerEventController");
+Object.defineProperty(exports, "BoardManagerEventController", { enumerable: true, get: function () { return __importDefault(BoardManagerEventController_1).default; } });
+var BoardStatusEventController_1 = require("./event/BoardStatusEventController");
+Object.defineProperty(exports, "BoardStatusEventController", { enumerable: true, get: function () { return __importDefault(BoardStatusEventController_1).default; } });
+var PlayManagerEventController_1 = require("./event/PlayManagerEventController");
+Object.defineProperty(exports, "PlayManagerEventController", { enumerable: true, get: function () { return __importDefault(PlayManagerEventController_1).default; } });
 var MoveData_1 = require("./MoveData");
 Object.defineProperty(exports, "MoveData", { enumerable: true, get: function () { return __importDefault(MoveData_1).default; } });
 var BoardManager_1 = require("./BoardManager");
