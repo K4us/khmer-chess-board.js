@@ -19,6 +19,8 @@ var MessageManager = /** @class */ (function () {
         this.messageClassName = 'message';
         this.logEnabled = true;
         this.khmerChessBoard = khmerChessBoard;
+        this.domContainer = document.createElement('div');
+        this.domMessage = document.createElement('div');
         (0, appendCss_1.default)(this.khmerChessBoard.options.uniqueClassName, this.css());
     }
     MessageManager.prototype.destroy = function () {

@@ -82,6 +82,7 @@ export default class KhmerChessBoard {
     soundManager: SoundManager;
     messageManager: MessageManager;
     pieceShadowManager: PieceShadowManager;
+    constructor();
     setOptions(options: {
         container?: HTMLElement | null;
         width: number;
@@ -98,6 +99,5 @@ export default class KhmerChessBoard {
     applyPieces(): void;
     removeAllDomElements(): void;
     removeAllDomCss(): void;
-    instantiate(): void;
     destroy(): void;
 }

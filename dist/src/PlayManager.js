@@ -14,6 +14,11 @@ var PlayManager = /** @class */ (function () {
         this.khmerChessBoard = khmerChessBoard;
         this.playEventController = new PlayManagerEventController_1.default();
         (0, appendCss_1.default)(this.khmerChessBoard.options.uniqueClassName, this.css());
+        this.containerDom = document.createElement('div');
+        this.backBtnDom = document.createElement('button');
+        this.playBtnDom = document.createElement('button');
+        this.pauseBtnDom = document.createElement('button');
+        this.nextBtnDom = document.createElement('button');
     }
     PlayManager.prototype.destroy = function () {
         this.renDataList.forEach(function (moveData) {
@@ -214,7 +219,8 @@ var PlayManager = /** @class */ (function () {
         this.renderMoveData();
     };
     PlayManager.prototype.loadCurrentRen = function () {
-        this.khmerChessBoard.loadRen(this.currentMove ? this.currentMove.renStr : '');
+        var _a;
+        this.khmerChessBoard.loadRen((_a = this.currentMove) === null || _a === void 0 ? void 0 : _a.renStr);
         this.khmerChessBoard.boardManager.checkBoardEvent();
     };
     Object.defineProperty(PlayManager.prototype, "currentMove", {

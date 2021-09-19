@@ -4,9 +4,9 @@ import { Move } from 'khmer-chess';
 import MoveData from './MoveData';
 export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
-    containerDom: HTMLElement;
     renDataList: MoveData[];
     playEventController: PlayManagerEventController<MoveData>;
+    containerDom: HTMLElement;
     backBtnDom: HTMLButtonElement;
     playBtnDom: HTMLButtonElement;
     pauseBtnDom: HTMLButtonElement;

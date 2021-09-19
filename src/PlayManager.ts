@@ -9,9 +9,9 @@ import MoveData from './MoveData';
 export default class PlayManager {
     khmerChessBoard: KhmerChessBoard;
 
-    containerDom: HTMLElement;
     renDataList: MoveData[] = [];
     playEventController: PlayManagerEventController<MoveData>;
+    containerDom: HTMLElement;
     backBtnDom: HTMLButtonElement;
     playBtnDom: HTMLButtonElement;
     pauseBtnDom: HTMLButtonElement;
@@ -23,6 +23,11 @@ export default class PlayManager {
         this.khmerChessBoard = khmerChessBoard;
         this.playEventController = new PlayManagerEventController();
         appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
+        this.containerDom = document.createElement('div');
+        this.backBtnDom = document.createElement('button');
+        this.playBtnDom = document.createElement('button');
+        this.pauseBtnDom = document.createElement('button');
+        this.nextBtnDom = document.createElement('button');
     }
     destroy() {
         this.renDataList.forEach((moveData) => {
@@ -237,7 +242,7 @@ export default class PlayManager {
         this.renderMoveData();
     }
     loadCurrentRen() {
-        this.khmerChessBoard.loadRen(this.currentMove ? this.currentMove.renStr : '');
+        this.khmerChessBoard.loadRen(this.currentMove?.renStr as string);
         this.khmerChessBoard.boardManager.checkBoardEvent();
     }
     get currentMove() {

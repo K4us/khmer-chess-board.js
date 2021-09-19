@@ -39,7 +39,7 @@ export default class BoardStatusEventController extends EventHandler {
         if (!move) {
             return events;
         }
-        const ren = REN.fromString(move.renStr);
+        const ren = REN.fromString(move.renStr as string);
         ren.syncWithMove(move);
         if (move.attacker && move.attacker.piece) {
             const boardEvent = new BoardStatusEvent({

@@ -5,6 +5,7 @@ var GraveyardManager = /** @class */ (function () {
     function GraveyardManager(khmerChessBoard) {
         this._cells = [];
         this.khmerChessBoard = khmerChessBoard;
+        this.domGraveyard = document.createElement('div');
     }
     GraveyardManager.prototype.destroy = function () {
         this._cells.forEach(function (cell) {

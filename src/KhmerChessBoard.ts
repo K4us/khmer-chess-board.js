@@ -32,12 +32,23 @@ export default class KhmerChessBoard {
     soundManager: SoundManager;
     messageManager: MessageManager;
     pieceShadowManager: PieceShadowManager;
+    constructor() {
+        this.containerDom = document.createElement('div');
+        this.domRootBoard = document.createElement('table');
+        this.khmerChess = new KhmerChess();
+        this.options = new OptionsManager();
+        this.playManager = new PlayManager(this);
+        this.graveyardManager = new GraveyardManager(this);
+        this.boardManager = new BoardManager(this);
+        this.soundManager = new SoundManager(this);
+        this.messageManager = new MessageManager(this);
+        this.pieceShadowManager = new PieceShadowManager(this);
+    }
     setOptions(options: {
         container?: HTMLElement | null;
         width: number;
     }) {
 
-        this.instantiate();
 
         if (!options.container) {
             throw new Error('Container is required!');
@@ -206,17 +217,6 @@ export default class KhmerChessBoard {
         elements.forEach((element) => {
             element.parentElement?.removeChild(element);
         });
-    }
-
-    instantiate() {
-        this.khmerChess = new KhmerChess();
-        this.options = new OptionsManager();
-        this.playManager = new PlayManager(this);
-        this.graveyardManager = new GraveyardManager(this);
-        this.boardManager = new BoardManager(this);
-        this.soundManager = new SoundManager(this);
-        this.messageManager = new MessageManager(this);
-        this.pieceShadowManager = new PieceShadowManager(this);
     }
 
     destroy() {

@@ -8,6 +8,7 @@ var PieceShadowManager = /** @class */ (function () {
             callbacks: [],
         };
         this.khmerChessBoard = khmerChessBoard;
+        this.tdShadowDom = document.createElement('div');
     }
     PieceShadowManager.prototype.destroy = function () {
         this.khmerChessBoard = null;

@@ -20,10 +20,19 @@ var PieceShadowManager_1 = __importDefault(require("./PieceShadowManager"));
 var BoardStatusEvent_1 = require("./event/BoardStatusEvent");
 var KhmerChessBoard = /** @class */ (function () {
     function KhmerChessBoard() {
+        this.containerDom = document.createElement('div');
+        this.domRootBoard = document.createElement('table');
+        this.khmerChess = new khmer_chess_1.KhmerChess();
+        this.options = new OptionsManager_1.default();
+        this.playManager = new PlayManager_1.default(this);
+        this.graveyardManager = new GraveyardManager_1.default(this);
+        this.boardManager = new BoardManager_1.default(this);
+        this.soundManager = new SoundManager_1.default(this);
+        this.messageManager = new MessageManager_1.default(this);
+        this.pieceShadowManager = new PieceShadowManager_1.default(this);
     }
     KhmerChessBoard.prototype.setOptions = function (options) {
         var _this = this;
-        this.instantiate();
         if (!options.container) {
             throw new Error('Container is required!');
         }
@@ -175,16 +184,6 @@ var KhmerChessBoard = /** @class */ (function () {
             var _a;
             (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(element);
         });
-    };
-    KhmerChessBoard.prototype.instantiate = function () {
-        this.khmerChess = new khmer_chess_1.KhmerChess();
-        this.options = new OptionsManager_1.default();
-        this.playManager = new PlayManager_1.default(this);
-        this.graveyardManager = new GraveyardManager_1.default(this);
-        this.boardManager = new BoardManager_1.default(this);
-        this.soundManager = new SoundManager_1.default(this);
-        this.messageManager = new MessageManager_1.default(this);
-        this.pieceShadowManager = new PieceShadowManager_1.default(this);
     };
     KhmerChessBoard.prototype.destroy = function () {
         this.removeAllDomElements();

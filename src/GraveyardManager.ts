@@ -12,6 +12,7 @@ export default class GraveyardManager {
     domGraveyard: HTMLElement;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
+        this.domGraveyard = document.createElement('div');
     }
     destroy() {
         this._cells.forEach((cell) => {

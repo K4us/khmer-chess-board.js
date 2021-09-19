@@ -12,6 +12,8 @@ export default class MessageManager {
     logEnabled = true;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
+        this.domContainer = document.createElement('div');
+        this.domMessage = document.createElement('div');
         appendCss(this.khmerChessBoard.options.uniqueClassName, this.css());
     }
     destroy() {

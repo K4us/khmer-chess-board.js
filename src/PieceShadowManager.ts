@@ -9,6 +9,7 @@ export default class PieceShadowManager {
     _quickMove = false;
     constructor(khmerChessBoard: KhmerChessBoard) {
         this.khmerChessBoard = khmerChessBoard;
+        this.tdShadowDom = document.createElement('div');
     }
     destroy() {
         (this.khmerChessBoard as any) = null;
