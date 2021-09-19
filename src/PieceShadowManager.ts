@@ -32,24 +32,23 @@ export default class PieceShadowManager {
         this.tdShadowDom = tdShadowDown;
     }
     movingPiece(fromCell: CellManager, toCell: CellManager, callback: Function) {
+        const fromBc = fromCell.containerDom.getBoundingClientRect();
+        const toBc = toCell.containerDom.getBoundingClientRect();
+        fromCell.removePieceClasses();
         if (this._quickMove) {
-            fromCell.removePieceClasses();
             callback();
+            callback = () => { };
         } else {
             const div = document.createElement('div');
             const pice = fromCell.piece;
             if (!pice || !div.animate || this.khmerChessBoard.options.isFullScreen) {
                 callback();
             } else {
-
-                const fromBc = fromCell.containerDom.getBoundingClientRect();
-                const toBc = toCell.containerDom.getBoundingClientRect();
                 this.tdShadowDom.appendChild(div);
                 div.style.top = `${fromBc.top}`;
                 div.style.left = `${fromBc.left}`;
                 div.classList.add(`type-${pice.type}`);
                 div.classList.add(`color-${pice.color}`);
-                fromCell.removePieceClasses();
                 const option = [
                     {
                         transform: 'translate(0px)',

@@ -10,7 +10,7 @@ Khmer Chess Javascript library to simulate chess board
 
 Screen Shot 2021-02-27 at 5.49.22 PM (KhmerChessBoard 1.0.13):
 
-![alt text](https://raw.githubusercontent.com/K4us/khmer-chess-board.js/main/example/Screen%20Shot%202021-02-27%20at%205.49.22%20PM.png "Logo Title Text 1")
+![alt text](./example/Screen%20Shot%202021-02-27%20at%205.49.22%20PM.png "Logo Title Text 1")
 
 ## Importing
 
@@ -31,3 +31,7 @@ Screen Shot 2021-02-27 at 5.49.22 PM (KhmerChessBoard 1.0.13):
 > npm i
 > npm run build
 ```
+
+## Licence
+
+MIT

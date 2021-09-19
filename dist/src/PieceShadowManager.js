@@ -25,9 +25,12 @@ var PieceShadowManager = /** @class */ (function () {
     };
     PieceShadowManager.prototype.movingPiece = function (fromCell, toCell, callback) {
         var _this = this;
+        var fromBc = fromCell.containerDom.getBoundingClientRect();
+        var toBc = toCell.containerDom.getBoundingClientRect();
+        fromCell.removePieceClasses();
         if (this._quickMove) {
-            fromCell.removePieceClasses();
             callback();
+            callback = function () { };
         }
         else {
             var div_1 = document.createElement('div');
@@ -36,14 +39,11 @@ var PieceShadowManager = /** @class */ (function () {
                 callback();
             }
             else {
-                var fromBc = fromCell.containerDom.getBoundingClientRect();
-                var toBc = toCell.containerDom.getBoundingClientRect();
                 this.tdShadowDom.appendChild(div_1);
                 div_1.style.top = "" + fromBc.top;
                 div_1.style.left = "" + fromBc.left;
                 div_1.classList.add("type-" + pice.type);
                 div_1.classList.add("color-" + pice.color);
-                fromCell.removePieceClasses();
                 var option = [
                     {
                         transform: 'translate(0px)',

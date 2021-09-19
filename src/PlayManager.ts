@@ -273,10 +273,10 @@ export default class PlayManager {
         if (move === null) {
             return false;
         }
+        this.currentIndex++;
         this.applyMove(move, (error) => {
             callback(error);
         });
-        this.currentIndex++;
         return true;
     }
     applyMove(move: Move, callback: (arg0: void | Error) => void = () => { }) {

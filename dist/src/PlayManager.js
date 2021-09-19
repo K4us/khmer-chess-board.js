@@ -257,10 +257,10 @@ var PlayManager = /** @class */ (function () {
         if (move === null) {
             return false;
         }
+        this.currentIndex++;
         this.applyMove(move, function (error) {
             callback(error);
         });
-        this.currentIndex++;
         return true;
     };
     PlayManager.prototype.applyMove = function (move, callback) {
