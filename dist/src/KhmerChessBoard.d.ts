@@ -19,7 +19,6 @@ export default class KhmerChessBoard {
         scripts: {
             start: string;
             "build:bundle": string;
-            "build:cp:pubic": string;
             "build:js": string;
             build: string;
             lint: string;
@@ -51,10 +50,8 @@ export default class KhmerChessBoard {
             "@typescript-eslint/parser": string;
             chai: string;
             "chai-spies": string;
-            "cp-cli": string;
             "del-cli": string;
             eslint: string;
-            "file-loader": string;
             "http-server": string;
             karma: string;
             "karma-chai": string;

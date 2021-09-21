@@ -1,5 +1,7 @@
 import KhmerChessBoard from './KhmerChessBoard';
-import AUDIO from './providers/audio';
+import {
+    moveAudio, checkAudio, captureAudio,
+} from 'k4us-share';
 
 export default class SoundManager {
     khmerChessBoard: KhmerChessBoard;
@@ -40,9 +42,9 @@ export default class SoundManager {
 
     enable() {
         this.isEnable = true;
-        this.move = this._addSound(AUDIO.move);
-        this.capture = this._addSound(AUDIO.capture);
-        this.check = this._addSound(AUDIO.check);
+        this.move = this._addSound(moveAudio);
+        this.capture = this._addSound(captureAudio);
+        this.check = this._addSound(checkAudio);
         this.khmerChessBoard.messageManager.log('Sound is enabled');
     }
 

@@ -1,14 +1,13 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.55",
+  "version": "1.0.56",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/src/index.js",
   "types": "src/index.ts",
   "scripts": {
     "start": "webpack serve --config webpack.config.dev.js",
     "build:bundle": "webpack --config webpack.config.js",
-    "build:cp:pubic": "cp-cli public/ dist/public",
-    "build:js": "del-cli dist -f && npm run lint && tsc && npm run build:cp:pubic",
+    "build:js": "del-cli dist -f && npm run lint && tsc",
     "build": "npm run build:js && npm run build:bundle",
     "lint": "eslint . --ext .ts ./src",
     "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
@@ -33,7 +32,7 @@
     "Board"
   ],
   "dependencies": {
-    "k4us-share": "^1.0.10",
+    "k4us-share": "^1.0.11",
     "khmer-chess": "^1.0.62"
   },
   "devDependencies": {
@@ -44,10 +43,8 @@
     "@typescript-eslint/parser": "^4.15.1",
     "chai": "^4.3.4",
     "chai-spies": "^1.0.0",
-    "cp-cli": "^2.0.0",
     "del-cli": "^4.0.1",
     "eslint": "^7.20.0",
-    "file-loader": "^6.2.0",
     "http-server": "^13.0.1",
     "karma": "^6.3.4",
     "karma-chai": "^0.1.0",

@@ -1,9 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var audio_1 = __importDefault(require("./providers/audio"));
+var k4us_share_1 = require("k4us-share");
 var SoundManager = /** @class */ (function () {
     function SoundManager(khmerChessBoard) {
         this.move = null;
@@ -37,9 +34,9 @@ var SoundManager = /** @class */ (function () {
     };
     SoundManager.prototype.enable = function () {
         this.isEnable = true;
-        this.move = this._addSound(audio_1.default.move);
-        this.capture = this._addSound(audio_1.default.capture);
-        this.check = this._addSound(audio_1.default.check);
+        this.move = this._addSound(k4us_share_1.moveAudio);
+        this.capture = this._addSound(k4us_share_1.captureAudio);
+        this.check = this._addSound(k4us_share_1.checkAudio);
         this.khmerChessBoard.messageManager.log('Sound is enabled');
     };
     SoundManager.prototype._addSound = function (src) {

@@ -23,19 +23,7 @@ module.exports = {
     },
 
     module: {
-        rules: [
-            /****************
-            * LOADERS
-            *****************/
-            {
-                test: /\.(jpe?g|png|ttf|eot|woff(2)?|mp3)(\?[a-z0-9=&.]+)?$/,
-                use: [
-                    {
-                        loader: 'file-loader'
-                    }
-                ]
-            }
-        ]
+        rules: []
     }
 };
 
