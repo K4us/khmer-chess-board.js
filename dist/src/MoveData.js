@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var khmer_chess_1 = require("khmer-chess");
+var constance_1 = require("./providers/constance");
 var MoveData = /** @class */ (function () {
     function MoveData(_a) {
         var _this = this;
@@ -16,11 +17,19 @@ var MoveData = /** @class */ (function () {
         indexSpan.innerText = khmer_chess_1.KhmerChess.toKhmerNum(index);
         indexSpan.classList.add('index');
         div.appendChild(indexSpan);
+        var pieceSpan = document.createElement('span');
+        pieceSpan.classList.add('info');
+        pieceSpan.classList.add(constance_1.KC_FONT_CLASS_NAME);
+        if (khmer_chess_1.Piece.isWhiteCharCode(str[0])) {
+            pieceSpan.classList.add('white');
+        }
+        pieceSpan.innerText = str[0];
+        div.appendChild(pieceSpan);
         var infoSpan = document.createElement('span');
         infoSpan.classList.add('info');
-        infoSpan.innerText = str;
+        infoSpan.innerText = str.substr(1);
         div.appendChild(infoSpan);
-        infoSpan.onclick = function () {
+        div.onclick = function () {
             if (!_this.isCurrent) {
                 onClick();
             }

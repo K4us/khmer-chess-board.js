@@ -185,7 +185,7 @@ export default class PlayManager {
             border-radius: 2px;
             cursor: pointer;
         }
-        ${containerSelector} .container > span.current {
+        ${containerSelector} .container > div.current {
             background-color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
         }

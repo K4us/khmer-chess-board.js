@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CSS_PSEUDO_NOTE = exports.CSS_PSEUDO_PIECE = exports.CSS_PSEUDO_HIGHLIGHT = exports.FLIPPED_CLASS = exports.BOARD_NOTE_H_PREFIX_CLASS = exports.BOARD_NOTE_V_PREFIX_CLASS = exports.GRAVEYARD_NOTE_PREFIX_CLASS = exports.POPUP_CLASS_NAME = exports.PIECE_CLASS_NAME = exports.TR_PIECE_SHADOW_CLASS_NAME = exports.TR_GRAVEYARD_CLASS_NAME = exports.TR_PIECE_CLASS_NAME = exports.GRAVEYARD_CLASS_NAME = exports.TURN_CLASS_NAME = exports.ATTACKED_CLASS_NAME = exports.MOVED_CLASS_NAME = exports.CAN_MOVE_CLASS_NAME = exports.SELECTED_CLASS_NAME = exports.CSS_TABLE_SELECTOR = exports.CSS_P2P = exports.TABLE_CLASS = exports.TD_GRAVEYARD_NUMBER = exports.MIN_CELL_WIDTH = exports.BORDER_WIDTH = void 0;
+exports.CSS_PSEUDO_NOTE = exports.CSS_PSEUDO_PIECE = exports.CSS_PSEUDO_HIGHLIGHT = exports.FLIPPED_CLASS = exports.BOARD_NOTE_H_PREFIX_CLASS = exports.BOARD_NOTE_V_PREFIX_CLASS = exports.GRAVEYARD_NOTE_PREFIX_CLASS = exports.POPUP_CLASS_NAME = exports.PIECE_CLASS_NAME = exports.TR_PIECE_SHADOW_CLASS_NAME = exports.TR_GRAVEYARD_CLASS_NAME = exports.TR_PIECE_CLASS_NAME = exports.GRAVEYARD_CLASS_NAME = exports.TURN_CLASS_NAME = exports.ATTACKED_CLASS_NAME = exports.MOVED_CLASS_NAME = exports.CAN_MOVE_CLASS_NAME = exports.KC_FONT_CLASS_NAME = exports.SELECTED_CLASS_NAME = exports.CSS_TABLE_SELECTOR = exports.CSS_P2P = exports.TABLE_CLASS = exports.TD_GRAVEYARD_NUMBER = exports.MIN_CELL_WIDTH = exports.BORDER_WIDTH = void 0;
 exports.BORDER_WIDTH = 1;
 exports.MIN_CELL_WIDTH = 5;
 exports.TD_GRAVEYARD_NUMBER = 30;
@@ -8,6 +8,7 @@ exports.TABLE_CLASS = 'khmer-chess-board';
 exports.CSS_P2P = 'p2p';
 exports.CSS_TABLE_SELECTOR = "table." + exports.TABLE_CLASS;
 exports.SELECTED_CLASS_NAME = 'selected';
+exports.KC_FONT_CLASS_NAME = 'kc-font';
 exports.CAN_MOVE_CLASS_NAME = 'can-move';
 exports.MOVED_CLASS_NAME = 'moved';
 exports.ATTACKED_CLASS_NAME = 'attacked';

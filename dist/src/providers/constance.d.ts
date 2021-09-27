@@ -5,6 +5,7 @@ export declare const TABLE_CLASS = "khmer-chess-board";
 export declare const CSS_P2P = "p2p";
 export declare const CSS_TABLE_SELECTOR: string;
 export declare const SELECTED_CLASS_NAME = "selected";
+export declare const KC_FONT_CLASS_NAME = "kc-font";
 export declare const CAN_MOVE_CLASS_NAME = "can-move";
 export declare const MOVED_CLASS_NAME = "moved";
 export declare const ATTACKED_CLASS_NAME = "attacked";

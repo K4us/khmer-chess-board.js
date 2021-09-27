@@ -1,4 +1,5 @@
-import { KhmerChess } from 'khmer-chess';
+import { KhmerChess, Piece } from 'khmer-chess';
+import { KC_FONT_CLASS_NAME } from './providers/constance';
 
 export default class MoveData {
     index: number;
@@ -26,11 +27,21 @@ export default class MoveData {
         indexSpan.classList.add('index');
         div.appendChild(indexSpan);
 
+        const pieceSpan = document.createElement('span');
+        pieceSpan.classList.add('info');
+        pieceSpan.classList.add(KC_FONT_CLASS_NAME);
+        if (Piece.isWhiteCharCode(str[0])) {
+            pieceSpan.classList.add('white');
+        }
+        pieceSpan.innerText = str[0];
+        div.appendChild(pieceSpan);
+
         const infoSpan = document.createElement('span');
         infoSpan.classList.add('info');
-        infoSpan.innerText = str;
+        infoSpan.innerText = str.substr(1);
         div.appendChild(infoSpan);
-        infoSpan.onclick = () => {
+
+        div.onclick = () => {
             if (!this.isCurrent) {
                 onClick();
             }

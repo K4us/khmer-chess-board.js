@@ -5,6 +5,7 @@ export const TABLE_CLASS = 'khmer-chess-board';
 export const CSS_P2P = 'p2p';
 export const CSS_TABLE_SELECTOR = `table.${TABLE_CLASS}`;
 export const SELECTED_CLASS_NAME = 'selected';
+export const KC_FONT_CLASS_NAME = 'kc-font';
 export const CAN_MOVE_CLASS_NAME = 'can-move';
 export const MOVED_CLASS_NAME = 'moved';
 export const ATTACKED_CLASS_NAME = 'attacked';

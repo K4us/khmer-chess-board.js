@@ -18,9 +18,11 @@ import {
     TR_PIECE_CLASS_NAME,
     TR_PIECE_SHADOW_CLASS_NAME,
     CSS_P2P,
+    KC_FONT_CLASS_NAME,
 } from '../providers/constance';
 import appendCss from './appendCss';
 import OptionsManager from '../OptionsManager';
+import { khmerChessFont } from 'k4us-share';
 
 export default function addCss({ uniqueClassName, options }:
     { uniqueClassName: string, options: OptionsManager }) {
@@ -31,6 +33,7 @@ export default function addCss({ uniqueClassName, options }:
 
     let css = '';
     css += `
+        ${khmerChessFont.css}
         ${selector} {
             table-layout: fixed;
             border-collapse: collapse;
@@ -41,6 +44,12 @@ export default function addCss({ uniqueClassName, options }:
             padding: 0px;
             margin: auto;
             background-color: #f4d1a6;
+        }
+        ${selector} .${KC_FONT_CLASS_NAME} {
+            font-family: ${khmerChessFont.fontName};
+        }
+        ${selector} .white {
+            color: white;
         }
         ${selector}.${POPUP_CLASS_NAME} {
             position: fixed;
