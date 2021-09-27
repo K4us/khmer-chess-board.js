@@ -15,20 +15,21 @@ export default class MoveData {
         this.index = index;
         this.renData = renData;
 
-        const span = document.createElement('span');
-        span.title = title;
-        containerDom.appendChild(span);
-        this.dom = span;
+        const div = document.createElement('div');
+        div.title = title;
+        div.classList.add('data');
+        containerDom.appendChild(div);
+        this.dom = div;
 
         const indexSpan = document.createElement('span');
         indexSpan.innerText = KhmerChess.toKhmerNum(index);
         indexSpan.classList.add('index');
-        span.appendChild(indexSpan);
+        div.appendChild(indexSpan);
 
         const infoSpan = document.createElement('span');
         infoSpan.classList.add('info');
         infoSpan.innerText = str;
-        span.appendChild(infoSpan);
+        div.appendChild(infoSpan);
         infoSpan.onclick = () => {
             if (!this.isCurrent) {
                 onClick();
@@ -50,9 +51,6 @@ export default class MoveData {
             this.dom.onclick = null;
             this.dom.parentElement?.removeChild(this.dom);
         }
-    }
-    scrollIntoView() {
-        this.dom.scrollIntoView();
     }
 }
 

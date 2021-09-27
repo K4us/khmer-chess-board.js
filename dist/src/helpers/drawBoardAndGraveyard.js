@@ -49,7 +49,6 @@ function drawBoardAndGraveyard(_a) {
     var tdShadow = createTd(tr);
     var trPlayerContainer = createTr(tbody);
     trPlayerContainer.classList.add('tr-player');
-    trPlayerContainer.style.height = "" + graveyardContainerHeight / 3;
     var tdPlayerContainer = createTd(trPlayerContainer);
     tdPlayerContainer.classList.add('player');
     tdPlayerContainer.colSpan = 8;

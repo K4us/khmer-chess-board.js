@@ -150,17 +150,6 @@ var CellManager = /** @class */ (function () {
         var div = document.createElement('div');
         return new CellManager(this.khmerChessBoard, new khmer_chess_1.Point(this.point.x, this.point.y), div, this.piece);
     };
-    CellManager.prototype.scrollIntoView = function (quick) {
-        if (quick) {
-            this.containerDom.scrollIntoView();
-            return;
-        }
-        this.containerDom.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-            inline: 'nearest',
-        });
-    };
     CellManager.prototype.movePieceTo = function (toCell) {
         var piece = this.piece;
         this.removePiece();
@@ -170,10 +159,8 @@ var CellManager = /** @class */ (function () {
         var deadPiece = this.piece;
         this.removePiece();
         toGYCell.setPiece(deadPiece);
-        toGYCell.scrollIntoView();
     };
     CellManager.prototype.movePieceFromGraveyard = function (toCell) {
-        this.scrollIntoView();
         var raisePiece = this.piece;
         this.removePiece();
         toCell.setPiece(raisePiece);

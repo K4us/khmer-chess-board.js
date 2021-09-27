@@ -93,7 +93,7 @@ export default class PlayManager {
             return moveData;
         });
         if (this.renDataList.length) {
-            this.renDataList[this.renDataList.length - 1].scrollIntoView();
+            this.dataContainerDom.scrollTop = this.dataContainerDom.scrollHeight;
         }
     }
     draw(playerContainer: HTMLElement) {
@@ -110,7 +110,7 @@ export default class PlayManager {
         let tdHistory = document.createElement('td');
         const div = document.createElement('div');
         div.style.width = `${containerWidth}px`;
-        div.style.height = '28px';
+        div.style.height = '50px';
         div.classList.add('container');
         this.dataContainerDom = div;
         tdHistory.appendChild(div);
@@ -177,8 +177,9 @@ export default class PlayManager {
         ${containerSelector} .container::-webkit-scrollbar {
             width: 1em;
         }
-        ${containerSelector} .container > span {
-            margin: 0 2px;
+        ${containerSelector} .container .data {
+            display: inline-block;
+            margin: 2px;
             padding: 0 2px;
             border: 1px solid green;
             border-radius: 2px;
@@ -326,6 +327,7 @@ export default class PlayManager {
             const toGYCell = graveyardManager.get(move.captured.toGraveyardPoint.index);
             pieceShadowManager.movingPiece(fromBCell, toGYCell, () => {
                 fromBCell.movePieceToGraveyard(toGYCell);
+                graveyardManager.scrollLastToView();
                 finish();
             });
             soundManager.playCapture();
@@ -364,6 +366,7 @@ export default class PlayManager {
                 const toBCell = boardManager.get(move.captured.fromBoardPoint.index);
                 pieceShadowManager.movingPiece(fromGYCell, toBCell, () => {
                     fromGYCell.movePieceFromGraveyard(toBCell);
+                    graveyardManager.scrollLastToView();
                     finish();
                 });
                 soundManager.playCapture();

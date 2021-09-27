@@ -33,7 +33,14 @@ export default class GraveyardManager {
         return this._cells[index];
     }
 
-    get latestPieceCell(): CellManager | null {
+    get lastIndex(): number | null {
+        const cell = this.lastPieceCell;
+        if (cell === null) {
+            return null;
+        }
+        return this._cells.indexOf(cell);
+    }
+    get lastPieceCell(): CellManager | null {
         for (let i = this._cells.length - 1; i >= 0; i--) {
             if (this._cells[i].piece !== null) {
                 return this._cells[i];
@@ -42,11 +49,11 @@ export default class GraveyardManager {
         return null;
     }
     get firstEmptyCell(): CellManager | null {
-        const latestPieceCell = this.latestPieceCell;
-        if (latestPieceCell === null) {
+        const lastPieceCell = this.lastPieceCell;
+        if (lastPieceCell === null) {
             return this._cells[0];
         }
-        return this._cells[latestPieceCell.point.index + 1] || null;
+        return this._cells[lastPieceCell.point.index + 1] || null;
     }
 
     setCellNote() {
@@ -78,7 +85,17 @@ export default class GraveyardManager {
             const cell = this.get(i);
             cell.setPiece(piece);
         });
-        this.latestPieceCell?.scrollIntoView(true);
+        this.scrollLastToView();
+    }
+
+    scrollLastToView() {
+        let lastIndex = this.khmerChessBoard.graveyardManager.lastIndex;
+        if (lastIndex === null || lastIndex < 4) {
+            lastIndex = 4;
+        }
+        const cellWidth = this.khmerChessBoard.options.cellWidth;
+        const div = this.domGraveyard.parentElement as HTMLDivElement;
+        div.scrollLeft = (lastIndex - 4) * cellWidth;
     }
 
     renderKhmerChessPieces() {

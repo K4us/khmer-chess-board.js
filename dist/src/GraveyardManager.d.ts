@@ -9,11 +9,13 @@ export default class GraveyardManager {
     setDom(domGraveyard: HTMLElement): void;
     push(cell: CellManager): void;
     get(index: number): CellManager;
-    get latestPieceCell(): CellManager | null;
+    get lastIndex(): number | null;
+    get lastPieceCell(): CellManager | null;
     get firstEmptyCell(): CellManager | null;
     setCellNote(): void;
     clearCellNote(): void;
     removePiecesFromCells(): void;
     applyPiecesFromKhmerChess(): void;
+    scrollLastToView(): void;
     renderKhmerChessPieces(): void;
 }

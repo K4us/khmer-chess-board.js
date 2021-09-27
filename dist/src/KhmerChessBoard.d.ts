@@ -25,6 +25,7 @@ export default class KhmerChessBoard {
             "kc:ts:gen": string;
             test: string;
             cov: string;
+            "commit:ver": string;
             pub: string;
         };
         repository: {

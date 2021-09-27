@@ -24,7 +24,18 @@ var GraveyardManager = /** @class */ (function () {
     GraveyardManager.prototype.get = function (index) {
         return this._cells[index];
     };
-    Object.defineProperty(GraveyardManager.prototype, "latestPieceCell", {
+    Object.defineProperty(GraveyardManager.prototype, "lastIndex", {
+        get: function () {
+            var cell = this.lastPieceCell;
+            if (cell === null) {
+                return null;
+            }
+            return this._cells.indexOf(cell);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GraveyardManager.prototype, "lastPieceCell", {
         get: function () {
             for (var i = this._cells.length - 1; i >= 0; i--) {
                 if (this._cells[i].piece !== null) {
@@ -38,11 +49,11 @@ var GraveyardManager = /** @class */ (function () {
     });
     Object.defineProperty(GraveyardManager.prototype, "firstEmptyCell", {
         get: function () {
-            var latestPieceCell = this.latestPieceCell;
-            if (latestPieceCell === null) {
+            var lastPieceCell = this.lastPieceCell;
+            if (lastPieceCell === null) {
                 return this._cells[0];
             }
-            return this._cells[latestPieceCell.point.index + 1] || null;
+            return this._cells[lastPieceCell.point.index + 1] || null;
         },
         enumerable: false,
         configurable: true
@@ -71,12 +82,20 @@ var GraveyardManager = /** @class */ (function () {
     };
     GraveyardManager.prototype.applyPiecesFromKhmerChess = function () {
         var _this = this;
-        var _a;
         this.khmerChessBoard.khmerChess.piecesInGraveyard.forEach(function (piece, i) {
             var cell = _this.get(i);
             cell.setPiece(piece);
         });
-        (_a = this.latestPieceCell) === null || _a === void 0 ? void 0 : _a.scrollIntoView(true);
+        this.scrollLastToView();
+    };
+    GraveyardManager.prototype.scrollLastToView = function () {
+        var lastIndex = this.khmerChessBoard.graveyardManager.lastIndex;
+        if (lastIndex === null || lastIndex < 4) {
+            lastIndex = 4;
+        }
+        var cellWidth = this.khmerChessBoard.options.cellWidth;
+        var div = this.domGraveyard.parentElement;
+        div.scrollLeft = (lastIndex - 4) * cellWidth;
     };
     GraveyardManager.prototype.renderKhmerChessPieces = function () {
         this.removePiecesFromCells();

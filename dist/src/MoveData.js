@@ -7,18 +7,19 @@ var MoveData = /** @class */ (function () {
         var index = _a.index, containerDom = _a.containerDom, renData = _a.renData, title = _a.title, str = _a.str, onClick = _a.onClick;
         this.index = index;
         this.renData = renData;
-        var span = document.createElement('span');
-        span.title = title;
-        containerDom.appendChild(span);
-        this.dom = span;
+        var div = document.createElement('div');
+        div.title = title;
+        div.classList.add('data');
+        containerDom.appendChild(div);
+        this.dom = div;
         var indexSpan = document.createElement('span');
         indexSpan.innerText = khmer_chess_1.KhmerChess.toKhmerNum(index);
         indexSpan.classList.add('index');
-        span.appendChild(indexSpan);
+        div.appendChild(indexSpan);
         var infoSpan = document.createElement('span');
         infoSpan.classList.add('info');
         infoSpan.innerText = str;
-        span.appendChild(infoSpan);
+        div.appendChild(infoSpan);
         infoSpan.onclick = function () {
             if (!_this.isCurrent) {
                 onClick();
@@ -44,9 +45,6 @@ var MoveData = /** @class */ (function () {
             this.dom.onclick = null;
             (_a = this.dom.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(this.dom);
         }
-    };
-    MoveData.prototype.scrollIntoView = function () {
-        this.dom.scrollIntoView();
     };
     return MoveData;
 }());

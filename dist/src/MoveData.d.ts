@@ -13,5 +13,4 @@ export default class MoveData {
     get isCurrent(): boolean;
     current(b: boolean): void;
     destroy(): void;
-    scrollIntoView(): void;
 }

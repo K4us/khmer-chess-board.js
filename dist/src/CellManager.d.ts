@@ -30,7 +30,6 @@ export default class CellManager {
     removeOnClick(): void;
     setFlipped(isUpsideDown: boolean): void;
     clone(): CellManager;
-    scrollIntoView(quick?: boolean): void;
     movePieceTo(toCell: CellManager): void;
     movePieceToGraveyard(toGYCell: CellManager): void;
     movePieceFromGraveyard(toCell: CellManager): void;

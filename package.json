@@ -1,6 +1,6 @@
 {
   "name": "khmer-chess-board",
-  "version": "1.0.56",
+  "version": "1.0.57",
   "description": "Khmer Chess Javascript library to simulate chess board",
   "main": "dist/src/index.js",
   "types": "src/index.ts",
@@ -13,6 +13,7 @@
     "kc:ts:gen": "dts-gen -m khmer-chess -f ./node_modules/khmer-chess/index.d.ts",
     "test": "karma start karma.conf.js",
     "cov": "http-server coverage/ -o",
+    "commit:ver": "export CURRENT_VERSION=$(grep \\\"version\\\": ./package.json | sed 's/.*: \"\\(.*\\)\".*/\\1/') && git commit -am \"release version $CURRENT_VERSION\"",
     "pub": "npm i && npm run build && npm publish"
   },
   "repository": {

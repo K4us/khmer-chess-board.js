@@ -96,7 +96,7 @@ var PlayManager = /** @class */ (function () {
             return moveData;
         });
         if (this.renDataList.length) {
-            this.renDataList[this.renDataList.length - 1].scrollIntoView();
+            this.dataContainerDom.scrollTop = this.dataContainerDom.scrollHeight;
         }
     };
     PlayManager.prototype.draw = function (playerContainer) {
@@ -113,7 +113,7 @@ var PlayManager = /** @class */ (function () {
         var tdHistory = document.createElement('td');
         var div = document.createElement('div');
         div.style.width = containerWidth + "px";
-        div.style.height = '28px';
+        div.style.height = '50px';
         div.classList.add('container');
         this.dataContainerDom = div;
         tdHistory.appendChild(div);
@@ -161,7 +161,7 @@ var PlayManager = /** @class */ (function () {
     };
     PlayManager.prototype.css = function () {
         var containerSelector = "table." + this.khmerChessBoard.options.uniqueClassName + "." + this.containerClassName;
-        return "\n        " + containerSelector + " {\n            width: 100%;\n            height: 100%;\n            box-shadow: rgb(0, 0, 0) 0px 0px 2px inset;\n        }\n        " + containerSelector + " td {\n            padding: 0px;\n            margin: 0px;\n            text-align: center;\n            box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 1px inset;\n        }\n        " + containerSelector + " .container {\n            font-size: 14px;\n            text-align: right;\n            overflow-x: auto;\n        }\n        " + containerSelector + " .container::-webkit-scrollbar {\n            width: 1em;\n        }\n        " + containerSelector + " .container > span {\n            margin: 0 2px;\n            padding: 0 2px;\n            border: 1px solid green;\n            border-radius: 2px;\n            cursor: pointer;\n        }\n        " + containerSelector + " .container > span.current {\n            background-color: rgba(255, 255, 255, 0.3);\n            cursor: not-allowed;\n        }\n        " + containerSelector + " .container span.index {\n            color: grey;\n            padding-right: 2px;\n            border-right: 1px solid gray;\n            margin-right: 2px;\n            font-size: 12px;\n        }\n        ";
+        return "\n        " + containerSelector + " {\n            width: 100%;\n            height: 100%;\n            box-shadow: rgb(0, 0, 0) 0px 0px 2px inset;\n        }\n        " + containerSelector + " td {\n            padding: 0px;\n            margin: 0px;\n            text-align: center;\n            box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 1px inset;\n        }\n        " + containerSelector + " .container {\n            font-size: 14px;\n            text-align: right;\n            overflow-x: auto;\n        }\n        " + containerSelector + " .container::-webkit-scrollbar {\n            width: 1em;\n        }\n        " + containerSelector + " .container .data {\n            display: inline-block;\n            margin: 2px;\n            padding: 0 2px;\n            border: 1px solid green;\n            border-radius: 2px;\n            cursor: pointer;\n        }\n        " + containerSelector + " .container > span.current {\n            background-color: rgba(255, 255, 255, 0.3);\n            cursor: not-allowed;\n        }\n        " + containerSelector + " .container span.index {\n            color: grey;\n            padding-right: 2px;\n            border-right: 1px solid gray;\n            margin-right: 2px;\n            font-size: 12px;\n        }\n        ";
     };
     Object.defineProperty(PlayManager.prototype, "isCanUndo", {
         get: function () {
@@ -309,6 +309,7 @@ var PlayManager = /** @class */ (function () {
             var toGYCell_1 = graveyardManager.get(move.captured.toGraveyardPoint.index);
             pieceShadowManager.movingPiece(fromBCell_1, toGYCell_1, function () {
                 fromBCell_1.movePieceToGraveyard(toGYCell_1);
+                graveyardManager.scrollLastToView();
                 finish();
             });
             soundManager.playCapture();
@@ -342,6 +343,7 @@ var PlayManager = /** @class */ (function () {
                 var toBCell_1 = boardManager.get(move.captured.fromBoardPoint.index);
                 pieceShadowManager.movingPiece(fromGYCell_1, toBCell_1, function () {
                     fromGYCell_1.movePieceFromGraveyard(toBCell_1);
+                    graveyardManager.scrollLastToView();
                     finish();
                 });
                 soundManager.playCapture();

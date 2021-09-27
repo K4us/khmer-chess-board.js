@@ -159,18 +159,6 @@ export default class CellManager {
             this.piece);
     }
 
-    scrollIntoView(quick?: boolean) {
-        if (quick) {
-            this.containerDom.scrollIntoView();
-            return;
-        }
-        this.containerDom.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-            inline: 'nearest',
-        });
-    }
-
     movePieceTo(toCell: CellManager) {
         const piece = this.piece;
         this.removePiece();
@@ -181,10 +169,8 @@ export default class CellManager {
         const deadPiece = this.piece;
         this.removePiece();
         toGYCell.setPiece(deadPiece);
-        toGYCell.scrollIntoView();
     }
     movePieceFromGraveyard(toCell: CellManager) {
-        this.scrollIntoView();
         const raisePiece = this.piece;
         this.removePiece();
         toCell.setPiece(raisePiece);

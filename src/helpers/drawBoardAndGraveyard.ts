@@ -75,7 +75,6 @@ export default function drawBoardAndGraveyard({
 
     const trPlayerContainer = createTr(tbody);
     trPlayerContainer.classList.add('tr-player');
-    trPlayerContainer.style.height = `${graveyardContainerHeight / 3}`;
 
     const tdPlayerContainer = createTd(trPlayerContainer);
     tdPlayerContainer.classList.add('player');
