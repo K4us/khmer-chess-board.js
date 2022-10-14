@@ -3,7 +3,6 @@
         "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
         "streetsidesoftware.code-spell-checker",
-        "ritwickdey.liveserver",
         "mhutchie.git-graph",
         "wayou.vscode-todo-highlight"
     ]
