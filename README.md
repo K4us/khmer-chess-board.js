@@ -26,7 +26,10 @@ import { KhmerChessBoard } from 'khmer-chess-board';
 ```javascript
 const { KhmerChessBoard } = require('khmer-chess-board');
 ```
-* Web: \<script src="khmer-chess-board/dist/khmer-chess-board.bundle.js"\>\</script\>
+* Web: 
+```html
+<script src="khmer-chess-board/dist/khmer-chess-board.bundle.js"></script>
+```
 
 ## Run
 
