@@ -13,8 +13,9 @@
         "titleBar.activeBackground": "#f9e64f",
         "titleBar.activeForeground": "#15202b",
         "titleBar.inactiveBackground": "#f9e64f99",
-        "titleBar.inactiveForeground": "#15202b99"
+        "titleBar.inactiveForeground": "#15202b99",
+        "tab.activeBackground": "#011b05",
+        "tab.activeBorder": "#ff0000",
+        "tab.activeModifiedBorder": "#3cfe31",
     },
-    "peacock.color": "#f9e64f",
-    "liveServer.settings.port": 5501
 }
