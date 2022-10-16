@@ -1,26 +1,6 @@
-export function randomString(length = 8) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
-
-const _idList: string[] = [];
-export function genId() {
-    let id = randomString(8);
-    while (~_idList.indexOf(id)) {
-        id = randomString(4);
-    }
-    _idList.push(id);
-    return id;
-}
-
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,3 +25,22 @@ export function genId() {
  * POSSIBILITY OF SUCH DAMAGE.
  *
  **/
+export function randomString(length = 8) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+};
+
+const _idList: string[] = [];
+export function genId() {
+    let id = randomString(8);
+    while (~_idList.indexOf(id)) {
+        id = randomString(4);
+    }
+    _idList.push(id);
+    return id;
+}
