@@ -47,6 +47,8 @@ export default class KhmerChessBoard {
             "@types/chai": string;
             "@types/chai-spies": string;
             "@types/mocha": string;
+            "@types/react": string;
+            "@types/react-dom": string;
             "@typescript-eslint/eslint-plugin": string;
             "@typescript-eslint/parser": string;
             chai: string;
@@ -60,6 +62,8 @@ export default class KhmerChessBoard {
             "karma-mocha": string;
             "karma-typescript": string;
             mocha: string;
+            react: string;
+            "react-dom": string;
             "source-map-loader": string;
             "ts-loader": string;
             typescript: string;

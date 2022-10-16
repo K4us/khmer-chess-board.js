@@ -13,9 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.PlayManagerEventController = exports.BoardStatusEventController = exports.BoardManagerEventController = exports.BoardStatusEvent = exports.KhmerChessBoard = void 0;
+exports.KhmerChess = exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.PlayManagerEventController = exports.BoardStatusEventController = exports.BoardManagerEventController = exports.BoardStatusEvent = exports.KhmerChessBoardComp = exports.KhmerChessBoard = void 0;
 var KhmerChessBoard_1 = require("./KhmerChessBoard");
 Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
+var KhmerChessBoardComp_1 = require("./KhmerChessBoardComp");
+Object.defineProperty(exports, "KhmerChessBoardComp", { enumerable: true, get: function () { return __importDefault(KhmerChessBoardComp_1).default; } });
 var BoardStatusEvent_1 = require("./event/BoardStatusEvent");
 Object.defineProperty(exports, "BoardStatusEvent", { enumerable: true, get: function () { return BoardStatusEvent_1.BoardStatusEvent; } });
 var BoardManagerEventController_1 = require("./event/BoardManagerEventController");
@@ -44,8 +46,10 @@ var PlayManager_1 = require("./PlayManager");
 Object.defineProperty(exports, "PlayManager", { enumerable: true, get: function () { return __importDefault(PlayManager_1).default; } });
 __exportStar(require("khmer-chess"), exports);
 var khmer_chess_1 = require("khmer-chess");
+Object.defineProperty(exports, "KhmerChess", { enumerable: true, get: function () { return khmer_chess_1.KhmerChess; } });
 var KhmerChessBoard_2 = __importDefault(require("./KhmerChessBoard"));
-console.log(khmer_chess_1.KhmerChess.title, khmer_chess_1.KhmerChess.version);
+var khmer_chess_2 = require("khmer-chess");
+console.log(khmer_chess_2.KhmerChess.title, khmer_chess_2.KhmerChess.version);
 console.log(KhmerChessBoard_2.default.title, KhmerChessBoard_2.default.version);
 /*
  * Copyright (c) 2021, K4us

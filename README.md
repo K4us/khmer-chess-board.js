@@ -21,14 +21,23 @@ Screen Shot 2021-02-27 at 5.49.22 PM (KhmerChessBoard 1.0.13):
 * [typescript](https://www.typescriptlang.org/): 
 ```typescript
 import { KhmerChessBoard } from 'khmer-chess-board';
+// React
+import { KhmerChessBoardComp } from 'khmer-chess-board';
 ```
 * [Node.js](https://nodejs.org/en/): 
 ```javascript
 const { KhmerChessBoard } = require('khmer-chess-board');
+// React
+const { KhmerChessBoardComp } = require('khmer-chess-board');
 ```
 * Web: 
 ```html
 <script src="khmer-chess-board/dist/khmer-chess-board.bundle.js"></script>
+<script>
+    console.log(KhmerChessBoard.version);
+    // React
+    console.log(KhmerChessBoardComp.version);
+</script>
 ```
 
 ## Run

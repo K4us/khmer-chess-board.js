@@ -1,4 +1,5 @@
 export { default as KhmerChessBoard } from './KhmerChessBoard';
+export { default as KhmerChessBoardComp } from './KhmerChessBoardComp';
 export { BoardStatusEvent } from './event/BoardStatusEvent';
 export { default as BoardManagerEventController } from './event/BoardManagerEventController';
 export { default as BoardStatusEventController } from './event/BoardStatusEventController';
@@ -14,8 +15,10 @@ export { default as MessageManager } from './MessageManager';
 export { default as PlayManager } from './PlayManager';
 
 export * from 'khmer-chess';
-import { KhmerChess } from 'khmer-chess';
+export { KhmerChess } from 'khmer-chess';
+
 import KhmerChessBoard from './KhmerChessBoard';
+import { KhmerChess } from 'khmer-chess';
 
 console.log(KhmerChess.title, KhmerChess.version);
 console.log(KhmerChessBoard.title, KhmerChessBoard.version);

@@ -22,9 +22,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.khmerChessBoardNS = exports.KhmerChessBoard = void 0;
+exports.khmerChessBoardNS = exports.KhmerChessBoardComp = exports.KhmerChessBoard = void 0;
 var KhmerChessBoard_1 = require("./KhmerChessBoard");
 Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
+var KhmerChessBoardComp_1 = require("./KhmerChessBoardComp");
+Object.defineProperty(exports, "KhmerChessBoardComp", { enumerable: true, get: function () { return __importDefault(KhmerChessBoardComp_1).default; } });
 exports.khmerChessBoardNS = __importStar(require("./index"));
 /*
  * Copyright (c) 2021, K4us
