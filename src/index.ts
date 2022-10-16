@@ -1,29 +1,6 @@
-export { default as KhmerChessBoard } from './KhmerChessBoard';
-export { BoardStatusEvent } from './event/BoardStatusEvent';
-export { default as BoardManagerEventController } from './event/BoardManagerEventController';
-export { default as BoardStatusEventController } from './event/BoardStatusEventController';
-export { default as PlayManagerEventController } from './event/PlayManagerEventController';
-export { default as MoveData } from './MoveData';
-export { default as BoardManager } from './BoardManager';
-export { default as OptionsManager } from './OptionsManager';
-export { default as SoundManager } from './SoundManager';
-export { default as CellManager } from './CellManager';
-export { default as PieceShadowManager } from './PieceShadowManager';
-export { default as GraveyardManager } from './GraveyardManager';
-export { default as MessageManager } from './MessageManager';
-export { default as PlayManager } from './PlayManager';
-
-export * from 'khmer-chess';
-import { KhmerChess } from 'khmer-chess';
-import KhmerChessBoard from './KhmerChessBoard';
-
-console.log(KhmerChess.title, KhmerChess.version);
-console.log(KhmerChessBoard.title, KhmerChessBoard.version);
-
-
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,3 +25,27 @@ console.log(KhmerChessBoard.title, KhmerChessBoard.version);
  * POSSIBILITY OF SUCH DAMAGE.
  *
  **/
+export { default as KhmerChessBoard } from './KhmerChessBoard';
+export { default as KhmerChessBoardComp } from './KhmerChessBoardComp';
+export { BoardStatusEvent } from './event/BoardStatusEvent';
+export { default as BoardManagerEventController } from './event/BoardManagerEventController';
+export { default as BoardStatusEventController } from './event/BoardStatusEventController';
+export { default as PlayManagerEventController } from './event/PlayManagerEventController';
+export { default as MoveData } from './MoveData';
+export { default as BoardManager } from './BoardManager';
+export { default as OptionsManager } from './OptionsManager';
+export { default as SoundManager } from './SoundManager';
+export { default as CellManager } from './CellManager';
+export { default as PieceShadowManager } from './PieceShadowManager';
+export { default as GraveyardManager } from './GraveyardManager';
+export { default as MessageManager } from './MessageManager';
+export { default as PlayManager } from './PlayManager';
+
+export * from 'khmer-chess';
+export { KhmerChess } from 'khmer-chess';
+
+import KhmerChessBoard from './KhmerChessBoard';
+import { KhmerChess } from 'khmer-chess';
+
+console.log(KhmerChess.title, KhmerChess.version);
+console.log(KhmerChessBoard.title, KhmerChessBoard.version);

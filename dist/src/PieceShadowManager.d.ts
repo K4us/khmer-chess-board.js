@@ -18,5 +18,5 @@ export default class PieceShadowManager {
     removePendingCallback(callback: () => void): void;
     finishAnimations(): void;
     _resolve(): void;
-    resolveAnimation(): Promise<void>;
+    waitForAnimation(): Promise<void>;
 }

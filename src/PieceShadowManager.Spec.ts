@@ -1,36 +1,6 @@
-import CellManager from './CellManager';
-import KhmerChessBoard from './KhmerChessBoard';
-import { capturing, init, reset } from './test/helper';
-const { expect } = chai;
-
-describe('KhmerChessBoard', function () {
-    const kcb: KhmerChessBoard = new KhmerChessBoard();
-
-    before(() => {
-        init(kcb);
-    });
-
-    afterEach(() => {
-        reset(kcb);
-    });
-
-    it('should move with shadow', async () => {
-        kcb.pieceShadowManager.quickMove(false);
-        kcb.loadRen(capturing.renStr);
-        kcb.playManager.play();
-        const cell = kcb.boardManager.get(capturing.fromIndex) as CellManager;
-        const targetCell = kcb.boardManager.get(capturing.toIndex) as CellManager;
-        kcb.boardManager.selectCell(cell);
-        kcb.boardManager.selectCell(targetCell);
-        await kcb.pieceShadowManager.resolveAnimation();
-        const movedCells = kcb.boardManager.movedCells;
-        expect(movedCells.length).to.eql(2);
-    }).timeout(1e3 * 5);
-});
-
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,3 +25,31 @@ describe('KhmerChessBoard', function () {
  * POSSIBILITY OF SUCH DAMAGE.
  *
  **/
+import KhmerChessBoard from './KhmerChessBoard';
+import { capturing, init, reset } from './test/helper';
+const { expect } = chai;
+
+describe('KhmerChessBoard', function () {
+    const kcb: KhmerChessBoard = new KhmerChessBoard();
+
+    before(() => {
+        init(kcb);
+    });
+
+    afterEach(() => {
+        reset(kcb);
+    });
+
+    it('should move with shadow', async () => {
+        kcb.pieceShadowManager.quickMove(false);
+        kcb.loadRen(capturing.renStr);
+        kcb.playManager.play();
+        const cell = kcb.boardManager.get(capturing.fromIndex);
+        const targetCell = kcb.boardManager.get(capturing.toIndex);
+        kcb.boardManager.selectCell(cell);
+        kcb.boardManager.selectCell(targetCell);
+        await kcb.pieceShadowManager.waitForAnimation();
+        const movedCells = kcb.boardManager.movedCells;
+        expect(movedCells.length).to.eql(2);
+    }).timeout(1e3 * 5);
+});

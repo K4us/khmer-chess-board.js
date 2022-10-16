@@ -16,7 +16,8 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "isolatedModules": true,
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx"
   },
   "exclude": [
     "node_modules/khmer-chess/src/**/*.Spec.ts",

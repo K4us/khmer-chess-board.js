@@ -1,8 +1,6 @@
-export { default as KhmerChessBoard } from './KhmerChessBoard';
-export * as khmerChessBoardNS from './index';
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,3 +25,6 @@ export * as khmerChessBoardNS from './index';
  * POSSIBILITY OF SUCH DAMAGE.
  *
  **/
+export { default as KhmerChessBoard } from './KhmerChessBoard';
+export { default as KhmerChessBoardComp } from './KhmerChessBoardComp';
+export * as khmerChessBoardNS from './index';

@@ -1,6 +1,6 @@
 {
     "name": "khmer-chess-board",
-    "version": "1.0.59",
+    "version": "1.0.61",
     "description": "Khmer Chess Javascript library to simulate chess board",
     "main": "dist/src/index.js",
     "types": "src/index.ts",
@@ -34,12 +34,14 @@
     ],
     "dependencies": {
         "k4us-share": "^1.0.13",
-        "khmer-chess": "^1.0.63"
+        "khmer-chess": "^1.0.65"
     },
     "devDependencies": {
         "@types/chai": "^4.2.21",
         "@types/chai-spies": "^1.0.3",
         "@types/mocha": "^9.0.0",
+        "@types/react": "^18.0.21",
+        "@types/react-dom": "^18.0.6",
         "@typescript-eslint/eslint-plugin": "^4.15.1",
         "@typescript-eslint/parser": "^4.15.1",
         "chai": "^4.3.4",
@@ -53,6 +55,8 @@
         "karma-mocha": "^2.0.1",
         "karma-typescript": "^5.5.2",
         "mocha": "^9.1.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "source-map-loader": "0.2.3",
         "ts-loader": "^9.2.5",
         "typescript": "^4.4.3",

@@ -22,13 +22,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.khmerChessBoardNS = exports.KhmerChessBoard = void 0;
-var KhmerChessBoard_1 = require("./KhmerChessBoard");
-Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
-exports.khmerChessBoardNS = __importStar(require("./index"));
+exports.khmerChessBoardNS = exports.KhmerChessBoardComp = exports.KhmerChessBoard = void 0;
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,5 +49,10 @@ exports.khmerChessBoardNS = __importStar(require("./index"));
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- **/ 
+ **/
+var KhmerChessBoard_1 = require("./KhmerChessBoard");
+Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
+var KhmerChessBoardComp_1 = require("./KhmerChessBoardComp");
+Object.defineProperty(exports, "KhmerChessBoardComp", { enumerable: true, get: function () { return __importDefault(KhmerChessBoardComp_1).default; } });
+exports.khmerChessBoardNS = __importStar(require("./index"));
 //# sourceMappingURL=index.umd.js.map

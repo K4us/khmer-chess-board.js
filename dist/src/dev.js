@@ -3,11 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KhmerChessBoard_1 = __importDefault(require("./KhmerChessBoard"));
-window.KhmerChessBoard = KhmerChessBoard_1.default;
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,5 +29,7 @@ window.KhmerChessBoard = KhmerChessBoard_1.default;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- **/ 
+ **/
+var KhmerChessBoard_1 = __importDefault(require("./KhmerChessBoard"));
+window.KhmerChessBoard = KhmerChessBoard_1.default;
 //# sourceMappingURL=dev.js.map

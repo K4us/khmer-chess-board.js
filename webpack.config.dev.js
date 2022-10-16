@@ -27,7 +27,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
         modules: [
             ROOT,
             'node_modules'
@@ -40,7 +40,7 @@ module.exports = {
             * LOADERS
             *****************/
             {
-                test: /\.ts?$/,
+                test: /\.tsx?$/,
                 use: 'ts-loader'
             }
         ]

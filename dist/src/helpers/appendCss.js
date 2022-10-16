@@ -1,16 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function appendCss(uniqueClassName, css) {
-    var head = document.head || document.getElementsByTagName('head')[0];
-    var style = document.createElement('style');
-    style.classList.add(uniqueClassName);
-    head.appendChild(style);
-    style.appendChild(document.createTextNode(css));
-}
-exports.default = appendCss;
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,5 +26,13 @@ exports.default = appendCss;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- **/ 
+ **/
+function appendCss(uniqueClassName, css) {
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = document.createElement('style');
+    style.classList.add(uniqueClassName);
+    head.appendChild(style);
+    style.appendChild(document.createTextNode(css));
+}
+exports.default = appendCss;
 //# sourceMappingURL=appendCss.js.map

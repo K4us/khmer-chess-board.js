@@ -13,9 +13,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.PlayManagerEventController = exports.BoardStatusEventController = exports.BoardManagerEventController = exports.BoardStatusEvent = exports.KhmerChessBoard = void 0;
+exports.KhmerChess = exports.PlayManager = exports.MessageManager = exports.GraveyardManager = exports.PieceShadowManager = exports.CellManager = exports.SoundManager = exports.OptionsManager = exports.BoardManager = exports.MoveData = exports.PlayManagerEventController = exports.BoardStatusEventController = exports.BoardManagerEventController = exports.BoardStatusEvent = exports.KhmerChessBoardComp = exports.KhmerChessBoard = void 0;
+/*
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ **/
 var KhmerChessBoard_1 = require("./KhmerChessBoard");
 Object.defineProperty(exports, "KhmerChessBoard", { enumerable: true, get: function () { return __importDefault(KhmerChessBoard_1).default; } });
+var KhmerChessBoardComp_1 = require("./KhmerChessBoardComp");
+Object.defineProperty(exports, "KhmerChessBoardComp", { enumerable: true, get: function () { return __importDefault(KhmerChessBoardComp_1).default; } });
 var BoardStatusEvent_1 = require("./event/BoardStatusEvent");
 Object.defineProperty(exports, "BoardStatusEvent", { enumerable: true, get: function () { return BoardStatusEvent_1.BoardStatusEvent; } });
 var BoardManagerEventController_1 = require("./event/BoardManagerEventController");
@@ -44,34 +73,9 @@ var PlayManager_1 = require("./PlayManager");
 Object.defineProperty(exports, "PlayManager", { enumerable: true, get: function () { return __importDefault(PlayManager_1).default; } });
 __exportStar(require("khmer-chess"), exports);
 var khmer_chess_1 = require("khmer-chess");
+Object.defineProperty(exports, "KhmerChess", { enumerable: true, get: function () { return khmer_chess_1.KhmerChess; } });
 var KhmerChessBoard_2 = __importDefault(require("./KhmerChessBoard"));
-console.log(khmer_chess_1.KhmerChess.title, khmer_chess_1.KhmerChess.version);
+var khmer_chess_2 = require("khmer-chess");
+console.log(khmer_chess_2.KhmerChess.title, khmer_chess_2.KhmerChess.version);
 console.log(KhmerChessBoard_2.default.title, KhmerChessBoard_2.default.version);
-/*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- **/ 
 //# sourceMappingURL=index.js.map
