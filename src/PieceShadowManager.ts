@@ -117,21 +117,20 @@ export default class PieceShadowManager {
         });
     }
     finishAnimations() {
-        while (this.pending.callbacks.length) {
+        while (this.pending.callbacks.length > 0) {
             this.pending.callbacks[0]();
         }
         this._resolve();
     }
     _resolve() {
-        while (!this.pending.callbacks.length &&
-            this.pending.resolvers.length) {
-            const resolve = this.pending.resolvers.shift();
-            if (resolve) {
-                resolve();
-            }
+        const { resolvers, callbacks } = this.pending;
+        while (callbacks.length === 0 &&
+            resolvers.length > 0) {
+            const resolve = resolvers.shift();
+            resolve?.();
         }
     }
-    resolveAnimation(): Promise<void> {
+    waitForAnimation(): Promise<void> {
         return new Promise((resolve, _) => {
             this.pending.resolvers.push(resolve);
             this._resolve();

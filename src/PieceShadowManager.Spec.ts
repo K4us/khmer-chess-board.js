@@ -25,7 +25,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  **/
-import CellManager from './CellManager';
 import KhmerChessBoard from './KhmerChessBoard';
 import { capturing, init, reset } from './test/helper';
 const { expect } = chai;
@@ -45,11 +44,11 @@ describe('KhmerChessBoard', function () {
         kcb.pieceShadowManager.quickMove(false);
         kcb.loadRen(capturing.renStr);
         kcb.playManager.play();
-        const cell = kcb.boardManager.get(capturing.fromIndex) as CellManager;
-        const targetCell = kcb.boardManager.get(capturing.toIndex) as CellManager;
+        const cell = kcb.boardManager.get(capturing.fromIndex);
+        const targetCell = kcb.boardManager.get(capturing.toIndex);
         kcb.boardManager.selectCell(cell);
         kcb.boardManager.selectCell(targetCell);
-        await kcb.pieceShadowManager.resolveAnimation();
+        await kcb.pieceShadowManager.waitForAnimation();
         const movedCells = kcb.boardManager.movedCells;
         expect(movedCells.length).to.eql(2);
     }).timeout(1e3 * 5);
