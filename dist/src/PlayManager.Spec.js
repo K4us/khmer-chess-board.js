@@ -3,25 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var KhmerChessBoard_1 = __importDefault(require("./KhmerChessBoard"));
-var helper_1 = require("./test/helper");
-var expect = chai.expect;
-describe('KhmerChessBoard', function () {
-    var kcb = new KhmerChessBoard_1.default();
-    before(function () {
-        (0, helper_1.init)(kcb);
-    });
-    afterEach(function () {
-        (0, helper_1.reset)(kcb);
-    });
-    it('should undo', function () {
-        kcb.playManager.undo();
-        expect(true).to.true;
-    });
-});
 /*
- * Copyright (c) 2021, K4us
- * Author: Raksa Eng <eng.raksa@gmail.com>, K4us Net <k4us.net@gmail.com>
+ * Copyright (c) 2021-2022, K4us
+ * Author: Raksa Eng <eng.raksa@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,5 +29,21 @@ describe('KhmerChessBoard', function () {
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- **/ 
+ **/
+var KhmerChessBoard_1 = __importDefault(require("./KhmerChessBoard"));
+var helper_1 = require("./test/helper");
+var expect = chai.expect;
+describe('KhmerChessBoard', function () {
+    var kcb = new KhmerChessBoard_1.default();
+    before(function () {
+        (0, helper_1.init)(kcb);
+    });
+    afterEach(function () {
+        (0, helper_1.reset)(kcb);
+    });
+    it('should undo', function () {
+        kcb.playManager.undo();
+        expect(true).to.true;
+    });
+});
 //# sourceMappingURL=PlayManager.Spec.js.map
